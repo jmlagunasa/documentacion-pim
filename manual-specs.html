@@ -94,8 +94,10 @@ pre.prompt{background:var(--morado-s);border:1px solid #e2cfe9;color:var(--tinta
 .tarjeta{border:1px solid var(--borde);border-radius:var(--radio);padding:12px 14px;background:var(--papel)}
 .tarjeta b{display:block;margin-bottom:3px}
 .tarjeta p{margin:4px 0;font-size:14.5px;color:var(--tinta2)}
-ol.tareas{list-style:none;padding:0;margin:16px 0}
-li.tarea{border:1px solid var(--borde);border-radius:var(--radio);padding:12px 18px;margin:12px 0;background:var(--papel);transition:border-color .2s}
+ol.tareas{list-style:none;padding:0;margin:16px 0;counter-reset:tarea}
+li.tarea{border:1px solid var(--borde);border-radius:var(--radio);padding:12px 18px;margin:12px 0;background:var(--papel);transition:border-color .2s;counter-increment:tarea}
+.tarea-cab::before{content:counter(tarea);flex:none;min-width:22px;height:22px;line-height:22px;margin-top:1px;border-radius:99px;background:var(--gris-s);color:var(--tinta2);font-size:12px;text-align:center}
+li.tarea.hecha .tarea-cab::before{background:var(--verde-s);color:var(--verde)}
 li.tarea.hecha{border-color:#bfe3cd;background:#fbfefc}
 .tarea-cab{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:15.5px;cursor:pointer}
 .tarea-cab input{width:18px;height:18px;margin-top:3px;accent-color:var(--verde);flex:none;cursor:pointer}
@@ -198,7 +200,7 @@ footer button{border:1px solid var(--borde);background:var(--papel);border-radiu
 <body>
 <header class="portada">
   <h1>Curso práctico de specs: skills y agentes en cada etapa</h1>
-  <p class="bajada">Un caso guiado de punta a punta con Spec Kit y OpenSpec. En cada etapa sabrás qué skill, agente o hook usar, y vas a escribir los tuyos. Poca teoría: haces, pegas el prompt y compruebas.</p>
+  <p class="bajada">¿Tienes 10 minutos? Empieza por la <a href="#expres">ruta exprés</a>: tu primer ciclo completo, con tu primera skill y tu primer agente. ¿Quieres llegar a experto? Sigue con las misiones: un caso guiado de punta a punta con Spec Kit y OpenSpec que incluye los temas avanzados, como el trabajo en paralelo, el drift, el legacy y la modernización. Poca teoría: haces, pegas el prompt y compruebas.</p>
   <p class="version">Comandos, archivos y salidas <span class="insignia medido">medidos</span> el 2026-10-18 con Spec Kit 1.2.1 y OpenSpec 1.14.3. Lo de subagentes y hooks de Cursor sale de su documentación, consultada el 18-oct-2026.</p>
 </header>
 
@@ -209,6 +211,7 @@ footer button{border:1px solid var(--borde);background:var(--papel);border-radiu
     <div class="barra"><span id="avance-barra"></span></div>
   </div>
   <ol>
+    <li><a href="#expres" data-mision="x">Ruta exprés: 10 minutos <span class="listo">✓</span></a></li>
     <li><a href="#inicio">Cómo funciona</a></li>
     <li><a href="#mapa">El mapa: qué usar en cada etapa</a></li>
     <li class="separador">El caso guiado</li>
@@ -219,11 +222,13 @@ footer button{border:1px solid var(--borde);background:var(--papel);border-radiu
     <li><a href="#m4" data-mision="m4">4 · Implementa con candados <span class="listo">✓</span></a></li>
     <li><a href="#m5" data-mision="m5">5 · Un agente que revisa <span class="listo">✓</span></a></li>
     <li><a href="#m6" data-mision="m6">6 · Gradúate a OpenSpec <span class="listo">✓</span></a></li>
-    <li><a href="#m7" data-mision="m7">7 · Dos devs en paralelo <span class="listo">✓</span></a></li>
+    <li><a href="#m7" data-mision="m7">7 · En paralelo con worktrees <span class="listo">✓</span></a></li>
     <li><a href="#m8" data-mision="m8">8 · Auditoría de drift <span class="listo">✓</span></a></li>
-    <li><a href="#m9" data-mision="m9">9 · Bonus: un legacy <span class="listo">✓</span></a></li>
+    <li><a href="#m9" data-mision="m9">9 · Entiende un legacy <span class="listo">✓</span></a></li>
+    <li><a href="#m10" data-mision="m10">10 · Moderniza por módulos <span class="listo">✓</span></a></li>
     <li class="separador">Para tu equipo</li>
     <li><a href="#taller">Taller: tu kit de skills y agentes</a></li>
+    <li><a href="#avanzados">Temas avanzados: dónde se practican</a></li>
     <li class="separador">Referencia</li>
     <li><a href="#prompts">Biblioteca de prompts</a></li>
     <li><a href="#formato">Formato de OpenSpec y trampas</a></li>
@@ -235,10 +240,162 @@ footer button{border:1px solid var(--borde);background:var(--papel);border-radiu
 
 <main>
 
+<!-- ============================================================ EXPRÉS -->
+<section class="bloque mision" id="expres">
+  <div class="cab"><span class="num">10 min</span><div><h2>Ruta exprés: tu primer ciclo completo</h2><p class="meta">Cursor + OpenSpec · cinco pasos de copiar y pegar</p></div><span class="cuenta" data-cuenta="x"></span></div>
+  <p>Al terminar vas a tener un cambio propuesto, validado, implementado, revisado por un agente y archivado, más tu primera skill y tu primer agente. Eso no te hace experto, pero te pone el ciclo completo en la mano. Lo experto viene en las misiones.</p>
+  <p class="usas"><b>Antes:</b> Cursor abierto y Node 20.19 o más (<code>node --version</code>). Los comandos de terminal tardan segundos <span class="insignia medido">medido</span>; lo que más tarda es que el agente escriba <span class="insignia inferido">estimado</span>.</p>
+  <ol class="tareas">
+    <li class="tarea" data-tarea="x-1">
+      <label class="tarea-cab"><input type="checkbox"> Instala OpenSpec y prepara un repo de práctica · 1 min</label>
+      <span class="etq haz">Haz</span>
+      <pre class="terminal">npm install -g @fission-ai/openspec@1.14.3
+mkdir -p ~/lab-expres &amp;&amp; cd ~/lab-expres &amp;&amp; git init -b main
+openspec init --tools cursor --language es
+git add -A &amp;&amp; git commit -m &quot;Base: OpenSpec&quot;
+cursor .</pre>
+      <span class="etq ver">Debes ver</span> <span class="insignia medido">medido</span>
+      <pre class="terminal">$ openspec init --tools cursor --language es
+▌ OpenSpec structure created
+✔ Setup complete for Cursor
+
+OpenSpec Setup Complete
+
+Created: Cursor
+6 skills and 6 commands in .cursor/
+Config: openspec/config.yaml (schema: spec-driven)
+
+Getting started:
+  Start your first change: /opsx-propose &quot;your idea&quot;
+
+Note: 6 more workflows are available (new, continue, ff, bulk-archive, verify, onboard).
+Add them with `openspec config profile`.
+
+Learn more: https://github.com/Fission-AI/OpenSpec
+Feedback:   https://github.com/Fission-AI/OpenSpec/issues
+
+Restart your IDE to refresh commands.</pre>
+    </li>
+    <li class="tarea" data-tarea="x-2">
+      <label class="tarea-cab"><input type="checkbox"> Crea tu primera skill y tu primer agente · 1 min</label>
+      <span class="etq haz">Haz</span> <span class="meta">(en la terminal, dentro de <code>~/lab-expres</code>; es un solo bloque)</span>
+      <pre class="terminal">mkdir -p .cursor/skills/revisar-spec
+cat &gt; .cursor/skills/revisar-spec/SKILL.md &lt;&lt;&#x27;FIN_DEL_ARCHIVO&#x27;
+---
+name: revisar-spec
+description: Revisa una spec de Spec Kit o de OpenSpec sin editarla y señala requisitos que no se pueden probar, palabras ambiguas, requisitos sin escenario, tecnología que se coló y criterios de éxito sin número. Usar después de especificar y antes de planear, o cuando pidan revisar una spec.
+---
+
+# Revisar una spec
+
+Sólo lees. No edites ningún archivo.
+
+1. Ubica la spec: la ruta que te den; si no, `.specify/feature.json` (Spec Kit) o el cambio activo de `openspec list` (OpenSpec).
+2. Revisa cada requisito:
+   - ¿Se puede probar con un escenario concreto? Si no, es un hallazgo.
+   - ¿Usa palabras sin número («rápido», «fácil», «adecuado», «robusto», «intuitivo»)?
+   - ¿Tiene al menos un escenario? En OpenSpec, ¿lleva SHALL o MUST y escenarios con cuatro `#`?
+   - ¿Menciona clases, tablas, librerías o frameworks? Eso va en el plan o en el diseño.
+3. Revisa los criterios de éxito: cada uno con número y sin tecnología.
+4. Entrega una tabla `ubicación | problema | propuesta`, de lo más grave a lo menos grave.
+5. Termina con una línea: «Lista para planear» o «Necesita cambios (N hallazgos)».
+FIN_DEL_ARCHIVO
+mkdir -p .claude/agents
+cat &gt; .claude/agents/revisor-conformidad.md &lt;&lt;&#x27;FIN_DEL_ARCHIVO&#x27;
+---
+name: revisor-conformidad
+description: Revisa, sólo leyendo, si el cambio de la rama cumple su spec requisito por requisito (implementado, con prueba que cita su ID, criterio cumplido), qué se coló fuera de la spec y si alguna prueba se apagó, se aflojó o se borró. Usar antes de abrir el PR o con /conformidad. No edita nada.
+tools: Read, Grep, Glob, Bash
+readonly: true
+---
+
+# Revisor de conformidad
+
+No escribiste este código: lo revisas contra su spec. Sólo lees. Bash es sólo para `git` y `rg`.
+
+## Cómo revisas
+
+1. Lista los requisitos de la spec: los `FR-###` de Spec Kit, o los `### Requirement:` de OpenSpec con sus escenarios.
+2. Lee el diff: `git diff --stat &lt;base&gt;...HEAD`, `git diff &lt;base&gt;...HEAD` y lo que no tiene commit.
+3. Por cada requisito: ¿el diff lo implementa? (cita `archivo:línea`). ¿Qué prueba lo cita en su nombre? ¿Se cumple su criterio?
+4. Al revés: ¿qué cambios del diff no rastrean a ningún requisito? Repórtalos aunque sean un refactor válido.
+5. Busca pruebas apagadas, aflojadas o borradas: `@Disabled`, `@Ignore`, `.skip`, aserciones borradas o comentadas, un valor concreto que pasó a `any()`.
+6. Revisa que el diff no rompa una regla de `AGENTS.md`, de la constitución o de `openspec/config.yaml`.
+7. Por cada firma pública que cambió, busca con `rg` quién la llama fuera del diff.
+
+## Reglas
+
+- Todo hallazgo lleva `archivo:línea`. Si no lo puedes citar, no lo afirmes.
+- Máximo 3 bloqueantes, en orden de gravedad. No comentes estilo ni rediseñes.
+- Si te falta la spec o la base, dilo y para.
+
+## Salida
+
+```
+## Conformidad: NO LISTO | LISTO CON PENDIENTES | LISTO PARA PR
+
+| Requisito | ¿Implementado? | Prueba | ¿Criterio cumplido? |
+|---|---|---|---|
+
+Fuera de la spec: …
+Pruebas apagadas, aflojadas o borradas: …
+Reglas rotas: …
+
+### Bloqueantes (máximo 3)
+1. `archivo:línea` — qué pasa, por qué importa y cómo se arregla.
+```
+FIN_DEL_ARCHIVO</pre>
+      <span class="etq ver">Debes ver</span>
+      <p>Dos archivos: la skill <code>revisar-spec</code>, que revisa una spec, y el agente <code>revisor-conformidad</code>, de sólo lectura, que revisa el código contra la spec. El bloque está <span class="insignia medido">probado</span>: crea los archivos idénticos a los de la misión 5. Abre un chat nuevo para que Cursor los vea.</p>
+    </li>
+    <li class="tarea" data-tarea="x-3">
+      <label class="tarea-cab"><input type="checkbox"> Propón un cambio y revísalo con tu skill · 3 min</label>
+      <span class="etq pega">Pega</span> <span class="meta">(en el chat de Cursor)</span>
+      <pre class="prompt">/opsx-propose bloquear-marcas: Gobierno de Datos puede bloquear una marca, y el alta de productos de una marca bloqueada se rechaza con el código MARCA_BLOQUEADA. Fuera de alcance: bajar lo ya publicado. Un comportamiento por requisito, cada uno con un escenario feliz y uno de error.</pre>
+      <p>Y después:</p>
+      <pre class="prompt">/revisar-spec openspec/changes/bloquear-marcas</pre>
+      <span class="etq comprueba">Comprueba</span> <span class="meta">(en la terminal)</span>
+      <pre class="terminal">$ openspec validate bloquear-marcas --strict
+Change &#x27;bloquear-marcas&#x27; is valid
+$ echo $?
+0</pre>
+    </li>
+    <li class="tarea" data-tarea="x-4">
+      <label class="tarea-cab"><input type="checkbox"> Implementa y pide la revisión del agente · 4 min</label>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/opsx-apply bloquear-marcas</pre>
+      <p>Cuando termine:</p>
+      <pre class="prompt">Usa el subagente revisor-conformidad para revisar este cambio contra openspec/changes/bloquear-marcas, con base main.</pre>
+      <span class="etq ver">Debes ver</span>
+      <p>Un veredicto (LISTO PARA PR, LISTO CON PENDIENTES o NO LISTO) con una fila por requisito. Si dice NO LISTO, pide que se arregle y repite la revisión.</p>
+    </li>
+    <li class="tarea" data-tarea="x-5">
+      <label class="tarea-cab"><input type="checkbox"> Archiva y mira nacer la spec viva · 1 min</label>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/opsx-archive bloquear-marcas</pre>
+      <span class="etq comprueba">Comprueba</span> <span class="insignia medido">medido</span> <span class="meta">(el nombre de la capacidad lo elige el agente; el tuyo puede ser otro)</span>
+      <pre class="terminal">$ openspec list --specs
+Specs:
+  bloqueo-de-marcas     requirements 2</pre>
+    </li>
+  </ol>
+  <div class="caja bien">
+    <p><b>Lo lograste.</b> Recorriste cinco etapas del <a href="#mapa">mapa</a>: especificar, revisar con una skill, implementar, pasar la conformidad con un agente y archivar. Para llegar a experto te falta esto, y aquí se practica:</p>
+    <ul>
+      <li>La base del repo: reglas, contexto y mapa de specs → <a href="#m1">misión 1</a>.</li>
+      <li>Spec Kit para servicios nuevos: constitución, clarify, plan, checklists y analyze → <a href="#m2">misiones 2 a 5</a>.</li>
+      <li>Un hook que bloquea saltarse pruebas → <a href="#m4">misión 4</a>.</li>
+      <li>Verify, drift y candados en CI → <a href="#m6">misiones 6</a> y <a href="#m8">8</a>.</li>
+      <li>Varios cambios a la vez con worktrees e integración por riesgo → <a href="#m7">misión 7</a>.</li>
+      <li>Legacy sin spec y modernización por módulos → <a href="#m9">misiones 9</a> y <a href="#m10">10</a>.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ============================================================ INICIO -->
 <section class="bloque" id="inicio">
   <h2>Cómo funciona</h2>
-  <p>Vas a construir un <b>servicio de catálogo de marcas</b> en un repo de práctica. Nace con Spec Kit, recibe cambios con OpenSpec y lo cuidan agentes de revisión. De bonus, rescatas un módulo viejo sin documentar. Son nueve misiones de 10 a 30 minutos.</p>
+  <p>Vas a construir un <b>servicio de catálogo de marcas</b> en un repo de práctica. Nace con Spec Kit, recibe cambios con OpenSpec y lo cuidan agentes de revisión. Al final rescatas un módulo viejo sin documentar y lo modernizas. Después de la ruta exprés vienen las misiones 0 a 10, de 10 a 30 minutos cada una.</p>
   <p>Cada tarea tiene una casilla, y tu avance se guarda en este navegador. Dentro de cada tarea vas a ver:</p>
   <div class="rejilla">
     <div class="tarjeta"><span class="etq haz">Haz</span><p>Lo que haces tú, en la terminal o en el chat.</p></div>
@@ -282,12 +439,22 @@ footer button{border:1px solid var(--borde);background:var(--papel);border-radiu
     <tr id="e-implementar" data-flujo="speckit openspec legacy"><td>Implementar</td><td>Programar contra las tareas, con las pruebas primero</td><td><code>/speckit-implement</code>, <code>/opsx-apply</code></td><td>—</td><td>Tu hook <code>no-saltar-pruebas</code></td><td><a href="#m4">4</a>, <a href="#m6">6</a></td></tr>
     <tr id="e-verificar" data-flujo="speckit openspec"><td>Verificar</td><td>¿El código cumple lo que dicen los artefactos?</td><td>Pruebas, revisión requisito → prueba, <code>/speckit-converge</code>, <code>/opsx-verify</code></td><td>—</td><td>Ningún CRITICAL antes de cerrar</td><td><a href="#m4">4</a>, <a href="#m6">6</a></td></tr>
     <tr id="e-conformidad" data-flujo="speckit openspec legacy"><td>Conformidad</td><td>Revisión independiente antes del PR</td><td>Tu skill <code>/conformidad</code></td><td><code>revisor-conformidad</code>, de sólo lectura</td><td>Quien implementó no se revisa</td><td><a href="#m5">5</a></td></tr>
+    <tr id="e-paralelo" data-flujo="speckit openspec"><td>Trabajar en paralelo</td><td>Varios cambios a la vez, cada uno en su worktree, y juntarlos al final</td><td><code>git worktree</code> y el prompt de integración</td><td>Un agente por worktree</td><td>La base no se paraleliza; se integra por orden de riesgo</td><td><a href="#m7">7</a></td></tr>
     <tr id="e-entregar" data-flujo="speckit openspec legacy"><td>Entregar</td><td>PR con la tabla de conformidad</td><td><code>gh pr create</code></td><td>—</td><td>🛑 CI verde, análisis de seguridad y revisión humana</td><td><a href="#m5">5</a></td></tr>
     <tr id="e-archivar" data-flujo="openspec"><td>Archivar</td><td>Fusionar el cambio en la spec viva</td><td><code>/opsx-archive</code>, <code>/opsx-bulk-archive</code></td><td>—</td><td><code>openspec validate --archived</code> en CI</td><td><a href="#m6">6</a>, <a href="#m7">7</a></td></tr>
     <tr id="e-mantener" data-flujo="openspec"><td>Mantener</td><td>¿Spec y código siguen diciendo lo mismo?</td><td>La pides cada semana</td><td><code>auditor-drift</code>, de sólo lectura y en sesión nueva</td><td>Decide una persona: regularizar, corregir o escalar</td><td><a href="#m8">8</a></td></tr>
     <tr id="e-reverse" data-flujo="legacy"><td>Entender un legacy</td><td>Reconstruir qué hace hoy, con evidencia, sin tocarlo</td><td>Prompts de reconocimiento, anomalías y entrevista</td><td>Un investigador de sólo lectura</td><td>🛑 2 de 3 testigos; no se inventan respuestas de negocio</td><td><a href="#m9">9</a></td></tr>
-    <tr id="e-modernizar" data-flujo="legacy"><td>Modernizar</td><td>Reemplazar por módulos sin cambiar el comportamiento</td><td><code>/speckit-specify</code> (spec de sustitución), specs delta</td><td>—</td><td>🛑 Tres anillos de equivalencia en verde</td><td><a href="#m9">9</a></td></tr>
+    <tr id="e-modernizar" data-flujo="legacy"><td>Modernizar</td><td>Reemplazar por módulos sin cambiar el comportamiento</td><td><code>/speckit-specify</code> (spec de sustitución), specs delta</td><td>—</td><td>🛑 Tres anillos de equivalencia en verde</td><td><a href="#m10">10</a></td></tr>
   </table></div>
+
+  <h3>Los tres niveles de SDD: ¿qué pasa con la spec al terminar?</h3>
+  <div class="envoltura-tabla"><table>
+    <tr><th>Nivel</th><th>Qué pasa con la spec</th><th>Herramienta</th><th>En este curso</th></tr>
+    <tr><td><b>Spec-first</b></td><td>Una spec por feature. Sirve para construirla, se cierra y queda como un capítulo del libro; lo nuevo va en otra spec</td><td>Spec Kit: por eso numera las specs y crea una rama por spec</td><td>Misiones 1 a 5</td></tr>
+    <tr><td><b>Spec-anchored</b></td><td>Una spec viva por capacidad, que cada cambio modifica: es el contrato de la aplicación. Su gran reto es el drift</td><td>OpenSpec</td><td>Misiones 6 a 8</td></tr>
+    <tr><td><b>Spec-as-source</b></td><td>Una spec por archivo de código. Sólo se tocan las specs, y una herramienta genera el código a partir de ellas</td><td>Herramientas todavía en desarrollo</td><td>Sólo se explica</td></tr>
+  </table></div>
+  <p>El curso de SDD que sigue el equipo recomienda spec-first como el más mantenible en entornos profesionales, porque mantener una sola spec viva en el tiempo exige mucho cuidado; los otros dos siguen siendo válidos <span class="insignia citado">curso de SDD, sección 5</span>. Aquí se usan los dos primeros según la vida del servicio: spec-first mientras nace y spec-anchored cuando ya vive.</p>
 
   <h3>La regla para decidir: ¿skill, agente, regla o hook?</h3>
   <div class="envoltura-tabla"><table>
@@ -588,8 +755,57 @@ git add -A &amp;&amp; git commit -m &quot;Base del repo: reglas, contexto, const
 <!-- ============================================================ M2 -->
 <section class="bloque mision" id="m2">
   <div class="cab"><span class="num">Misión 2</span><div><h2>Especifica con Spec Kit y estrena tu primera skill</h2><p class="meta">25 minutos · el qué y el porqué, y una skill que lo revisa</p><div class="chips"><a href="#e-especificar">Especificar</a><a href="#e-aclarar">Aclarar</a></div></div><span class="cuenta" data-cuenta="m2"></span></div>
-  <p class="usas"><b>Usas:</b> las skills <code>/speckit-specify</code> y <code>/speckit-clarify</code>, y escribes tu skill <code>revisar-spec</code>.</p>
+  <p class="usas"><b>Usas:</b> las skills <code>/speckit-specify</code> y <code>/speckit-clarify</code>, la extensión git de Spec Kit si la quieres, y escribes tu skill <code>revisar-spec</code>.</p>
   <ol class="tareas">
+    <li class="tarea" data-tarea="m2-0">
+      <label class="tarea-cab"><input type="checkbox"> Decide quién crea la rama y los commits: tú o la extensión git de Spec Kit</label>
+      <p>Spec Kit se amplía con <b>extensiones</b>: paquetes que agregan comandos y <b>hooks</b> que corren antes o después de cada comando. La extensión git crea la rama de la feature antes de especificar y puede hacer commit antes y después de cada fase.</p>
+      <span class="etq haz">Haz</span> <span class="meta">(si la quieres)</span>
+      <pre class="terminal">specify extension add git
+specify extension list</pre>
+      <span class="etq ver">Debes ver</span> <span class="insignia medido">medido</span>
+      <pre class="terminal">$ specify extension list
+
+Installed Extensions:
+
+  ✓ Git Branching Workflow (v1.0.1)
+     git
+     Feature branch creation, numbering (sequential/timestamp), templating,
+validation, and Git remote detection
+     Commands: 5 | Hooks: 18 | Priority: 10 | Status: Enabled</pre>
+      <p>Sus 18 hooks quedan en <code>.specify/extensions.yml</code>. <code>optional: false</code> quiere decir que el agente debe correrlo; con <code>true</code>, te pregunta <span class="insignia medido">medido</span>:</p>
+      <pre class="codigo" data-archivo="resumen de .specify/extensions.yml (hook, comando y si es opcional)">before_constitution: speckit.git.initialize optional: false
+before_specify: speckit.git.feature optional: false
+before_clarify: speckit.git.commit optional: true
+before_plan: speckit.git.commit optional: true
+before_tasks: speckit.git.commit optional: true
+before_implement: speckit.git.commit optional: true
+before_checklist: speckit.git.commit optional: true
+before_analyze: speckit.git.commit optional: true
+before_taskstoissues: speckit.git.commit optional: true
+after_constitution: speckit.git.commit optional: true
+after_specify: speckit.git.commit optional: true
+after_clarify: speckit.git.commit optional: true
+after_plan: speckit.git.commit optional: true
+after_tasks: speckit.git.commit optional: true
+after_implement: speckit.git.commit optional: true
+after_checklist: speckit.git.commit optional: true
+after_analyze: speckit.git.commit optional: true
+after_taskstoissues: speckit.git.commit optional: true</pre>
+      <p>El autocommit viene apagado. Se enciende en <code>.specify/extensions/git/git-config.yml</code>: pon <code>auto_commit.default</code> en <code>true</code> y el <code>enabled</code> de cada comando que quieras. Ahí también se ajusta el nombre de la rama a la convención del equipo con <code>branch_template</code> o <code>branch_prefix</code> <span class="insignia medido">medido el archivo</span>. Un ejemplo <span class="insignia simulado">simulado</span>:</p>
+      <pre class="codigo" data-archivo=".specify/extensions/git/git-config.yml (fragmento)">branch_template: &quot;feature/{number}-{slug}&quot;   # el último tramo debe empezar con {number}-
+auto_commit:
+  default: true
+  before_plan:
+    enabled: true</pre>
+      <div class="caja aviso"><p><b>Los hooks de Spec Kit no son candados.</b> Son instrucciones que el agente lee en cada comando, y el curso de SDD muestra que a veces no se ejecutan <span class="insignia citado">curso de SDD, sección 4</span>. Lo que no puede fallar va en un hook del agente (misión 4) o en el CI.</p></div>
+      <p><b>Si no la quieres</b>, por ejemplo porque tu equipo ya tiene su convención de ramas, apágala y crea tú la rama en la tarea siguiente <span class="insignia medido">medido</span>:</p>
+      <pre class="terminal">$ specify extension disable git
+✓ Extension &#x27;Git Branching Workflow&#x27; disabled
+
+Commands will no longer be available. Hooks will not execute.
+To re-enable: specify extension enable git</pre>
+    </li>
     <li class="tarea" data-tarea="m2-1">
       <label class="tarea-cab"><input type="checkbox"> Crea la rama de la feature</label>
       <span class="etq haz">Haz</span>
@@ -603,8 +819,12 @@ git add -A &amp;&amp; git commit -m &quot;Base del repo: reglas, contexto, const
 Quién lo usa: Gobierno de Datos administra las marcas; otros sistemas consultan si una marca se puede usar.
 Qué necesita: dar de alta, editar, desactivar (sin borrar) y consultar marcas. El nombre no se repite aunque cambien mayúsculas o espacios.
 Por qué: hoy hay marcas duplicadas y productos con marcas retiradas.
+Criterios de aceptación (los escribo yo):
+- Dar de alta &quot;Zeta&quot; cuando ya existe &quot;zeta&quot; se rechaza con MARCA_DUPLICADA.
+- Una marca desactivada sigue existiendo y la consulta dice que está inactiva.
 Fuera de alcance: la pantalla y la carga inicial de marcas.
 Reglas: no menciones tecnología. Lo que no esté claro márcalo [NEEDS CLARIFICATION] en vez de suponerlo. Escribe en español y deja los encabezados de la plantilla.</pre>
+      <div class="caja idea"><p><b>Los criterios los escribes tú.</b> El curso de SDD pide escribir a mano la primera versión de la spec, con criterios de aceptación que se puedan verificar; la IA la mejora, no la inventa <span class="insignia citado">curso de SDD, sección 3</span>. Si no tienes tiempo para la spec entera, al menos escribe tú los criterios, como en el prompt.</p></div>
       <span class="etq ver">Debes ver</span>
       <p><code>specs/001-catalogo-de-marcas/spec.md</code>, <code>checklists/requirements.md</code> y <code>.specify/feature.json</code>. Si quedan dudas, como máximo tres preguntas con opciones A, B y C <span class="insignia medido">medido de la skill</span>.</p>
       <span class="etq comprueba">Comprueba</span>
@@ -697,6 +917,14 @@ Al final, propón qué decisiones transversales de este plan deben pasar a AGENT
       <span class="etq comprueba">Comprueba</span>
       <pre class="terminal">ls specs/001-*/ specs/001-*/contracts/
 grep -A8 &quot;Constitution Check&quot; specs/001-*/plan.md</pre>
+    </li>
+    <li class="tarea" data-tarea="m3-6">
+      <label class="tarea-cab"><input type="checkbox"> Pon pruebas unitarias a la spec: checklists por dominio</label>
+      <p>Una checklist no prueba el código: prueba si los requisitos de un tema están completos, claros y son medibles. Haz una por cada dominio delicado y resuelve las casillas pendientes <b>antes de las tareas</b> <span class="insignia citado">curso de SDD, sección 3</span>.</p>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/speckit-checklist seguridad: roles, autenticación entre sistemas y qué pasa cuando se niega un permiso</pre>
+      <span class="etq ver">Debes ver</span>
+      <p><code>checklists/seguridad.md</code>, con casillas CHK001, CHK002… y entre corchetes qué revisan: <code>[Gap]</code>, <code>[Ambiguity]</code> o <code>[Consistency]</code> <span class="insignia simulado">simulado</span>. Cada casilla sin marcar es un hueco de la spec: corrígelo con <code>/speckit-clarify</code> o editando la spec, y vuelve a correr la checklist. Ábrela en el explorador de esta misión, etapa 6.</p>
     </li>
     <li class="tarea" data-tarea="m3-3">
       <label class="tarea-cab"><input type="checkbox"> Divide en tareas</label>
@@ -971,6 +1199,17 @@ Ninguno. Pendiente: explica el listado en el PR o quítalo.</pre>
       <span class="etq comprueba">Comprueba</span>
       <p>Que el veredicto cita <code>archivo:línea</code> en cada fila. Si dice NO LISTO, corrige y repite; no edites el agente para que «apruebe».</p>
     </li>
+    <li class="tarea" data-tarea="m5-5">
+      <label class="tarea-cab"><input type="checkbox"> Si la spec cambia antes de que el servicio viva: ¿iterarla o crear otra?</label>
+      <p>Mientras el servicio nace, los cambios siguen en Spec Kit. La regla, del curso y del kit del equipo <span class="insignia citado">curso de SDD, sección 4</span>:</p>
+      <ul>
+        <li><b>La spec cumplió su objetivo y llega algo nuevo:</b> esa spec se cierra y lo nuevo va en otra (<code>/speckit-specify</code>, número siguiente). En el mapa de specs puede decir <code>sustituye a NNN</code>.</li>
+        <li><b>El resultado no fue el esperado:</b> se itera la misma spec, en una sesión nueva y con el modelo más potente que tengas.</li>
+      </ul>
+      <span class="etq pega">Pega</span> <span class="meta">(para iterar)</span>
+      <pre class="prompt">/speckit-specify Reescribe la spec existente @specs/001-catalogo-de-marcas/spec.md; no crees una spec nueva. Los criterios nuevos son: &lt;…&gt;.</pre>
+      <p>Si el cambio es de fondo, borra de esa spec <code>plan.md</code>, <code>tasks.md</code>, <code>research.md</code>, <code>data-model.md</code>, <code>quickstart.md</code> y <code>contracts/</code>, y repite plan → tasks → analyze → implement. Si es menor, pide al plan que reutilice lo existente y cambie sólo lo necesario.</p>
+    </li>
     <li class="tarea" data-tarea="m5-4">
       <label class="tarea-cab"><input type="checkbox"> Abre el PR con la evidencia</label>
       <span class="etq haz">Haz</span>
@@ -991,7 +1230,7 @@ gh pr create --title &quot;Spec 001: catálogo de marcas&quot; --body-file pr.md
 <!-- ============================================================ M6 -->
 <section class="bloque mision" id="m6">
   <div class="cab"><span class="num">Misión 6</span><div><h2>Gradúate a OpenSpec: tu primer cambio</h2><p class="meta">25 minutos · explorar, proponer, aplicar, verificar y archivar</p><div class="chips"><a href="#e-entender">Entender</a><a href="#e-especificar">Especificar</a><a href="#e-implementar">Implementar</a><a href="#e-verificar">Verificar</a><a href="#e-archivar">Archivar</a></div></div><span class="cuenta" data-cuenta="m6"></span></div>
-  <p class="usas"><b>Usas:</b> <code>/opsx-explore</code>, <code>/opsx-new</code> + <code>/opsx-continue</code>, <code>/opsx-apply</code>, <code>/opsx-verify</code> y <code>/opsx-archive</code>. El cambio: Gobierno de Datos puede <b>bloquear</b> una marca, y el alta de productos de esa marca se rechaza.</p>
+  <p class="usas"><b>Cambias de nivel: de spec-first a spec-anchored.</b> Ya no escribes una spec por feature: modificas la spec viva del sistema. <b>Usas:</b> <code>/opsx-explore</code>, <code>/opsx-new</code> + <code>/opsx-continue</code>, <code>/opsx-apply</code>, <code>/opsx-verify</code> y <code>/opsx-archive</code>. El cambio: Gobierno de Datos puede <b>bloquear</b> una marca, y el alta de productos de esa marca se rechaza.</p>
   <ol class="tareas">
     <li class="tarea" data-tarea="m6-1">
       <label class="tarea-cab"><input type="checkbox"> Antes de abrir, mira lo que ya existe</label>
@@ -1138,9 +1377,33 @@ Specs:
 
 <!-- ============================================================ M7 -->
 <section class="bloque mision" id="m7">
-  <div class="cab"><span class="num">Misión 7</span><div><h2>Dos devs en paralelo</h2><p class="meta">15 minutos · cuando dos specs se pisan</p><div class="chips"><a href="#e-cruzada">Revisión cruzada</a><a href="#e-especificar">Especificar</a><a href="#e-archivar">Archivar</a></div></div><span class="cuenta" data-cuenta="m7"></span></div>
-  <p class="usas"><b>Usas:</b> tu agente <code>revision-cruzada</code>. El caso: el dev B hace <code>motivo-al-bloquear</code> (el bloqueo exige un motivo) mientras el dev A hace <code>desbloqueo-temporal</code>. Los dos tocan el mismo requisito.</p>
+  <div class="cab"><span class="num">Misión 7</span><div><h2>Varios cambios en paralelo, con worktrees</h2><p class="meta">25 minutos · qué no se paraleliza, specs que chocan e integración por orden de riesgo</p><div class="chips"><a href="#e-paralelo">Trabajar en paralelo</a><a href="#e-cruzada">Revisión cruzada</a><a href="#e-especificar">Especificar</a><a href="#e-archivar">Archivar</a></div></div><span class="cuenta" data-cuenta="m7"></span></div>
+  <p class="usas"><b>Usas:</b> git worktrees, un agente por worktree y tu agente <code>revision-cruzada</code>. El caso: el dev B (o un segundo agente) hace <code>motivo-al-bloquear</code>, en el que el bloqueo exige un motivo, mientras el dev A hace <code>desbloqueo-temporal</code>. Los dos tocan el mismo requisito.</p>
   <ol class="tareas">
+    <li class="tarea" data-tarea="m7-6">
+      <label class="tarea-cab"><input type="checkbox"> Antes de paralelizar: lo que nunca va en paralelo</label>
+      <p>La base se acuerda junta y en secuencia: la constitución (o <code>config.yaml</code>), el dominio básico, el esquema de datos y las convenciones. Si dos personas la escriben a la vez, pueden fijar principios contradictorios que después no se consolidan <span class="insignia citado">curso de SDD, sección 6</span>. En este laboratorio ya quedó en la misión 1, así que puedes seguir.</p>
+    </li>
+    <li class="tarea" data-tarea="m7-7">
+      <label class="tarea-cab"><input type="checkbox"> Un worktree por cambio, un agente por worktree</label>
+      <p>Un worktree es otra carpeta del mismo repo con su propia rama. Así dos agentes trabajan a la vez sin pisarse archivos.</p>
+      <span class="etq haz">Haz</span> <span class="meta">(desde la carpeta del repo, en main)</span>
+      <pre class="terminal">git worktree add ../lab-specs-motivo -b motivo-al-bloquear
+git worktree add ../lab-specs-desbloqueo -b desbloqueo-temporal
+git worktree list</pre>
+      <span class="etq ver">Debes ver</span> <span class="insignia medido">medido</span>
+      <pre class="terminal">$ git worktree add ../lab-specs-motivo -b motivo-al-bloquear
+Preparing worktree (new branch &#x27;motivo-al-bloquear&#x27;)
+HEAD is now at &lt;commit&gt; Base del repo
+$ git worktree add ../lab-specs-desbloqueo -b desbloqueo-temporal
+Preparing worktree (new branch &#x27;desbloqueo-temporal&#x27;)
+HEAD is now at &lt;commit&gt; Base del repo
+$ git worktree list
+~/lab-specs             &lt;commit&gt; [main]
+~/lab-specs-desbloqueo  &lt;commit&gt; [desbloqueo-temporal]
+~/lab-specs-motivo      &lt;commit&gt; [motivo-al-bloquear]</pre>
+      <p>Abre cada carpeta en su propia ventana de Cursor. En cada una, su dev o su agente corre <code>/opsx-propose</code> de su cambio. Las tareas y la implementación también van en paralelo, cada una en su worktree. Haz commit en cada worktree antes de integrar.</p>
+    </li>
     <li class="tarea" data-tarea="m7-1">
       <label class="tarea-cab"><input type="checkbox"> Taller: escribe el agente de revisión cruzada</label>
       <div class="taller">
@@ -1289,8 +1552,15 @@ Next steps:
 $ echo $?
 1</pre>
     </li>
+    <li class="tarea" data-tarea="m7-8">
+      <label class="tarea-cab"><input type="checkbox"> Integra por orden de riesgo, desde main</label>
+      <p>No se integra por orden de llegada: primero lo que menos puede romper (algo de sólo lectura, como un reporte) y al final lo que escribe en la base de datos <span class="insignia citado">curso de SDD, sección 6</span>. Aquí, <code>motivo-al-bloquear</code> primero, porque <code>desbloqueo-temporal</code> depende de él.</p>
+      <span class="etq pega">Pega</span> <span class="meta">(en un chat nuevo, en la carpeta principal, en main)</span>
+      <pre class="prompt">Estás en main. Integra la rama motivo-al-bloquear, que tiene su propio worktree: haz el merge. Si da conflictos, analiza cada uno y propón la solución completa antes de aplicarla. Si entra limpio, corre todas las pruebas; si fallan, analiza por qué y propón cómo resolverlo. No borres worktrees ni ramas todavía.</pre>
+      <p>Repite con la siguiente rama. Para resolver conflictos conviene el modelo más potente que tengas <span class="insignia citado">curso de SDD, sección 6</span>. Si choca <code>.specify/feature.json</code>, el puntero de Spec Kit a la spec activa, quédate con la versión de main.</p>
+    </li>
     <li class="tarea" data-tarea="m7-5">
-      <label class="tarea-cab"><input type="checkbox"> Archiva en orden</label>
+      <label class="tarea-cab"><input type="checkbox"> Archiva en orden y limpia</label>
       <span class="etq pega">Pega</span>
       <pre class="prompt">/opsx-archive motivo-al-bloquear</pre>
       <pre class="terminal">$ openspec archive motivo-al-bloquear -y
@@ -1304,6 +1574,10 @@ Totals: + 0, ~ 1, - 0, → 0
 Specs updated successfully.
 Change &#x27;motivo-al-bloquear&#x27; archived as &#x27;2026-10-18-motivo-al-bloquear&#x27;.</pre>
       <p>Si el squad cerró varios cambios que tocan la misma spec, usa <code>/opsx-bulk-archive</code>: detecta los conflictos y los fusiona en orden de creación, pidiendo confirmación <span class="insignia citado">regla del kit de un equipo</span>.</p>
+      <span class="etq haz">Haz</span> <span class="meta">(al terminar de integrar todo)</span>
+      <pre class="terminal">git worktree remove ../lab-specs-motivo &amp;&amp; git branch -d motivo-al-bloquear
+git worktree remove ../lab-specs-desbloqueo &amp;&amp; git branch -d desbloqueo-temporal</pre>
+      <p>Y en <code>specs/README.md</code>, marca como <code>publicada</code> cada cambio integrado.</p>
     </li>
   </ol>
 </section>
@@ -1404,13 +1678,16 @@ $ echo $?
 
 <!-- ============================================================ M9 -->
 <section class="bloque mision" id="m9">
-  <div class="cab"><span class="num">Misión 9</span><div><h2>Bonus: rescata un legacy sin spec</h2><p class="meta">30 minutos · reverse-spec y modernización, en miniatura</p><div class="chips"><a href="#e-reverse">Entender un legacy</a><a href="#e-modernizar">Modernizar</a></div></div><span class="cuenta" data-cuenta="m9"></span></div>
-  <p class="usas"><b>El caso:</b> un módulo viejo de facturación cobra la baja a mitad de mes por dos caminos distintos, y nadie sabe cuál es el bueno. Primero se observa, luego se clasifica y se pregunta, después se congela con pruebas y al final se escribe la spec de lo que hay. Cambiar el comportamiento es otro trabajo, después <span class="insignia citado">método del kit de un equipo</span>.</p>
+  <div class="cab"><span class="num">Misión 9</span><div><h2>Entiende un legacy sin spec (reverse-spec)</h2><p class="meta">30 minutos · observar, clasificar, preguntar, congelar y especificar</p><div class="chips"><a href="#e-reverse">Entender un legacy</a></div></div><span class="cuenta" data-cuenta="m9"></span></div>
+  <p class="usas"><b>El caso:</b> un módulo viejo de facturación cobra la baja a mitad de mes por dos caminos distintos, y nadie sabe cuál es el bueno. Primero se observa, luego se clasifica y se pregunta, después se congela con pruebas y al final se escribe la spec de lo que hay. Cambiar el comportamiento es otro trabajo: la <a href="#m10">misión 10</a> <span class="insignia citado">curso de SDD, sección 7, y kit de un equipo</span>.</p>
   <ol class="tareas">
     <li class="tarea" data-tarea="m9-1">
-      <label class="tarea-cab"><input type="checkbox"> Foto base y constitución de la fase</label>
+      <label class="tarea-cab"><input type="checkbox"> Foto base, arranque sin tocar nada y constitución de la fase</label>
       <span class="etq haz">Haz</span>
       <pre class="terminal">git tag foto-base      # el punto contra el que se compara todo</pre>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">Arranca la aplicación sin modificar ningún archivo; sólo instala las dependencias que hagan falta. Después dime cómo recorrerla a mano: pantallas, endpoints y procesos programados.</pre>
+      <p>Recórrela tú como usuario. El README se lee con desconfianza: dice lo que alguien creyó, no lo que hay. Luego, la constitución de la fase, que aquí son prohibiciones, no aspiraciones:</p>
       <span class="etq pega">Pega</span>
       <pre class="prompt">/speckit-constitution Fase: documentar y proteger, no mejorar. Principios:
 1. El comportamiento actual es sagrado: ningún cambio observable sin una decisión de negocio por escrito, aunque parezca un error.
@@ -1457,7 +1734,8 @@ BigDecimal cargoProporcional(BigDecimal mensual, int diasUsados, int diasDelMes)
       <p>Con una mensualidad de 60.00 y una baja del 16 al 30 de julio (15 días de un mes de 31), el camino A cobra <b>30.00</b> y el B, <b>29.03</b> <span class="insignia medido">calculado</span>.</p>
     </li>
     <li class="tarea" data-tarea="m9-3">
-      <label class="tarea-cab"><input type="checkbox"> Registra la anomalía y pregúntale al negocio</label>
+      <label class="tarea-cab"><input type="checkbox"> Clasifica, registra la anomalía y pregúntale al negocio</label>
+      <p>Cada comportamiento se clasifica como <b>INTENCIONAL</b>, <b>ACCIDENTAL</b> o <b>DUDOSO</b>. Un concepto implementado dos veces con resultados distintos es una <b>contradicción</b>: se documenta con un ejemplo donde divergen, y no se decide cuál es el bueno. Nada se da por confirmado con un solo testigo: hacen falta 2 de 3 entre código, datos y negocio.</p>
       <span class="etq ver">Debes ver</span> <span class="insignia simulado">simulado</span>
       <pre class="codigo" data-archivo="specs/000-reconocimiento/registro-de-anomalias.md">## A-01 · Dos cálculos distintos del cargo por baja a mitad de mes
 - Testigos: CÓDIGO Facturacion.java:41 y :58 · DATOS (pendiente: dos facturas reales de julio) · NEGOCIO (pendiente)
@@ -1478,6 +1756,7 @@ void congelaLosDosCalculosDeLaBaja() {
     assertThat(facturacion.cargoPorDias(new BigDecimal(&quot;60.00&quot;), 15)).isEqualByComparingTo(&quot;30.00&quot;);
     assertThat(facturacion.cargoProporcional(new BigDecimal(&quot;60.00&quot;), 15, 31)).isEqualByComparingTo(&quot;29.03&quot;);
 }</pre>
+      <p>Súmale un <b>golden master</b> del flujo principal: de 8 a 12 casos fijos cuya salida completa se guarda y se compara campo a campo en cada corrida. Sólo se regenera con una decisión de negocio documentada.</p>
     </li>
     <li class="tarea" data-tarea="m9-5">
       <label class="tarea-cab"><input type="checkbox"> Escribe la spec de lo que hace hoy</label>
@@ -1486,11 +1765,62 @@ void congelaLosDosCalculosDeLaBaja() {
       <pre class="prompt">/speckit-specify Spec de ingeniería inversa: documenta el comportamiento EXISTENTE del cargo por baja. No es una feature nueva: es la especificación de lo que el sistema ya hace, para que sirva de contrato. Las anomalías no se corrigen ni se omiten: se especifican tal como funcionan hoy, con su ID del registro (A-01). Cada criterio de aceptación cita la prueba de caracterización que lo verifica, y cada decisión de negocio cita el acta.</pre>
     </li>
     <li class="tarea" data-tarea="m9-6">
-      <label class="tarea-cab"><input type="checkbox"> Moderniza un módulo y corrige después</label>
-      <span class="etq pega">Pega</span> <span class="meta">(la spec de sustitución)</span>
-      <pre class="prompt">/speckit-specify Spec de sustitución del módulo de facturación. Las specs del comportamiento actual son el contrato inmutable. Nueva implementación con las mismas funciones y firmas; cero cambios de comportamiento, anomalías incluidas. Criterios de aceptación: (a) la suite de caracterización completa pasa contra el módulo nuevo; (b) el golden master pasa sin regenerarse; (c) una prueba comparativa corre el módulo viejo y el nuevo sobre muchos casos con semilla fija y exige igualdad campo a campo. La entrada vieja queda como fachada que delega en el nuevo; los consumidores no se tocan.</pre>
-      <p>🛑 Los tres anillos en verde antes de seguir. Si un anillo falla, se corrige el módulo nuevo, nunca la prueba. Cuando el negocio decida (D-01: «el correcto es el proporcional»), la corrección llega como spec delta:</p>
-      <pre class="prompt">/speckit-specify Spec DELTA sobre la spec del cargo por baja: ejecuta la decisión D-01 y cierra la anomalía A-01. Di qué requisitos revoca y cuáles conserva; el comportamiento nuevo con un ejemplo antes y después; cero retroactividad (aplica desde el despliegue). Criterio: la prueba &quot;CONGELA comportamiento actual: A-01&quot; se sustituye por la del comportamiento nuevo, citando A-01 y D-01.</pre>
+      <label class="tarea-cab"><input type="checkbox"> Arma el Spec Pack y decide qué sigue</label>
+      <p>Si hay que presentarlo a quien decide, el entregable es un <code>specs/SPEC-PACK.md</code> <span class="insignia citado">curso de SDD, sección 7</span>:</p>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">Arma specs/SPEC-PACK.md, la entrada al paquete: un resumen ejecutivo sin tecnicismos (qué se hizo, qué se encontró con ejemplos en dinero, qué protección se instaló y qué decisiones quedan pendientes), los riesgos priorizados, un índice comentado de los documentos y qué quedó fuera de la red de pruebas.</pre>
+      <p>🛑 Y la decisión, sólo con los tres candados cerrados: las specs aprobadas, cero PENDIENTES y la red en verde. Hay tres opciones: documentarlo y dejarlo vivo, modernizarlo (<a href="#m10">misión 10</a>) o marcarlo obsoleto. Decide quien tiene la autoridad, no el agente.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============================================================ M10 -->
+<section class="bloque mision" id="m10">
+  <div class="cab"><span class="num">Misión 10</span><div><h2>Moderniza por módulos (strangler fig)</h2><p class="meta">30 minutos · cambiar la implementación sin que nadie lo note</p><div class="chips"><a href="#e-modernizar">Modernizar</a><a href="#e-implementar">Implementar</a><a href="#e-entregar">Entregar</a></div></div><span class="cuenta" data-cuenta="m10"></span></div>
+  <p class="usas"><b>La idea:</b> modernizar no es mejorar el código. Es cambiar la implementación por módulos, incluso con otra tecnología, <b>sin que cambie el comportamiento</b>: el éxito es que nadie lo note. Las correcciones aprobadas llegan después, como specs delta <span class="insignia citado">curso de SDD, sección 8, y kit de un equipo</span>.</p>
+  <ol class="tareas">
+    <li class="tarea" data-tarea="m10-1">
+      <label class="tarea-cab"><input type="checkbox"> Enmienda la constitución para la fase de modernización</label>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/speckit-constitution Enmienda la constitución: termina la fase de documentación y empieza la de modernización. Principios:
+1. El comportamiento es sagrado por defecto: sólo cambia con una decisión registrada en registro-de-anomalias.md, que cite quién la tomó y cuándo.
+2. Las pruebas de caracterización son el árbitro: un test en rojo sin decisión que lo ampare se resuelve revirtiendo el código, no ajustando el test.
+3. Estrangular antes que reescribir: un módulo a la vez, cada uno con su spec, su extracción y su prueba de equivalencia.
+4. Dependencias nuevas sólo con justificación en la spec y un ADR aprobado por una persona.
+5. Cero retroactividad: lo ya emitido no se toca.</pre>
+      <span class="etq comprueba">Comprueba</span>
+      <p>Que la constitución tiene versión nueva y fecha de enmienda, y que sigue diciendo que el comportamiento no cambia sin una decisión.</p>
+    </li>
+    <li class="tarea" data-tarea="m10-2">
+      <label class="tarea-cab"><input type="checkbox"> Elige el siguiente módulo a estrangular</label>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">Compara los módulos candidatos a modernizar con tres criterios, en este orden: valor (qué cambios o decisiones pendientes bloquea), red (cuántas pruebas de caracterización lo cubren; sin red no se estrangula) y acoplamiento (cuántos consumidores tiene y si toca base de datos, red o reloj). Deja en specs/000-reconocimiento/consumidores-&lt;módulo&gt;.md la lista completa de quién lo usa, con archivo:línea. No elijas tú: recomienda.</pre>
+      <p>🛑 Decides tú o el arquitecto, con la recomendación delante. Si ningún candidato tiene red suficiente, vuelve a la misión 9 y amplíala primero.</p>
+    </li>
+    <li class="tarea" data-tarea="m10-3">
+      <label class="tarea-cab"><input type="checkbox"> Escribe la spec de sustitución y recorre su ciclo</label>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/speckit-specify Spec de sustitución del módulo de facturación. Las specs del comportamiento actual son el contrato inmutable. Nueva implementación con las mismas funciones y firmas; cero cambios de comportamiento, anomalías incluidas. Criterios de aceptación: (a) la suite de caracterización completa pasa contra el módulo nuevo; (b) el golden master pasa sin regenerarse; (c) una prueba comparativa corre el módulo viejo y el nuevo sobre muchos casos con semilla fija y exige igualdad campo a campo. La entrada vieja queda como fachada que delega en el nuevo; los consumidores no se tocan. Fuera de alcance: los consumidores, las correcciones de anomalías y cualquier otro módulo.</pre>
+      <p>Después, el ciclo de siempre: clarify, plan, tasks, analyze e implement (misiones 2 a 4). Si el plan propone tocar consumidores o corregir algo «de paso», devuélvelo: está fuera de alcance.</p>
+    </li>
+    <li class="tarea" data-tarea="m10-4">
+      <label class="tarea-cab"><input type="checkbox"> Prueba la equivalencia y conmuta</label>
+      <span class="etq haz">Haz</span>
+      <p>Corre los tres anillos: la suite completa, el golden master sin regenerar y la prueba comparativa. Lee la salida real.</p>
+      <p>🛑 <b>Los tres en verde antes de seguir.</b> Si un anillo falla, se corrige el módulo nuevo, nunca la prueba ni el master. Si va a producción con tráfico real, vienen después la paridad en QA, el feature flag y el plan de rollback <span class="insignia citado">kit de un equipo</span>. Luego, de vuelta a la tarea 2 con el siguiente módulo.</p>
+    </li>
+    <li class="tarea" data-tarea="m10-5">
+      <label class="tarea-cab"><input type="checkbox"> Ahora sí: corrige la anomalía con una spec delta</label>
+      <p>Con el módulo ya modernizado y la decisión del negocio en mano (D-01: «el correcto es el proporcional»):</p>
+      <span class="etq pega">Pega</span>
+      <pre class="prompt">/speckit-specify Spec DELTA sobre la spec del cargo por baja: ejecuta la decisión D-01 y cierra la anomalía A-01. Di qué requisitos revoca y cuáles conserva; el comportamiento nuevo con un ejemplo antes y después; cero retroactividad (aplica desde el despliegue). Fuera de alcance: las otras anomalías, cada una en su delta. Criterio: la prueba &quot;CONGELA comportamiento actual: A-01&quot; se sustituye por la del comportamiento nuevo, citando A-01 y D-01.</pre>
+      <p>Si el negocio todavía no ha decidido, no hay delta: la anomalía sigue congelada.</p>
+    </li>
+    <li class="tarea" data-tarea="m10-6">
+      <label class="tarea-cab"><input type="checkbox"> Funcionalidades nuevas sin «feature isla», y cierra la fase</label>
+      <p>Una funcionalidad nueva se especifica <b>desde la arquitectura que ya hay</b>, no desde la que te gustaría tener. Meter otro stack aparte deja dos arquitecturas y el doble de lugares donde fallar: un segundo legacy. Si la arquitectura actual no la soporta, primero se moderniza el módulo que hace falta (tareas 2 a 4) <span class="insignia citado">curso de SDD, sección 8</span>.</p>
+      <span class="etq comprueba">Comprueba</span>
+      <p>Que el plan no mete tecnología que el repo no usa, salvo con un ADR aprobado. Cuando termine la modernización, enmienda otra vez la constitución para dejarla como la de un servicio normal.</p>
     </li>
   </ol>
 </section>
@@ -1638,6 +1968,41 @@ No hiciste este trabajo: lo revisas. Sólo lees.
   </details>
 </section>
 
+<!-- ============================================================ AVANZADOS -->
+<section class="bloque" id="avanzados">
+  <h2>Temas avanzados: dónde se practica cada uno</h2>
+  <p>Cada tema avanzado del curso de SDD que sigue el equipo (secciones 4 a 8), con la misión y la tarea donde lo practicas aquí. Los fundamentos (secciones 2 y 3: instalación, constitución, una buena spec, clarify, plan, tasks, analyze, implement, iterar y checklists) están en la ruta exprés y en las misiones 0 a 5.</p>
+  <div class="envoltura-tabla"><table>
+    <tr><th>Sección del curso</th><th>Tema</th><th>Dónde se practica</th></tr>
+    <tr><td rowspan="5">4 · Flujo profesional con git</td><td>Git en SDD y el ciclo profesional: una rama por spec, commit por fase, PR</td><td><a href="#m2">Misiones 2 a 5</a></td></tr>
+    <tr><td>Gestión de specs con CLAUDE.md y AGENTS.md</td><td><a href="#m1">Misión 1</a>, tarea 1; decisiones transversales en la <a href="#m3">misión 3</a></td></tr>
+    <tr><td>Extensiones y hooks de Spec Kit</td><td><a href="#m2">Misión 2</a>, «quién crea la rama y los commits»</td></tr>
+    <tr><td>Mapa de Specs</td><td><a href="#m1">Misión 1</a>, tarea 4, y <a href="#m7">misión 7</a></td></tr>
+    <tr><td>Modificar specs existentes</td><td><a href="#m5">Misión 5</a>, «¿iterarla o crear otra?»</td></tr>
+    <tr><td rowspan="6">5 · Niveles de SDD con OpenSpec</td><td>Spec-first, spec-anchored y spec-as-source</td><td><a href="#mapa">El mapa</a>, «los tres niveles», y la <a href="#m6">misión 6</a></td></tr>
+    <tr><td>Instalar OpenSpec y <code>config.yaml</code></td><td><a href="#m0">Misión 0</a> y <a href="#m1">misión 1</a>, tarea 5</td></tr>
+    <tr><td>Primer, segundo y tercer cambio; implementar y archivar</td><td><a href="#expres">Ruta exprés</a>, <a href="#m6">misión 6</a> y <a href="#m7">misión 7</a></td></tr>
+    <tr><td>Spec drift y cómo evitarlo: continue, verify, MODIFIED en vez de ADDED, bulk-archive</td><td><a href="#m6">Misión 6</a> (regla anti-drift y verify) y <a href="#m7">misión 7</a></td></tr>
+    <tr><td>Identificar y resolver drifts</td><td><a href="#m8">Misión 8</a></td></tr>
+    <tr><td>Spec-as-source</td><td>Sólo se explica, en <a href="#mapa">el mapa</a></td></tr>
+    <tr><td rowspan="5">6 · Trabajo en paralelo</td><td>Lo que no se paraleliza</td><td><a href="#m1">Misión 1</a> (la base en su propio PR) y <a href="#m7">misión 7</a>, tarea 1</td></tr>
+    <tr><td>Git worktrees</td><td><a href="#m7">Misión 7</a>, tarea 2</td></tr>
+    <tr><td>Specs, plan, tareas e implementación en paralelo</td><td><a href="#m7">Misión 7</a>: un agente por worktree</td></tr>
+    <tr><td>Identificar y resolver conflictos entre specs</td><td><a href="#m7">Misión 7</a>: agente <code>revision-cruzada</code> y «un concepto, una spec dueña»</td></tr>
+    <tr><td>Integración por orden de riesgo</td><td><a href="#m7">Misión 7</a>, «integra por orden de riesgo»</td></tr>
+    <tr><td rowspan="5">7 · Reverse specs</td><td>Exploración manual y constitución de la fase</td><td><a href="#m9">Misión 9</a>, tarea 1</td></tr>
+    <tr><td>Exploración, clasificación y contradicciones</td><td><a href="#m9">Misión 9</a>, tareas 2 y 3</td></tr>
+    <tr><td>Entrevista al negocio</td><td><a href="#m9">Misión 9</a>, tarea 3</td></tr>
+    <tr><td>Characterization tests y specs formales</td><td><a href="#m9">Misión 9</a>, tareas 4 y 5</td></tr>
+    <tr><td>Spec Pack, el entregable</td><td><a href="#m9">Misión 9</a>, tarea 6</td></tr>
+    <tr><td rowspan="4">8 · Modernización</td><td>Constitución para modernizar</td><td><a href="#m10">Misión 10</a>, tarea 1</td></tr>
+    <tr><td>Strangler fig y el primer módulo</td><td><a href="#m10">Misión 10</a>, tareas 2 a 4</td></tr>
+    <tr><td>Corregir contradicciones, anomalías y bugs</td><td><a href="#m10">Misión 10</a>, tarea 5</td></tr>
+    <tr><td>Funcionalidades nuevas sin errores</td><td><a href="#m10">Misión 10</a>, tarea 6</td></tr>
+  </table></div>
+  <p><b>Lo que no se practica aquí:</b> modelos locales, entorno gráfico y los modos de aprobación automática de cada agente, que dependen de tu herramienta. Spec-as-source tampoco: sólo se explica.</p>
+</section>
+
 <!-- ============================================================ PROMPTS -->
 <section class="bloque" id="prompts">
   <h2>Biblioteca de prompts</h2>
@@ -1681,6 +2046,11 @@ Un comportamiento por requisito, cada uno con un escenario feliz y uno de error.
     <pre class="prompt">Usa el subagente revision-cruzada para comparar las ramas &lt;rama-1&gt; y &lt;rama-2&gt;. Si no te doy ramas, toma las filas &quot;en curso&quot; de specs/README.md.</pre></article>
   <article class="prompt-tarjeta" data-cat="agentes"><header><b>Auditoría de drift semanal</b><span class="etiqueta">Agente</span></header>
     <pre class="prompt">Usa el subagente auditor-drift con los últimos &lt;N&gt; días de git. No edites nada; dame el informe y, por hallazgo, la salida que recomiendas.</pre></article>
+  <article class="prompt-tarjeta" data-cat="agentes"><header><b>Integrar una rama por orden de riesgo</b><span class="etiqueta">Paralelo</span></header>
+    <p class="cuando">Cuándo: varios cambios hechos en worktrees; se integra primero lo que menos puede romper.</p>
+    <pre class="prompt">Estás en main. Integra la rama &lt;rama&gt;, que tiene su propio worktree: haz el merge. Si da conflictos, analiza cada uno y propón la solución completa antes de aplicarla. Si entra limpio, corre todas las pruebas; si fallan, analiza por qué y propón cómo resolverlo. No borres worktrees ni ramas todavía.</pre></article>
+  <article class="prompt-tarjeta" data-cat="agentes"><header><b>Limpiar al terminar de integrar</b><span class="etiqueta">Paralelo</span></header>
+    <pre class="prompt">Ya integré las ramas &lt;ramas&gt;. Detén lo que esté corriendo en sus worktrees, borra esos worktrees y sus ramas, cierra sus specs y marca cada una como publicada en specs/README.md. Muéstrame git worktree list y git status al final.</pre></article>
   <article class="prompt-tarjeta" data-cat="agentes"><header><b>Requisitos sin prueba</b><span class="etiqueta">Revisión</span></header>
     <pre class="prompt">Lista los requisitos de &lt;spec&gt; (FR-### o &quot;### Requirement:&quot; con sus escenarios) y busca en &lt;carpeta de pruebas&gt; qué prueba cita cada uno en su nombre. Tabla: requisito | prueba | archivo. Marca los que no tienen prueba y enséñame el comando de búsqueda que usaste.</pre></article>
   <article class="prompt-tarjeta" data-cat="skills"><header><b>Crear una skill</b><span class="etiqueta">Skills</span></header>
@@ -1695,6 +2065,10 @@ Un comportamiento por requisito, cada uno con un escenario feliz y uno de error.
     <pre class="prompt">Investiga &lt;módulo&gt; sólo leyendo y entrega en specs/000-reconocimiento/: mapa-sistema.md, flujo-&lt;entidad&gt;.md, registro-riesgos.md y memoria-historica.md. Cada afirmación con archivo:línea. Lo que tenga un solo testigo, PENDIENTE con la pregunta exacta que lo destrabaría.</pre></article>
   <article class="prompt-tarjeta" data-cat="legacy"><header><b>Preguntas decidibles para el negocio</b><span class="etiqueta">Legacy</span></header>
     <pre class="prompt">Con los PENDIENTES de registro-de-anomalias.md, redacta preguntas para negocio: contexto mínimo, lenguaje no técnico, un ejemplo con números reales, respuesta sí/no o a elegir, sin sugerir la respuesta, ordenadas por impacto económico y dirigidas a una persona.</pre></article>
+  <article class="prompt-tarjeta" data-cat="legacy"><header><b>Elegir el siguiente módulo a modernizar</b><span class="etiqueta">Modernización</span></header>
+    <pre class="prompt">Compara los módulos candidatos a modernizar por valor (qué cambios pendientes bloquea), red (cuántas pruebas de caracterización lo cubren) y acoplamiento (consumidores y si toca base de datos, red o reloj). Deja la lista de consumidores de cada uno con archivo:línea. Recomienda; no elijas tú.</pre></article>
+  <article class="prompt-tarjeta" data-cat="legacy"><header><b>Funcionalidad nueva sin «feature isla»</b><span class="etiqueta">Modernización</span></header>
+    <pre class="prompt">/speckit-specify &lt;funcionalidad&gt;. Especifícala desde la arquitectura que ya tiene el repo (ver AGENTS.md); no propongas otro stack ni un servicio aparte. Si la arquitectura actual no la soporta, dime qué módulo habría que modernizar primero.</pre></article>
   <article class="prompt-tarjeta" data-cat="legacy"><header><b>Pruebas de caracterización</b><span class="etiqueta">Legacy</span></header>
     <pre class="prompt">Escribe pruebas de caracterización de &lt;módulo&gt;: el valor esperado es el que produce el código actual. Si una prueba falla, corrige la prueba, nunca el código. Una prueba por anomalía con nombre &quot;CONGELA comportamiento actual: A-xx · …&quot;; toda frontera en tres puntos (debajo, el valor y encima). Usa el framework de pruebas que ya existe.</pre></article>
 </section>
@@ -1763,6 +2137,10 @@ $ echo $?
   <h2>Problemas comunes</h2>
   <details><summary>Un hook bloqueó un comando que no se saltaba nada</summary>
     <p>El hook mira el texto del comando: si tu comando contiene el patrón, aunque sea como dato, lo bloquea. Ajusta el patrón para que sea preciso. Si el hook es del equipo, no lo rodees; dilo.</p></details>
+  <details><summary>Los hooks de Spec Kit no se ejecutaron (no creó la rama o no hizo commit)</summary>
+    <p>Los hooks de <code>.specify/extensions.yml</code> son instrucciones que el agente debe seguir, y a veces se las salta. Revisa <code>specify extension list</code> y pídele que corra el hook. Si algo no puede fallar, ponlo en un hook del agente (misión 4) o en el CI.</p></details>
+  <details><summary>Al integrar ramas, choca <code>.specify/feature.json</code></summary>
+    <p>Es el puntero de Spec Kit a la spec activa, y cada rama lo cambia. Quédate con la versión de la rama principal.</p></details>
   <details><summary>Mi agente no aparece o el principal no lo usa</summary>
     <p>Revisa la carpeta (<code>.cursor/agents/</code> o <code>.claude/agents/</code>) y que <code>description</code> diga cuándo usarlo. Pídelo por nombre: <i>«Usa el subagente &lt;nombre&gt;…»</i> o <code>/&lt;nombre&gt;</code>. Abre un chat nuevo después de crearlo.</p></details>
   <details><summary>Mi agente revisor editó archivos</summary>
@@ -1819,8 +2197,9 @@ $ echo $?
     <li><b>OpenSpec</b>: <a href="https://github.com/Fission-AI/OpenSpec">github.com/Fission-AI/OpenSpec</a>, versión 1.14.3, con Node v26.7.0.</li>
     <li><b>Cursor</b>: <a href="https://cursor.com/docs/skills">skills</a>, <a href="https://cursor.com/docs/subagents">subagentes</a>, <a href="https://cursor.com/docs/hooks">hooks</a> y <a href="https://cursor.com/docs/reference/third-party-hooks">hooks de Claude Code en Cursor</a>, consultadas el 18-oct-2026.</li>
     <li><b>Estándar abierto de skills</b>: <a href="https://agentskills.io/specification">agentskills.io/specification</a>.</li>
+    <li><b>Curso de SDD que sigue el equipo</b>, secciones 2 a 8: lo que la página marca como «curso de SDD» sale de sus lecciones, y la tabla de <a href="#avanzados">temas avanzados</a> dice dónde se practica cada una.</li>
   </ul>
-  <p><b>Cómo se midió.</b> Un script corre las dos herramientas de verdad en una carpeta temporal y guarda sus archivos y salidas. Mide la inicialización para Cursor, Claude, Codex y Copilot, el ciclo de dos cambios de OpenSpec, las reglas de <code>config.yaml</code> llegando al agente, los casos permitidos del hook y la revisión requisito → prueba. Las rutas de la máquina se reemplazaron por <code>~/mi-proyecto</code>. Las misiones, los flujos de reverse-spec y modernización, y los agentes de revisión se basan en el kit de un equipo que trabaja así. Aquí van en versiones genéricas.</p>
+  <p><b>Cómo se midió.</b> Un script corre las dos herramientas de verdad en una carpeta temporal y guarda sus archivos y salidas. Mide la inicialización para Cursor, Claude, Codex y Copilot, el ciclo de dos cambios de OpenSpec, la extensión git de Spec Kit y sus hooks, los worktrees, las reglas de <code>config.yaml</code> llegando al agente, los casos permitidos del hook y la revisión requisito → prueba. El bloque que crea la skill y el agente de la ruta exprés se ejecuta y se compara con los originales cada vez que se genera la página. Las rutas de la máquina se reemplazaron por <code>~/mi-proyecto</code>. Las misiones, los flujos de reverse-spec y modernización, y los agentes de revisión se basan en el kit de un equipo que trabaja así. Aquí van en versiones genéricas.</p>
   <p>Fecha de la medición: 2026-10-18.</p>
 </section>
 
