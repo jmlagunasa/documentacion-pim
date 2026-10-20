@@ -88,8 +88,11 @@ a{color:inherit}
 .caja.navy{background:var(--navy);color:#fff;font-weight:600;border-color:var(--navy);padding:14px 10px}
 .caja.navy .modulos{display:flex;gap:3px;flex-wrap:wrap;margin-top:8px;justify-content:center}
 .caja.navy .modulos span{font-size:9px;background:#334155;color:#E2E8F0;padding:3px 6px;border-radius:4px;font-weight:600}
+.caja.navy .api-terceros{background:#065F46;border:1px dashed #10B981;color:#D1FAE5;padding:6px 10px;border-radius:5px;margin-top:8px;font-size:10px;font-weight:600;letter-spacing:0.3px}
+.caja.navy .api-terceros code{background:transparent;color:#A7F3D0;font-family:var(--mono);font-size:10px}
 .caja.gw-bff{background:var(--indigo-soft);border-color:#93C5FD;color:#1E3A8A;font-weight:600}
-.caja.gw-api{background:var(--verde-soft);border-color:#86EFAC;color:#14532D;font-weight:600}
+.caja.gw-bff small{display:block;font-size:9px;font-weight:400;color:#3B4C7A;font-style:italic;margin-top:2px}
+.caja.gw-api{background:var(--verde-soft);border-color:#86EFAC;color:#14532D;font-weight:600;font-size:11px}
 .caja.base{background:#E0F2FE;border-color:#7DD3FC;color:#075985;font-weight:600}
 .caja.apigee{background:var(--rojo-soft);border-color:#FCA5A5;color:var(--rojo);font-weight:600}
 .caja.p360{background:#7F1D1D;border-color:#7F1D1D;color:#fff;font-weight:700;padding:12px 10px;font-size:14px}
@@ -291,19 +294,20 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
     <div class="panel tobe">
       <div class="panel-label">CÓMO QUEDA</div>
-      <div class="capa"><div class="capa-label">FRONTS (SE QUEDAN)</div>
+      <div class="capa"><div class="capa-label">QUIÉN LLAMA</div>
         <div class="capa-boxes">
           <div class="caja">Vendor Center</div>
           <div class="caja">Foro (módulo)</div>
+          <div class="caja gw-api">Sistemas de proveedores y sellers</div>
         </div></div>
-      <div class="capa"><div class="capa-label">PUERTAS</div>
+      <div class="capa"><div class="capa-label">PUERTA DEL PORTAL</div>
         <div class="capa-boxes">
-          <div class="caja gw-bff">BFF del portal</div>
-          <div class="caja gw-api">API de terceros</div>
+          <div class="caja gw-bff">BFF del portal <small>(sólo fronts internos)</small></div>
         </div></div>
       <div class="capa"><div class="capa-label">BACKEND</div>
         <div class="capa-boxes">
           <div class="caja navy">Backend compartido · 15 módulos
+            <div class="api-terceros">API de terceros · <code>/partner/v1</code> (misma lógica expuesta a proveedores y sellers)</div>
             <div class="modulos">
               <span>Catálogo</span><span>Plantillas</span><span>Productos</span>
               <span>Activos</span><span>Estudio</span><span>Avisos</span>
