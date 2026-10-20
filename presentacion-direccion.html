@@ -114,8 +114,8 @@ a{color:inherit}
 .avance b::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}
 /* APIs bloques */
 .alcance{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:20px}
-.bloques{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.bloques .bloque:nth-child(n+5){grid-column:span 1}
+.bloques{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
+.bloques .bloque{display:flex;flex-direction:column}
 @media (min-width:1100px){.bloques{grid-template-columns:repeat(4,1fr)}}
 .bloque{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:16px}
 .bloque-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
@@ -124,9 +124,12 @@ a{color:inherit}
 .bloque-sub{font-size:11px;color:var(--muted);font-style:italic;margin-top:3px}
 .bloque hr{border:0;border-top:1px solid var(--line);margin:10px 0}
 .bloque ul{list-style:none;margin:0;padding:0}
-.bloque li{font-family:var(--mono);font-size:11px;color:var(--ink);padding:3px 0;display:flex;align-items:center;gap:8px}
-.bloque li::before{content:"";width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.bloque .extra{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px}
+.bloque li{padding:7px 0;position:relative;padding-left:16px}
+.bloque li + li{border-top:1px dashed var(--line);margin-top:4px;padding-top:9px}
+.bloque li::before{content:"";position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%}
+.bloque .ruta{font-family:var(--mono);font-size:11px;color:var(--ink);font-weight:600;display:block;word-break:break-all}
+.bloque .que{display:block;font-size:12px;color:var(--muted);line-height:1.35;margin-top:3px}
+.bloque .extra{font-size:11px;color:var(--muted);font-style:italic;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
 .c-morado .bloque-n{background:var(--morado)} .c-morado li::before{background:var(--morado)}
 .c-azul .bloque-n{background:var(--azul)}       .c-azul li::before{background:var(--azul)}
 .c-amarillo .bloque-n{background:var(--amarillo)} .c-amarillo li::before{background:var(--amarillo)}
@@ -346,8 +349,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>POST /oauth/token</li><li>GET /me</li><li>GET /credentials</li></ul>
-  <div class="extra">+ rotar secretos</div>
+  <ul><li><span class="ruta">POST /oauth/token</span><span class="que">Pide la llave para entrar; sin ella no puedes llamar nada más.</span></li><li><span class="ruta">GET /me</span><span class="que">Dime quién soy y qué puedo hacer: negocios, tiendas, alcances y límites.</span></li><li><span class="ruta">GET /credentials</span><span class="que">Lista mis llaves vigentes y cuándo caducan.</span></li></ul>
+  <div class="extra">+ rotar la llave sin dejar de operar</div>
 </div>
 <div class="bloque c-azul">
   <div class="bloque-head">
@@ -358,8 +361,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>GET /categories</li><li>GET /templates/{id}</li><li>POST /suggestions/classification</li></ul>
-  <div class="extra">+ /value-lists, /brands, /brand-requests</div>
+  <ul><li><span class="ruta">GET /categories</span><span class="que">Dame el árbol de categorías para encontrar la plantilla correcta.</span></li><li><span class="ruta">GET /templates/{id}</span><span class="que">Qué campos pide esta plantilla y cuáles son obligatorios para mi negocio.</span></li><li><span class="ruta">POST /suggestions/classification</span><span class="que">Mándame título, marca o foto; la IA te sugiere qué plantilla usar.</span></li></ul>
+  <div class="extra">+ listas cerradas de valores, marcas permitidas y pedir alta de una marca nueva</div>
 </div>
 <div class="bloque c-amarillo">
   <div class="bloque-head">
@@ -370,8 +373,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>POST /products/lookup</li><li>GET /offer-targets/{sku}</li></ul>
-  <div class="extra">por EAN o marca + modelo</div>
+  <ul><li><span class="ruta">POST /products/lookup</span><span class="que">Antes de mandar nada: ¿este producto ya existe? Busca por EAN o por marca y modelo.</span></li><li><span class="ruta">GET /offer-targets/{sku}</span><span class="que">Si ya existe, dime sobre qué SKU puedo poner oferta en Marketplace.</span></li></ul>
+  <div class="extra">evita duplicados y propone qué hacer: ofertar, catalogar o esperar</div>
 </div>
 <div class="bloque c-coral">
   <div class="bloque-head">
@@ -382,8 +385,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>POST /validations</li><li>POST /proposals</li><li>POST /batches</li></ul>
-  <div class="extra">+ /media/uploads, PUT /proposals/{id}/media</div>
+  <ul><li><span class="ruta">POST /validations</span><span class="que">Ensaya un producto sin crearlo: te digo qué le falta antes de mandarlo en serio.</span></li><li><span class="ruta">POST /proposals</span><span class="que">Da de alta un producto con sus variantes.</span></li><li><span class="ruta">POST /batches</span><span class="que">Da de alta muchos productos de una vez (hasta 1,000 por llamada).</span></li></ul>
+  <div class="extra">+ pedir URL para subir imágenes y asignarlas al producto</div>
 </div>
 <div class="bloque c-teal">
   <div class="bloque-head">
@@ -394,8 +397,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>GET /proposals/{id}</li><li>PATCH /proposals/{id}</li><li>GET /batches/{id}/items</li></ul>
-  <div class="extra">+ /history, /channels, /cancel, /receipts</div>
+  <ul><li><span class="ruta">GET /proposals/{id}</span><span class="que">¿En qué estado está mi producto y qué me falta hacer?</span></li><li><span class="ruta">PATCH /proposals/{id}</span><span class="que">Corrige lo que te pedí arreglar.</span></li><li><span class="ruta">GET /batches/{id}/items</span><span class="que">Cómo le fue a cada renglón de mi lote: creado, con error o ya existía.</span></li></ul>
+  <div class="extra">+ historia del producto, estado por canal, cancelar y recibo de cada escritura</div>
 </div>
 <div class="bloque c-indigo">
   <div class="bloque-head">
@@ -406,8 +409,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>GET /products/{id}/permissions</li><li>POST /products/{id}/modifications</li><li>POST /modifications/batches</li></ul>
-  <div class="extra">+ cambiar imágenes</div>
+  <ul><li><span class="ruta">GET /products/{id}/permissions</span><span class="que">¿Qué puedo cambiar de este producto y qué está bloqueado?</span></li><li><span class="ruta">POST /products/{id}/modifications</span><span class="que">Mándame un cambio para que lo revisen.</span></li><li><span class="ruta">POST /modifications/batches</span><span class="que">Modifica muchos productos a la vez, sólo atributos editables.</span></li></ul>
+  <div class="extra">+ sustituir las fotos del producto por otras</div>
 </div>
 <div class="bloque c-verde">
   <div class="bloque-head">
@@ -418,8 +421,8 @@ body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;heigh
     </div>
   </div>
   <hr/>
-  <ul><li>POST /webhooks</li><li>GET /events (feed de respaldo)</li></ul>
-  <div class="extra">+ /test, /secret, /deliveries</div>
+  <ul><li><span class="ruta">POST /webhooks</span><span class="que">Dame tu URL y yo te aviso cuando algo cambie; dejas de estar preguntando.</span></li><li><span class="ruta">GET /events</span><span class="que">Feed de respaldo con los eventos de los últimos 30 días, por si un webhook se cayó.</span></li></ul>
+  <div class="extra">+ probar la URL, rotar la firma y ver qué entregas fallaron</div>
 </div></div>
   <div class="flujo-pie">El flujo del alta: 1 → 2 → 3 → 4. Después, 5 corre en paralelo mientras llega el acuse por 7. Al publicar entra 6.</div>
 </section>
