@@ -92,9 +92,16 @@ p{margin:0 0 10px}
 .pros{margin:0 0 8px;padding-left:18px}
 .pros li{margin:3px 0}
 .pros.no{color:#6d3030}
-.roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
 .roles button{font:600 13px/1.2 inherit;border:1px solid var(--borde);background:#fff;color:var(--tinta);border-radius:999px;padding:6px 12px;cursor:pointer}
 .roles button[aria-selected="true"]{background:var(--morado);color:#fff;border-color:var(--morado)}
+.roles button.eu{background:#fff6e4;border-color:#c4a15a;color:#6a4b12}
+.roles button.eu[aria-selected="true"]{background:#a6843a;color:#fff;border-color:#a6843a}
+.roles button.foro{background:#e8f1f8;border-color:#3d6b9a;color:#1d4568}
+.roles button.foro[aria-selected="true"]{background:#3d6b9a;color:#fff;border-color:#3d6b9a}
+.muestra{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;margin:0 6px 0 0}
+.muestra.eu{background:#fff6e4;border:1px solid #c4a15a;color:#6a4b12}
+.muestra.foro{background:#e8f1f8;border:1px solid #3d6b9a;color:#1d4568}
 .app{display:grid;grid-template-columns:196px minmax(0,1fr);border:1px solid #d9d4e2;border-radius:12px;overflow:hidden;min-height:360px;background:#fff;box-shadow:0 8px 24px rgba(29,33,48,.06)}
 .menu{background:#3d1d52;color:#f6eef8;padding:14px 12px}
 .marca{font-weight:700;font-size:13px;letter-spacing:.02em;margin-bottom:12px}
@@ -295,6 +302,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 <section id="pantallas">
   <h2>Qué ve cada quien</h2>
   <p>Cada perfil ve sólo su menú y puede entrar a sus opciones. Las plantillas las gestiona Gobierno de Producto. Los datos maestros, Gobierno de Datos. QA revisa la ficha cuando la calidad no se aprueba sola. Las pantallas son ilustración.</p>
+  <p class="ley"><span class="muestra eu">Entrada Única Catalogación</span><span class="muestra foro">Foro</span> El resto entra hoy por P360, no por esos dos portales.</p>
   <div class="roles" id="roles" role="tablist"></div>
   <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
   <div class="app">
@@ -351,19 +359,19 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 <script>
 (function () {
   var gente = [
-    { id: "proveedor", nombre: "Proveedor", marca: "Entrada Única Catalogación", grupo: "",
+    { id: "proveedor", nombre: "Proveedor", marca: "Entrada Única Catalogación", origen: "eu", grupo: "",
       opciones: [
         ["Nueva propuesta", "Alta en cuatro pasos: identificar, datos de venta, variantes y fotos, enviar. El sistema revisa el código antes de crear otro producto."],
         ["Mis propuestas", "Sigue el estatus de lo que ya envió: borrador, en revisión, rechazada o aprobada."],
         ["Carga masiva", "Sube un archivo. Cada renglón es una propuesta y el archivo de errores marca cuál falló."],
         ["Activos", "Carga las fotos, el video y los documentos de sus productos."]
       ]},
-    { id: "compras", nombre: "Compras", marca: "Entrada Única Catalogación", grupo: "",
+    { id: "compras", nombre: "Compras", marca: "Entrada Única Catalogación", origen: "eu", grupo: "",
       opciones: [
         ["Aprobaciones", "Bandeja en Revisión Compras. Acepta, rechaza o pide corrección sobre la ficha que capturó el proveedor."],
         ["Estatus", "Consulta en qué va la propuesta de su sección, sin abrir otro sistema."]
       ]},
-    { id: "catalogacion", nombre: "Catalogación", marca: "Entrada Única Catalogación", grupo: "",
+    { id: "catalogacion", nombre: "Catalogación", marca: "Entrada Única Catalogación", origen: "eu", grupo: "",
       opciones: [
         ["Mi catálogo", "Consulta los productos y las propuestas. No captura como proveedor ni aprueba como Compras."],
         ["Usuarios y perfiles", "Alta y cambio de quien entra a catalogación, con su perfil y su negocio."],
@@ -389,26 +397,26 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         ["Revisión", "Revisa la ficha a mano: datos, fotos y completitud."],
         ["Enviar a corregir", "La regresa a quien debe corregirla: proveedor, Compras, Gobierno de Datos o repoblamiento."]
       ]},
-    { id: "logistica", nombre: "Logística", marca: "Sistema de catalogación", grupo: "Módulo Foro",
+    { id: "logistica", nombre: "Logística", marca: "Sistema de catalogación", origen: "foro", grupo: "Módulo Foro",
       opciones: [
         ["Carga de SKU", "Sube el archivo. Cada producto queda en tomar, no tomar, no existe o error."],
         ["Recepción", "Al abrir el contenedor, separa lo que se toma de lo que sale de inmediato."],
         ["Trazabilidad", "Sigue la muestra: contenedor, caja, tarima y vale, desde que entra hasta que sale del estudio."],
         ["Salidas", "Escanea el vale y acomoda los contenedores para el envío."]
       ]},
-    { id: "fotografo", nombre: "Fotógrafo", marca: "Sistema de catalogación", grupo: "Módulo Foro",
+    { id: "fotografo", nombre: "Fotógrafo", marca: "Sistema de catalogación", origen: "foro", grupo: "Módulo Foro",
       opciones: [
         ["Toma", "Cámara en el equipo. Elige la imagen principal y las de detalle. El programa de la PC sube el archivo."],
         ["Guía de fotos", "Qué tomas pide ese producto: principal, detalle y ambiente."],
         ["Bandeja", "La foto pasa por fondo blanco y recorte antes de ir a edición."]
       ]},
-    { id: "editor", nombre: "Editor", marca: "Sistema de catalogación", grupo: "Módulo Foro",
+    { id: "editor", nombre: "Editor", marca: "Sistema de catalogación", origen: "foro", grupo: "Módulo Foro",
       opciones: [
         ["Asignación", "Recibe el siguiente producto, en automático o a mano."],
         ["Validar y reemplazar", "Compara la original con la editada, reemplaza, agrega imágenes y carga video."],
         ["Herencia por color", "Al cerrar, las fotos del color pasan a las tallas de ese mismo color."]
       ]},
-    { id: "capturista", nombre: "Capturista", marca: "Sistema de catalogación", grupo: "Módulo Foro",
+    { id: "capturista", nombre: "Capturista", marca: "Sistema de catalogación", origen: "foro", grupo: "Módulo Foro",
       opciones: [
         ["Bandeja", "Productos listos para completar la ficha, después de la foto."],
         ["Atributos", "Completa lo que la IA predijo. SKU, marca y talla vienen del producto y no se reescriben."],
@@ -426,7 +434,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   function pintar() {
     var g = gente[quien];
     roles.innerHTML = gente.map(function (p, i) {
-      return '<button type="button" role="tab" aria-selected="' + (i === quien ? "true" : "false") + '">' + esc(p.nombre) + "</button>";
+      return '<button type="button" role="tab" class="' + (p.origen || "") + '" aria-selected="' + (i === quien ? "true" : "false") + '">' + esc(p.nombre) + "</button>";
     }).join("");
     var html = '<div class="marca">' + esc(g.marca) + "</div>";
     if (g.grupo) html += '<div class="grupo">' + esc(g.grupo) + "</div>";
