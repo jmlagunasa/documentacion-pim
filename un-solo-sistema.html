@@ -49,16 +49,20 @@ p{margin:0 0 10px}
 .cil:after{bottom:-6px;background:#d5e2f8}
 .base{text-align:center;font-size:12px;font-weight:700;color:#1f4f9c;margin-top:10px}
 .copia{align-self:center;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ambar);background:var(--ambar-s);border:1px solid #f0d98a;border-radius:999px;padding:4px 8px;text-align:center}
-.flujo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 12px}
-.caja{border:1px solid var(--borde);border-radius:10px;background:#fff;padding:10px 12px;min-width:140px}
-.caja b{display:block;font-size:14px}
-.caja span{display:block;font-size:12.5px;color:var(--tinta2)}
-.caja.nucleo{border-color:#c9b3d4;background:var(--morado-s)}
-.gcp{display:flex;align-items:center;gap:8px}
-.gcp svg{width:28px;height:28px;flex:none}
-.flecha{color:var(--tinta3);font-size:18px;line-height:1}
-.pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
-.pill{border-radius:999px;padding:2px 10px;font-size:12.5px;background:var(--azul-s);color:#1f4f9c;border:1px solid #bcd0f2}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 10px}
+.lado{background:#fff;border:1px solid #e6e4ea;border-radius:8px;padding:14px 16px 12px;border-top-width:4px}
+.lado.front{border-top-color:#c4a15a}
+.lado.back{border-top-color:#1a6b63}
+.lado h3{margin:0;font-size:18px;color:var(--tinta);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.lado .sub{margin:2px 0 10px;font-size:13px;color:var(--tinta3)}
+.badge{margin-left:auto;background:#1a6b63;color:#fff;border-radius:4px;padding:3px 8px;font-size:11px;letter-spacing:.04em;font-weight:700}
+.nums{list-style:none;margin:0;padding:0}
+.nums li{display:flex;gap:8px;margin:0 0 7px;font-size:14.5px}
+.nums b{min-width:1.1em}
+.franjas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.franja{border:1px solid #e6e4ea;border-radius:8px;padding:10px 12px;font-size:14px;border-left-width:4px}
+.franja.foro{border-left-color:#c4a15a;background:#fff}
+.franja.canales{border-left-color:#2c3344;background:#eef1f4}
 .roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
 .roles button{font:600 13px/1.2 inherit;border:1px solid var(--borde);background:#fff;color:var(--tinta);border-radius:999px;padding:6px 12px;cursor:pointer}
 .roles button[aria-selected="true"]{background:var(--morado);color:#fff;border-color:var(--morado)}
@@ -106,7 +110,8 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 @media (max-width:820px){
   .marco{grid-template-columns:1fr}
   nav{position:static}
-  .tres,.hoy,.ficha,.queda{grid-template-columns:1fr}
+  .tres,.hoy,.ficha,.queda,.par,.franjas{grid-template-columns:1fr}
+  .badge{margin-left:0}
   .hoy{grid-template-columns:1fr}
   .copia{justify-self:start}
   .app{grid-template-columns:1fr}
@@ -177,35 +182,34 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 
 <section id="propuesta">
   <h2>Cómo quedaría</h2>
-  <p>Un sistema. Las personas entran a su módulo. El backend y la base son uno solo.</p>
-  <div class="pills">
-    <span class="pill">Proveedor</span>
-    <span class="pill">Compras</span>
-    <span class="pill">Logística</span>
-    <span class="pill">Fotógrafo</span>
-    <span class="pill">Capturista</span>
+  <div class="par">
+    <article class="lado front">
+      <h3>Entrada Única</h3>
+      <p class="sub">4 pantallas (front)</p>
+      <ol class="nums">
+        <li><b>1</b> Alta de la propuesta</li>
+        <li><b>2</b> Visto bueno de Compras</li>
+        <li><b>3</b> Enriquecimiento de la ficha</li>
+        <li><b>4</b> Consulta del estatus</li>
+      </ol>
+    </article>
+    <article class="lado back">
+      <h3>PIM Headless (una base) <span class="badge">SÓLO BACKEND</span></h3>
+      <p class="sub">5 piezas, en un solo lugar</p>
+      <ol class="nums">
+        <li><b>1</b> El producto, escrito una vez</li>
+        <li><b>2</b> Las fotos, un solo archivo</li>
+        <li><b>3</b> Muestra, toma y guía de Foro</li>
+        <li><b>4</b> El estatus del ciclo, el mismo para todos</li>
+        <li><b>5</b> SKU y salida a canales (SAP, tienda, OMS)</li>
+      </ol>
+    </article>
   </div>
-  <div class="flujo">
-    <div class="caja nucleo"><b>Un sistema</b><span>Catalogación, visto bueno, Foro y la ficha</span></div>
-    <div class="flecha" aria-hidden="true">→</div>
-    <div class="caja gcp">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" fill-rule="evenodd" d="m14.68 13.06l4.55 2.63v.99l-4.94-2.85z"/><path fill="#669df6" fill-rule="evenodd" d="m9.98 13.65l-5.21 3.01l-.32-.8l5.08-2.94z"/><path fill="#aecbfa" d="M11.55 3.29h.86v5.78h-.86z"/><path fill="#aecbfa" fill-rule="evenodd" d="M3.25 7v10L12 22l8.74-5V7L12 2Zm15.63 8.89L12 19.78l-6.88-3.89V8.11L12 4.22l6.87 3.89v7.78Z"/><path fill="#aecbfa" fill-rule="evenodd" d="m11.98 11.5l3.98-2.29l-3.98-2.3l-3.97 2.3z"/><path fill="#669df6" fill-rule="evenodd" d="m11.52 12.3l-3.86-2.29v4.59l3.86 2.29z"/><path fill="#4285f4" fill-rule="evenodd" d="M12.48 12.3v4.59l3.86-2.29v-4.59z"/></svg>
-      <div><b>Backend</b><span>Google Kubernetes Engine</span></div>
-    </div>
-    <div class="flecha" aria-hidden="true">→</div>
-    <div class="caja"><b>Una base</b><span>El producto se escribe una vez</span></div>
+  <div class="franjas">
+    <div class="franja foro"><b>Foro:</b> el estudio se queda. Sólo cambia a quién le pregunta.</div>
+    <div class="franja canales"><b>Publicación: tienda, OMS y Marketplace.</b> Sin cambio de puerta.</div>
   </div>
-  <div class="flujo">
-    <div class="caja gcp">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#aecbfa" d="M2 4h20v7H2z"/><path fill="#669df6" d="M20 4h2v7h-2z"/><path fill="#4285f4" d="M22 4h-2v7z"/><path fill="#669df6" d="M2 4h2v7H2z"/><path fill="#fff" d="M6 7h6v1H6z"/><rect width="3" height="3" x="15" y="6" fill="#fff" rx="1.5"/><path fill="#aecbfa" d="M2 13h20v7H2z"/><path fill="#669df6" d="M20 13h2v7h-2z"/><path fill="#4285f4" d="M22 13h-2v7z"/><path fill="#669df6" d="M2 13h2v7H2z"/><path fill="#fff" d="M6 16h6v1H6z"/><rect width="3" height="3" x="15" y="15" fill="#fff" rx="1.5"/></svg>
-      <div><b>Fotos</b><span>Cloud Storage. El archivo se guarda una vez</span></div>
-    </div>
-    <div class="caja gcp">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><filter id="gcpPsF" width="14.73" height="12.76" x="4.64" y="4.19" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-color="#fff" result="bg"/><feBlend in="SourceGraphic" in2="bg"/></filter><mask id="gcpPsM" width="14.73" height="12.76" x="4.64" y="4.19" maskUnits="userSpaceOnUse"><circle cx="12" cy="12.23" r="3.58" filter="url(#gcpPsF)"/></mask></defs><circle cx="18.97" cy="8.21" r="1.72" fill="#669df6"/><circle cx="5.03" cy="8.21" r="1.72" fill="#669df6"/><circle cx="12" cy="20.28" r="1.72" fill="#669df6"/><g fill="#4285f4" mask="url(#gcpPsM)"><path d="m11.646 12.86l.795-1.384l6.995 4.02l-.795 1.384z"/><path d="m4.633 15.573l6.963-4.02l.795 1.377l-6.963 4.02z"/><path d="M11.2 4.19h1.59v8.04H11.2z"/></g><circle cx="12" cy="12.23" r="2.78" fill="#aecbfa"/><circle cx="5.03" cy="16.25" r="2.19" fill="#aecbfa"/><circle cx="18.97" cy="16.25" r="2.19" fill="#aecbfa"/><circle cx="12" cy="4.19" r="2.19" fill="#aecbfa"/></svg>
-      <div><b>Avisos</b><span>Pub/Sub. El siguiente módulo se entera. No copia la ficha</span></div>
-    </div>
-  </div>
-  <p class="nota">Catalogación y el estudio siguen siendo las dos entradas de hoy. Las dos abren el mismo producto. El programa que sube la foto desde la cámara se queda en la PC del fotógrafo.</p>
+  <p class="nota">La cámara sigue en la PC del fotógrafo. Sube la foto y el archivo queda una vez, en el mismo producto.</p>
 </section>
 
 <section id="pantallas">
