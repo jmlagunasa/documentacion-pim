@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Un solo sistema para el ciclo de vida del producto</title>
+<style>
+:root{
+  --fondo:#f5f4f7;--papel:#fff;--tinta:#1d2130;--tinta2:#4a5063;--tinta3:#767c8f;
+  --borde:#e3e1e8;--link:#1f62c9;--morado:#6d2a7f;--gris-s:#eef0f3;
+  --ambar-s:#fff3cd;--ambar:#856404;--verde-s:#e8f4eb;--verde:#1d6b33;
+  --rojo-s:#fbecec;--azul-s:#e9f0fc;--morado-s:#f3e8f6;
+  --radio:10px;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--fondo);color:var(--tinta);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--link)}
+header{background:var(--papel);border-bottom:1px solid var(--borde);padding:18px 24px}
+header .volver{font-size:13px;text-decoration:none;margin-right:14px}
+h1{font-size:22px;line-height:1.25;margin:6px 0 0}
+header p{margin:4px 0 0;color:var(--tinta3);font-size:13.5px}
+.estado{display:inline-block;margin-top:8px;background:var(--ambar-s);color:var(--ambar);border:1px solid #f0d98a;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:600}
+.marco{display:grid;grid-template-columns:220px minmax(0,1fr);gap:26px;max-width:1180px;padding:22px 24px 36px}
+nav{position:sticky;top:16px;align-self:start;font-size:13.5px}
+nav b{display:block;color:var(--tinta3);font-size:12px;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px}
+nav ol{margin:0;padding-left:20px}
+nav li{margin:4px 0}
+nav a{text-decoration:none}
+main{min-width:0}
+section{background:var(--papel);border:1px solid var(--borde);border-radius:var(--radio);padding:18px 22px;margin:0 0 16px;scroll-margin-top:12px}
+h2{font-size:18px;margin:0 0 8px;color:var(--morado)}
+h3{font-size:15px;margin:14px 0 6px}
+p{margin:0 0 10px}
+.lead{font-size:16px}
+.tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 4px}
+.tres article{background:var(--gris-s);border-radius:8px;padding:10px 12px}
+.tres b{display:block;margin-bottom:2px}
+.tres span{display:block;font-size:13px;color:var(--tinta2)}
+.nota{font-size:12.5px;color:var(--tinta2);margin:8px 0 0}
+.hoy{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:stretch;margin:8px 0 4px}
+.sis{border:1px solid var(--borde);border-radius:10px;padding:12px;background:#fff}
+.sis h3{margin:8px 0 4px;font-size:15px}
+.sis p{font-size:13px;color:var(--tinta2);margin:0}
+.sis ul{margin:8px 0 0;padding-left:18px;font-size:13px}
+.cil{width:36px;height:44px;margin:0 auto;border-radius:8px 8px 10px 10px;background:linear-gradient(#e7eefc,#d5e2f8);border:2px solid #8eaddd;position:relative}
+.cil:before,.cil:after{content:"";position:absolute;left:-2px;right:-2px;height:10px;border:2px solid #8eaddd;border-radius:50%;background:#f4f8ff}
+.cil:before{top:-6px}
+.cil:after{bottom:-6px;background:#d5e2f8}
+.base{text-align:center;font-size:12px;font-weight:700;color:#1f4f9c;margin-top:10px}
+.copia{align-self:center;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ambar);background:var(--ambar-s);border:1px solid #f0d98a;border-radius:999px;padding:4px 8px;text-align:center}
+.flujo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 12px}
+.caja{border:1px solid var(--borde);border-radius:10px;background:#fff;padding:10px 12px;min-width:140px}
+.caja b{display:block;font-size:14px}
+.caja span{display:block;font-size:12.5px;color:var(--tinta2)}
+.caja.nucleo{border-color:#c9b3d4;background:var(--morado-s)}
+.gcp{display:flex;align-items:center;gap:8px}
+.gcp svg{width:28px;height:28px;flex:none}
+.flecha{color:var(--tinta3);font-size:18px;line-height:1}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+.pill{border-radius:999px;padding:2px 10px;font-size:12.5px;background:var(--azul-s);color:#1f4f9c;border:1px solid #bcd0f2}
+.roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
+.roles button{font:600 13px/1.2 inherit;border:1px solid var(--borde);background:#fff;color:var(--tinta);border-radius:999px;padding:6px 12px;cursor:pointer}
+.roles button[aria-selected="true"]{background:var(--morado);color:#fff;border-color:var(--morado)}
+.app{display:grid;grid-template-columns:196px minmax(0,1fr);border:1px solid #d9d4e2;border-radius:12px;overflow:hidden;min-height:360px;background:#fff;box-shadow:0 8px 24px rgba(29,33,48,.06)}
+.menu{background:#3d1d52;color:#f6eef8;padding:14px 12px}
+.marca{font-weight:700;font-size:13px;letter-spacing:.02em;margin-bottom:12px}
+.menu button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#e7d4ee;font:13px/1.3 inherit;padding:7px 8px;border-radius:6px;cursor:pointer}
+.menu button.on{background:#6d2a7f;color:#fff}
+.menu .grupo{margin:12px 8px 4px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#c9a6d6}
+.vista{padding:14px 16px 16px}
+.vista[hidden]{display:none}
+.crumb{font-size:12px;color:var(--tinta3);margin-bottom:4px}
+.vista h3{margin:0 0 8px;font-size:16px;color:var(--tinta)}
+.pasos{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
+.paso{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--gris-s);color:var(--tinta2)}
+.paso.ya{background:var(--verde-s);color:var(--verde)}
+.paso.va{background:var(--morado);color:#fff}
+.ficha{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.campo{background:var(--gris-s);border-radius:8px;padding:8px 10px}
+.campo b{display:block;font-size:11px;color:var(--tinta3);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.campo span{font-size:14px}
+.tabla{overflow-x:auto;margin:6px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border:1px solid var(--borde);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--gris-s);font-weight:600}
+.ok{color:var(--verde);font-weight:700}
+.no{color:#8a1f1f;font-weight:700}
+.acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.acc span{font-size:12.5px;font-weight:700;border-radius:6px;padding:4px 8px}
+.a1{background:var(--verde-s);color:var(--verde)}
+.a2{background:var(--rojo-s);color:#8a1f1f}
+.a3{background:var(--ambar-s);color:var(--ambar)}
+.fotos{display:flex;gap:8px;margin-top:8px}
+.foto{width:86px;height:72px;border-radius:8px;border:1px dashed #c9b3d4;background:var(--morado-s);display:flex;align-items:flex-end;padding:6px;font-size:11px;color:var(--morado);font-weight:700}
+.foto.llena{border-style:solid;background:linear-gradient(#f7f1fa,#e4d0ec)}
+.aviso{font-size:12.5px;background:var(--azul-s);color:#1f4f9c;border-radius:8px;padding:8px 10px;margin-top:10px}
+.producto{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;background:var(--morado-s);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:13px}
+.producto b{color:var(--morado)}
+.checks{margin:0;padding:0;list-style:none}
+.checks li{margin:0 0 8px;padding:8px 10px;border-radius:8px;background:var(--verde-s)}
+.queda{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.queda div{background:var(--gris-s);border-radius:8px;padding:10px 12px;font-size:13.5px}
+.queda b{display:block;margin-bottom:4px}
+footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)}
+@media (max-width:820px){
+  .marco{grid-template-columns:1fr}
+  nav{position:static}
+  .tres,.hoy,.ficha,.queda{grid-template-columns:1fr}
+  .hoy{grid-template-columns:1fr}
+  .copia{justify-self:start}
+  .app{grid-template-columns:1fr}
+  .menu{display:flex;flex-wrap:wrap;gap:4px}
+  .menu .grupo,.marca{display:none}
+  .menu button{width:auto}
+}
+@media print{nav{display:none}.marco{display:block}.vista{display:block!important}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <a class="volver" href="index.html">← Documentación del Nuevo PIM</a>
+  <h1>Un solo sistema para el ciclo de vida del producto</h1>
+  <p>Catalogación y Foro fotográfico trabajan el mismo producto. Cada perfil ve su pantalla.</p>
+  <span class="estado">Propuesta para la sesión con el equipo funcional</span>
+</header>
+<div class="marco">
+<nav>
+  <b>En la sesión</b>
+  <ol>
+    <li><a href="#decision">Qué se confirma</a></li>
+    <li><a href="#hoy">Cómo está hoy</a></li>
+    <li><a href="#propuesta">Cómo quedaría</a></li>
+    <li><a href="#pantallas">Qué ve cada quien</a></li>
+  </ol>
+</nav>
+<main>
+
+<section id="decision">
+  <h2>Qué se confirma en esta sesión</h2>
+  <p class="lead">El producto recorre todo su ciclo en un solo sistema. Foro fotográfico es un módulo de ese sistema, no una base aparte.</p>
+  <div class="tres">
+    <article><b>Un producto</b><span>Alta, visto bueno, muestra, toma, ficha y publicación leen el mismo registro.</span></article>
+    <article><b>Una base y un backend</b><span>Se acaba de copiar el producto entre P360, Entrada Única y Foro.</span></article>
+    <article><b>Una pantalla por oficio</b><span>Proveedor, Compras, logística, fotógrafo y capturista siguen viendo su trabajo.</span></article>
+  </div>
+  <p class="nota">Las pantallas de abajo son una ilustración, con la forma del alta de Entrada Única Catalogación y de los módulos de Foro. No son capturas del sistema de hoy.</p>
+</section>
+
+<section id="hoy">
+  <h2>Cómo está hoy</h2>
+  <p>El mismo producto se guarda en tres sistemas. Para saber en qué va, hay que mirar los tres.</p>
+  <div class="hoy">
+    <div class="sis">
+      <div class="cil" aria-hidden="true"></div>
+      <div class="base">Base de P360</div>
+      <h3>P360</h3>
+      <p>La ficha maestra, el SKU y lo que sale a los canales.</p>
+    </div>
+    <div class="copia">se copia</div>
+    <div class="sis">
+      <div class="cil" aria-hidden="true"></div>
+      <div class="base">Base de Entrada Única</div>
+      <h3>Entrada Única</h3>
+      <p>El alta, la aprobación de Compras y las fotos que sube el proveedor.</p>
+    </div>
+    <div class="copia">se copia</div>
+    <div class="sis">
+      <div class="cil" aria-hidden="true"></div>
+      <div class="base">Base de Foro</div>
+      <h3>Foro fotográfico</h3>
+      <p>La muestra, la toma, la edición y el enriquecimiento.</p>
+    </div>
+  </div>
+  <p class="nota">Foro, por dentro, reparte su información en más de una base. En este dibujo es un sistema: el producto tampoco vive ahí una sola vez.</p>
+</section>
+
+<section id="propuesta">
+  <h2>Cómo quedaría</h2>
+  <p>Un sistema. Las personas entran a su módulo. El backend y la base son uno solo.</p>
+  <div class="pills">
+    <span class="pill">Proveedor</span>
+    <span class="pill">Compras</span>
+    <span class="pill">Logística</span>
+    <span class="pill">Fotógrafo</span>
+    <span class="pill">Capturista</span>
+  </div>
+  <div class="flujo">
+    <div class="caja nucleo"><b>Un sistema</b><span>Catalogación, visto bueno, Foro y la ficha</span></div>
+    <div class="flecha" aria-hidden="true">→</div>
+    <div class="caja gcp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285f4" fill-rule="evenodd" d="m14.68 13.06l4.55 2.63v.99l-4.94-2.85z"/><path fill="#669df6" fill-rule="evenodd" d="m9.98 13.65l-5.21 3.01l-.32-.8l5.08-2.94z"/><path fill="#aecbfa" d="M11.55 3.29h.86v5.78h-.86z"/><path fill="#aecbfa" fill-rule="evenodd" d="M3.25 7v10L12 22l8.74-5V7L12 2Zm15.63 8.89L12 19.78l-6.88-3.89V8.11L12 4.22l6.87 3.89v7.78Z"/><path fill="#aecbfa" fill-rule="evenodd" d="m11.98 11.5l3.98-2.29l-3.98-2.3l-3.97 2.3z"/><path fill="#669df6" fill-rule="evenodd" d="m11.52 12.3l-3.86-2.29v4.59l3.86 2.29z"/><path fill="#4285f4" fill-rule="evenodd" d="M12.48 12.3v4.59l3.86-2.29v-4.59z"/></svg>
+      <div><b>Backend</b><span>Google Kubernetes Engine</span></div>
+    </div>
+    <div class="flecha" aria-hidden="true">→</div>
+    <div class="caja"><b>Una base</b><span>El producto se escribe una vez</span></div>
+  </div>
+  <div class="flujo">
+    <div class="caja gcp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#aecbfa" d="M2 4h20v7H2z"/><path fill="#669df6" d="M20 4h2v7h-2z"/><path fill="#4285f4" d="M22 4h-2v7z"/><path fill="#669df6" d="M2 4h2v7H2z"/><path fill="#fff" d="M6 7h6v1H6z"/><rect width="3" height="3" x="15" y="6" fill="#fff" rx="1.5"/><path fill="#aecbfa" d="M2 13h20v7H2z"/><path fill="#669df6" d="M20 13h2v7h-2z"/><path fill="#4285f4" d="M22 13h-2v7z"/><path fill="#669df6" d="M2 13h2v7H2z"/><path fill="#fff" d="M6 16h6v1H6z"/><rect width="3" height="3" x="15" y="15" fill="#fff" rx="1.5"/></svg>
+      <div><b>Fotos</b><span>Cloud Storage. El archivo se guarda una vez</span></div>
+    </div>
+    <div class="caja gcp">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><defs><filter id="gcpPsF" width="14.73" height="12.76" x="4.64" y="4.19" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse"><feFlood flood-color="#fff" result="bg"/><feBlend in="SourceGraphic" in2="bg"/></filter><mask id="gcpPsM" width="14.73" height="12.76" x="4.64" y="4.19" maskUnits="userSpaceOnUse"><circle cx="12" cy="12.23" r="3.58" filter="url(#gcpPsF)"/></mask></defs><circle cx="18.97" cy="8.21" r="1.72" fill="#669df6"/><circle cx="5.03" cy="8.21" r="1.72" fill="#669df6"/><circle cx="12" cy="20.28" r="1.72" fill="#669df6"/><g fill="#4285f4" mask="url(#gcpPsM)"><path d="m11.646 12.86l.795-1.384l6.995 4.02l-.795 1.384z"/><path d="m4.633 15.573l6.963-4.02l.795 1.377l-6.963 4.02z"/><path d="M11.2 4.19h1.59v8.04H11.2z"/></g><circle cx="12" cy="12.23" r="2.78" fill="#aecbfa"/><circle cx="5.03" cy="16.25" r="2.19" fill="#aecbfa"/><circle cx="18.97" cy="16.25" r="2.19" fill="#aecbfa"/><circle cx="12" cy="4.19" r="2.19" fill="#aecbfa"/></svg>
+      <div><b>Avisos</b><span>Pub/Sub. El siguiente módulo se entera. No copia la ficha</span></div>
+    </div>
+  </div>
+  <p class="nota">Catalogación y el estudio siguen siendo las dos entradas de hoy. Las dos abren el mismo producto. El programa que sube la foto desde la cámara se queda en la PC del fotógrafo.</p>
+</section>
+
+<section id="pantallas">
+  <h2>Qué ve cada quien</h2>
+  <p>Es el mismo sistema. Cambia el módulo, no la base. El ejemplo es un refrigerador de muestra.</p>
+  <div class="roles" role="tablist">
+    <button type="button" role="tab" id="tab-proveedor" aria-selected="true" aria-controls="vista-proveedor">Proveedor</button>
+    <button type="button" role="tab" id="tab-compras" aria-selected="false" aria-controls="vista-compras">Compras</button>
+    <button type="button" role="tab" id="tab-logistica" aria-selected="false" aria-controls="vista-logistica">Logística de Foro</button>
+    <button type="button" role="tab" id="tab-fotografo" aria-selected="false" aria-controls="vista-fotografo">Fotógrafo</button>
+    <button type="button" role="tab" id="tab-capturista" aria-selected="false" aria-controls="vista-capturista">Capturista</button>
+  </div>
+  <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
+  <div class="app">
+    <aside class="menu">
+      <div class="marca">Catalogación</div>
+      <button type="button" data-abre="proveedor">Nueva propuesta</button>
+      <button type="button" data-abre="compras">Aprobaciones</button>
+      <button type="button" data-abre="capturista">Enriquecimiento</button>
+      <div class="grupo">Foro</div>
+      <button type="button" data-abre="logistica">Recepción</button>
+      <button type="button" data-abre="fotografo">Toma</button>
+    </aside>
+    <div>
+      <div class="vista" id="vista-proveedor" role="tabpanel" aria-labelledby="tab-proveedor">
+        <div class="crumb">Catalogación · como el alta de Entrada Única</div>
+        <h3>Nueva propuesta</h3>
+        <div class="pasos"><span class="paso va">1 Identificar</span><span class="paso">2 Datos de venta</span><span class="paso">3 Variantes y fotos</span><span class="paso">4 Enviar</span></div>
+        <div class="ficha">
+          <div class="campo"><b>Negocio</b><span>Liverpool</span></div>
+          <div class="campo"><b>Código de barras</b><span>De muestra</span></div>
+          <div class="campo"><b>Marca</b><span>Marca de muestra</span></div>
+          <div class="campo"><b>Modelo</b><span>MOD-11</span></div>
+        </div>
+        <p class="aviso">El sistema revisa si ese código ya existe antes de crear otro producto. Si ya existe, en Mercaderías no se duplica.</p>
+      </div>
+      <div class="vista" id="vista-compras" role="tabpanel" aria-labelledby="tab-compras" hidden>
+        <div class="crumb">Catalogación · bandeja de Compras</div>
+        <h3>Aprobaciones</h3>
+        <div class="tabla"><table>
+          <thead><tr><th>Producto</th><th>Estatus</th><th>Sección</th></tr></thead>
+          <tbody><tr><td>Refrigerador 11 pies</td><td>Revisión Compras</td><td>Línea blanca</td></tr></tbody>
+        </table></div>
+        <div class="acc"><span class="a1">Aprobar</span><span class="a2">Rechazar</span><span class="a3">Pedir corrección</span></div>
+        <p class="aviso">Compras ve la ficha que capturó el proveedor. No abre otro sistema para aprobarla.</p>
+      </div>
+      <div class="vista" id="vista-logistica" role="tabpanel" aria-labelledby="tab-logistica" hidden>
+        <div class="crumb">Foro · recepción de muestras</div>
+        <h3>Recepción</h3>
+        <div class="tabla"><table>
+          <thead><tr><th>Producto</th><th>Decisión</th><th>Destino</th></tr></thead>
+          <tbody>
+            <tr><td>Refrigerador 11 pies</td><td class="ok">Tomar</td><td>Estudio</td></tr>
+            <tr><td>Licuadora de vaso</td><td class="no">No tomar</td><td>Sale con vale</td></tr>
+          </tbody>
+        </table></div>
+        <p class="aviso">Logística carga el archivo de productos, separa tomar y no tomar, y opera cajas y contenedores. Es el mismo refrigerador que aprobó Compras.</p>
+      </div>
+      <div class="vista" id="vista-fotografo" role="tabpanel" aria-labelledby="tab-fotografo" hidden>
+        <div class="crumb">Foro · toma en el estudio</div>
+        <h3>Toma</h3>
+        <div class="fotos">
+          <div class="foto llena">Principal</div>
+          <div class="foto">Detalle</div>
+          <div class="foto">Ambiente</div>
+        </div>
+        <p class="aviso">La guía de fotos sale del mismo producto. La cámara sigue en la PC del fotógrafo: ese programa sube el archivo y el sistema lo guarda una vez.</p>
+      </div>
+      <div class="vista" id="vista-capturista" role="tabpanel" aria-labelledby="tab-capturista" hidden>
+        <div class="crumb">Catalogación · la ficha, en un solo lugar</div>
+        <h3>Enriquecimiento</h3>
+        <div class="pasos"><span class="paso ya">Foto de la toma</span><span class="paso va">Atributos</span><span class="paso">Título y descripción</span></div>
+        <div class="ficha">
+          <div class="campo"><b>Capacidad</b><span>11 pies</span></div>
+          <div class="campo"><b>Color</b><span>Acero inoxidable</span></div>
+          <div class="campo"><b>Foto principal</b><span>Llegó de la toma</span></div>
+          <div class="campo"><b>Título</b><span>Por completar</span></div>
+        </div>
+        <p class="aviso">El capturista completa la ficha sobre el mismo producto. No la vuelve a escribir en Foro ni en P360.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Lo que esta sesión deja cerrado</h3>
+  <ul class="checks">
+    <li>El ciclo completo del producto vive en un solo sistema.</li>
+    <li>Foro fotográfico es el módulo de la muestra y de la toma. La foto regresa al mismo producto.</li>
+    <li>La ficha se completa en catalogación. Cada perfil ve sólo su pantalla.</li>
+  </ul>
+  <div class="queda">
+    <div><b>Sigue igual para quien lo usa</b>El proveedor captura en los mismos pasos. Compras aprueba, rechaza o pide corrección. Logística separa tomar y no tomar. El fotógrafo trabaja en el estudio.</div>
+    <div><b>Deja de pasar</b>El producto ya no se copia entre tres bases. La foto y el estatus ya no viajan de un sistema a otro para que el siguiente equipo los vea.</div>
+  </div>
+</section>
+
+</main>
+</div>
+<footer>
+  <p>Página para la sesión con el equipo funcional. El dibujo de un backend y una base es el de la arquitectura del programa: las dos entradas de hoy se quedan y el producto vive una vez. Las pantallas ilustran los módulos de Entrada Única Catalogación y de Foro. Se regenera desde <code>docs/arquitectura/un-solo-sistema/</code>.</p>
+</footer>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('[role="tab"]');
+  var menu = document.querySelectorAll('.menu button');
+  function abrir(id) {
+    tabs.forEach(function (tab) {
+      var on = tab.id === 'tab-' + id;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    document.querySelectorAll('.vista').forEach(function (v) {
+      v.hidden = v.id !== 'vista-' + id;
+    });
+    menu.forEach(function (b) {
+      b.classList.toggle('on', b.getAttribute('data-abre') === id);
+    });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { abrir(tab.id.replace('tab-', '')); });
+  });
+  menu.forEach(function (b) {
+    b.addEventListener('click', function () { abrir(b.getAttribute('data-abre')); });
+  });
+  abrir('proveedor');
+})();
+</script>
+</body>
+</html>
