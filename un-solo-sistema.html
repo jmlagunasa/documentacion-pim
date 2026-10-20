@@ -63,6 +63,21 @@ p{margin:0 0 10px}
 .franja{border:1px solid #e6e4ea;border-radius:8px;padding:10px 12px;font-size:14px;border-left-width:4px}
 .franja.foro{border-left-color:#c4a15a;background:#fff}
 .franja.canales{border-left-color:#2c3344;background:#eef1f4}
+.ciclo{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 10px}
+.etapa{background:#fff;border:1px solid #e6e4ea;border-top:3px solid #c4a15a;border-radius:8px;padding:8px 10px;min-width:104px}
+.etapa.foro{border-top-color:#3d6b9a}
+.etapa b{display:block;font-size:13.5px}
+.etapa span{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--tinta3)}
+.cierre{background:var(--morado-s);border:1px solid #dcc3e3;border-radius:8px;padding:10px 12px;text-align:center;font-weight:700;color:var(--morado)}
+.lado.mod-foro{border-top-color:#3d6b9a}
+.engloba{margin-top:12px}
+.tag{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--tinta3)}
+.kicker{margin:12px 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta3)}
+.menu button:disabled{opacity:1;cursor:default}
+.menu button.on:disabled{color:#fff}
+.pros{margin:0 0 8px;padding-left:18px}
+.pros li{margin:3px 0}
+.pros.no{color:#6d3030}
 .roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 12px}
 .roles button{font:600 13px/1.2 inherit;border:1px solid var(--borde);background:#fff;color:var(--tinta);border-radius:999px;padding:6px 12px;cursor:pointer}
 .roles button[aria-selected="true"]{background:var(--morado);color:#fff;border-color:var(--morado)}
@@ -126,30 +141,39 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 <header>
   <a class="volver" href="index.html">← Documentación del Nuevo PIM</a>
   <h1>Un solo sistema para el ciclo de vida del producto</h1>
-  <p>Catalogación y Foro fotográfico trabajan el mismo producto. Cada perfil ve su pantalla.</p>
+  <p>El ciclo del producto, el sistema de catalogación con Foro como módulo, y la decisión de la sesión.</p>
   <span class="estado">Propuesta para la sesión con el equipo funcional</span>
 </header>
 <div class="marco">
 <nav>
   <b>En la sesión</b>
   <ol>
-    <li><a href="#decision">Qué se confirma</a></li>
+    <li><a href="#ciclo">El ciclo</a></li>
     <li><a href="#hoy">Cómo está hoy</a></li>
     <li><a href="#propuesta">Cómo quedaría</a></li>
     <li><a href="#pantallas">Qué ve cada quien</a></li>
+    <li><a href="#elegir">La decisión</a></li>
   </ol>
 </nav>
 <main>
 
-<section id="decision">
-  <h2>Qué se confirma en esta sesión</h2>
-  <p class="lead">El producto recorre todo su ciclo en un solo sistema. Foro fotográfico es un módulo de ese sistema, no una base aparte.</p>
-  <div class="tres">
-    <article><b>Un producto</b><span>Alta, visto bueno, muestra, toma, ficha y publicación leen el mismo registro.</span></article>
-    <article><b>Una base y un backend</b><span>Se acaba de copiar el producto entre P360, Entrada Única y Foro.</span></article>
-    <article><b>Una pantalla por oficio</b><span>Proveedor, Compras, logística, fotógrafo y capturista siguen viendo su trabajo.</span></article>
+<section id="ciclo">
+  <h2>El ciclo de vida del producto</h2>
+  <p>Diez etapas. Cada una dice qué módulo la trabaja. Abajo se cierran en un solo ciclo.</p>
+  <div class="ciclo">
+    <div class="etapa"><b>1 Entrada</b><span>Catalogación</span></div>
+    <div class="etapa"><b>2 ¿Ya existe?</b><span>Catalogación</span></div>
+    <div class="etapa"><b>3 Plantilla</b><span>Catalogación</span></div>
+    <div class="etapa"><b>4 Captura</b><span>Catalogación</span></div>
+    <div class="etapa"><b>5 Visto bueno</b><span>Catalogación</span></div>
+    <div class="etapa"><b>6 SKU</b><span>Catalogación</span></div>
+    <div class="etapa foro"><b>7 Fotos</b><span>Foro</span></div>
+    <div class="etapa"><b>8 Calidad</b><span>Catalogación</span></div>
+    <div class="etapa"><b>9 Publicación</b><span>Catalogación</span></div>
+    <div class="etapa"><b>10 Cambios</b><span>Catalogación</span></div>
   </div>
-  <p class="nota">Las pantallas de abajo son una ilustración, con la forma del alta de Entrada Única Catalogación y de los módulos de Foro. No son capturas del sistema de hoy.</p>
+  <div class="cierre">Un solo ciclo de vida del producto</div>
+  <p class="nota">Si la foto la sube el proveedor, la etapa 7 la hace Catalogación. Si la toma Liverpool, la hace Foro. Sigue siendo la misma etapa del mismo producto. El SKU lo devuelve SAP y la publicación sale a tienda, OMS y Marketplace: las pide Catalogación, sobre este ciclo.</p>
 </section>
 
 <section id="hoy">
@@ -182,39 +206,54 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 
 <section id="propuesta">
   <h2>Cómo quedaría</h2>
+  <p>Un sistema de catalogación. Foro es un módulo adentro, no otro sistema. PIM Headless es el único backend: junta lo que hoy hacen los dos.</p>
+  <p class="kicker">Sistema de catalogación</p>
   <div class="par">
     <article class="lado front">
-      <h3>Entrada Única</h3>
-      <p class="sub">4 pantallas (front)</p>
+      <h3>Catalogación</h3>
+      <p class="sub">Lo que hace este módulo</p>
       <ol class="nums">
-        <li><b>1</b> Alta de la propuesta</li>
-        <li><b>2</b> Visto bueno de Compras</li>
-        <li><b>3</b> Enriquecimiento de la ficha</li>
-        <li><b>4</b> Consulta del estatus</li>
+        <li><b>1</b> Alta de la propuesta, en pantalla, por archivo o por API</li>
+        <li><b>2</b> Validar al capturar: código, duplicado y plantilla</li>
+        <li><b>3</b> Visto bueno de Compras: aprobar, rechazar o pedir corrección</li>
+        <li><b>4</b> Fotos que sube el proveedor</li>
+        <li><b>5</b> Enriquecimiento de la ficha: atributos, título y descripción</li>
+        <li><b>6</b> Looks, reportes y el estatus que ve cada quien</li>
       </ol>
     </article>
-    <article class="lado back">
-      <h3>PIM Headless (una base) <span class="badge">SÓLO BACKEND</span></h3>
-      <p class="sub">5 piezas, en un solo lugar</p>
+    <article class="lado mod-foro">
+      <h3>Foro</h3>
+      <p class="sub">Módulo dentro del sistema de catalogación</p>
       <ol class="nums">
-        <li><b>1</b> El producto, escrito una vez</li>
-        <li><b>2</b> Las fotos, un solo archivo</li>
-        <li><b>3</b> Muestra, toma y guía de Foro</li>
-        <li><b>4</b> El estatus del ciclo, el mismo para todos</li>
-        <li><b>5</b> SKU y salida a canales (SAP, tienda, OMS)</li>
+        <li><b>1</b> Recibir la muestra y separar tomar o no tomar</li>
+        <li><b>2</b> Contenedores, cajas y salida con vale</li>
+        <li><b>3</b> Toma en el estudio y guía de fotos</li>
+        <li><b>4</b> Subida desde la cámara, en la PC del fotógrafo</li>
+        <li><b>5</b> Edición de la imagen</li>
+        <li><b>6</b> Reportes del estudio</li>
       </ol>
     </article>
   </div>
-  <div class="franjas">
-    <div class="franja foro"><b>Foro:</b> el estudio se queda. Sólo cambia a quién le pregunta.</div>
-    <div class="franja canales"><b>Publicación: tienda, OMS y Marketplace.</b> Sin cambio de puerta.</div>
-  </div>
-  <p class="nota">La cámara sigue en la PC del fotógrafo. Sube la foto y el archivo queda una vez, en el mismo producto.</p>
+  <article class="lado back engloba">
+    <h3>PIM Headless <span class="badge">EL ÚNICO</span></h3>
+    <p class="sub">Una base. Aquí viven, juntas, las funciones de Catalogación y de Foro. Como lo era STEP para todo el ciclo, sin las restricciones de STEP para entrar y para cambiar el flujo.</p>
+    <ol class="nums">
+      <li><b>1</b> Alta y validación de la propuesta <span class="tag">Catalogación</span></li>
+      <li><b>2</b> Visto bueno <span class="tag">Catalogación</span></li>
+      <li><b>3</b> Ficha, enriquecimiento, looks y reportes <span class="tag">Catalogación</span></li>
+      <li><b>4</b> Fotos del proveedor <span class="tag">Catalogación</span></li>
+      <li><b>5</b> Muestra, toma, guía y edición <span class="tag">Foro</span></li>
+      <li><b>6</b> Reportes del estudio <span class="tag">Foro</span></li>
+      <li><b>7</b> El estatus del ciclo, el mismo para todos <span class="tag">Los dos</span></li>
+      <li><b>8</b> SKU y salida a SAP, tienda, OMS y Marketplace <span class="tag">Los dos</span></li>
+      <li><b>9</b> Usuarios y avisos, un solo directorio <span class="tag">Los dos</span></li>
+    </ol>
+  </article>
 </section>
 
 <section id="pantallas">
   <h2>Qué ve cada quien</h2>
-  <p>Es el mismo sistema. Cambia el módulo, no la base. El ejemplo es un refrigerador de muestra.</p>
+  <p>Mismo sistema y mismo producto. El menú de la izquierda es el de ese perfil: no aparecen las opciones de los demás. Las pantallas son ilustración, con la forma del alta de Entrada Única y de Foro.</p>
   <div class="roles" role="tablist">
     <button type="button" role="tab" id="tab-proveedor" aria-selected="true" aria-controls="vista-proveedor">Proveedor</button>
     <button type="button" role="tab" id="tab-compras" aria-selected="false" aria-controls="vista-compras">Compras</button>
@@ -224,15 +263,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   </div>
   <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
   <div class="app">
-    <aside class="menu">
-      <div class="marca">Catalogación</div>
-      <button type="button" data-abre="proveedor">Nueva propuesta</button>
-      <button type="button" data-abre="compras">Aprobaciones</button>
-      <button type="button" data-abre="capturista">Enriquecimiento</button>
-      <div class="grupo">Foro</div>
-      <button type="button" data-abre="logistica">Recepción</button>
-      <button type="button" data-abre="fotografo">Toma</button>
-    </aside>
+    <aside class="menu" id="menu"></aside>
     <div>
       <div class="vista" id="vista-proveedor" role="tabpanel" aria-labelledby="tab-proveedor">
         <div class="crumb">Catalogación · como el alta de Entrada Única</div>
@@ -293,46 +324,87 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
     </div>
   </div>
 
-  <h3>Lo que esta sesión deja cerrado</h3>
-  <ul class="checks">
-    <li>El ciclo completo del producto vive en un solo sistema.</li>
-    <li>Foro fotográfico es el módulo de la muestra y de la toma. La foto regresa al mismo producto.</li>
-    <li>La ficha se completa en catalogación. Cada perfil ve sólo su pantalla.</li>
-  </ul>
-  <div class="queda">
-    <div><b>Sigue igual para quien lo usa</b>El proveedor captura en los mismos pasos. Compras aprueba, rechaza o pide corrección. Logística separa tomar y no tomar. El fotógrafo trabaja en el estudio.</div>
-    <div><b>Deja de pasar</b>El producto ya no se copia entre tres bases. La foto y el estatus ya no viajan de un sistema a otro para que el siguiente equipo los vea.</div>
+</section>
+
+<section id="elegir">
+  <h2>Qué decide esta sesión</h2>
+  <p>Dos caminos. El dibujo de «Cómo quedaría» es el primero. El segundo deja Entrada Única y Foro como hoy, y sólo une el backend con PIM Headless.</p>
+  <div class="par">
+    <article class="lado front">
+      <h3>Unificar el flujo</h3>
+      <p class="sub">Foro es un módulo del sistema de catalogación. Un ciclo y una ficha.</p>
+      <p><b>Ventajas</b></p>
+      <ul class="pros">
+        <li>El producto se escribe una vez.</li>
+        <li>La ficha tiene una sola puerta.</li>
+        <li>Cada perfil ve sólo su menú, dentro del mismo sistema.</li>
+        <li>El ciclo queda junto, como en STEP, sin las restricciones de STEP.</li>
+      </ul>
+      <p><b>Desventajas</b></p>
+      <ul class="pros no">
+        <li>Quien hoy edita o enriquece en el portal de Foro pasa a hacerlo en Catalogación.</li>
+        <li>Esas pantallas se construyen en el sistema de catalogación.</li>
+        <li>El piso (muestra y toma) cambia de lugar en el menú, aunque el oficio siga en el estudio.</li>
+      </ul>
+    </article>
+    <article class="lado back">
+      <h3>Dejar los dos sistemas</h3>
+      <p class="sub">Entrada Única y Foro siguen separados. Sólo se unifica el backend con PIM Headless.</p>
+      <p><b>Ventajas</b></p>
+      <ul class="pros">
+        <li>Nadie cambia de portal.</li>
+        <li>Cada equipo sigue en el sistema que ya usa.</li>
+        <li>La base y el backend pasan a ser uno solo, y los dos les preguntan a él.</li>
+      </ul>
+      <p><b>Desventajas</b></p>
+      <ul class="pros no">
+        <li>La ficha sigue con dos puertas.</li>
+        <li>El mismo dato se puede volver a desfasar entre los dos sistemas.</li>
+        <li>Hay dos menús para un solo producto.</li>
+      </ul>
+    </article>
   </div>
 </section>
 
 </main>
 </div>
 <footer>
-  <p>Página para la sesión con el equipo funcional. El dibujo de un backend y una base es el de la arquitectura del programa: las dos entradas de hoy se quedan y el producto vive una vez. Las pantallas ilustran los módulos de Entrada Única Catalogación y de Foro. Se regenera desde <code>docs/arquitectura/un-solo-sistema/</code>.</p>
+  <p>Página para la sesión con el equipo funcional. Arriba, las etapas del ciclo y el módulo que las trabaja. «Cómo quedaría» es unificar el flujo: Foro como módulo del sistema de catalogación y PIM Headless como único backend. La última sección pone ese camino junto al de dejar los dos sistemas y sólo unir el backend. Las pantallas son ilustración. Se regenera desde <code>docs/arquitectura/un-solo-sistema/</code>.</p>
 </footer>
 <script>
 (function () {
+  var menus = {
+    proveedor: { marca: "Catalogación", items: ["Nueva propuesta", "Mis propuestas", "Carga masiva"], activo: "Nueva propuesta" },
+    compras: { marca: "Catalogación", items: ["Aprobaciones", "Estatus de la sección"], activo: "Aprobaciones" },
+    logistica: { marca: "Catalogación", grupo: "Módulo Foro", items: ["Recepción", "Contenedores", "Salidas"], activo: "Recepción" },
+    fotografo: { marca: "Catalogación", grupo: "Módulo Foro", items: ["Toma", "Guía de fotos"], activo: "Toma" },
+    capturista: { marca: "Catalogación", items: ["Bandeja de fichas", "Enriquecimiento"], activo: "Enriquecimiento" }
+  };
   var tabs = document.querySelectorAll('[role="tab"]');
-  var menu = document.querySelectorAll('.menu button');
+  var menu = document.getElementById("menu");
+  function pintar(id) {
+    var m = menus[id];
+    var html = '<div class="marca">' + m.marca + "</div>";
+    if (m.grupo) html += '<div class="grupo">' + m.grupo + "</div>";
+    m.items.forEach(function (nombre) {
+      var on = nombre === m.activo ? " on" : "";
+      html += '<button type="button" disabled class="' + on.trim() + '">' + nombre + "</button>";
+    });
+    menu.innerHTML = html;
+  }
   function abrir(id) {
     tabs.forEach(function (tab) {
-      var on = tab.id === 'tab-' + id;
-      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.setAttribute("aria-selected", tab.id === "tab-" + id ? "true" : "false");
     });
-    document.querySelectorAll('.vista').forEach(function (v) {
-      v.hidden = v.id !== 'vista-' + id;
+    document.querySelectorAll(".vista").forEach(function (v) {
+      v.hidden = v.id !== "vista-" + id;
     });
-    menu.forEach(function (b) {
-      b.classList.toggle('on', b.getAttribute('data-abre') === id);
-    });
+    pintar(id);
   }
   tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () { abrir(tab.id.replace('tab-', '')); });
+    tab.addEventListener("click", function () { abrir(tab.id.replace("tab-", "")); });
   });
-  menu.forEach(function (b) {
-    b.addEventListener('click', function () { abrir(b.getAttribute('data-abre')); });
-  });
-  abrir('proveedor');
+  abrir("proveedor");
 })();
 </script>
 </body>
