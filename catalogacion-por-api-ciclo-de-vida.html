@@ -437,17 +437,72 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
   ]
 }</pre></template>
 
-<template id="ej-cat-schema"><h3 slot>GET /categories/{categoryId}/schema<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Para validar la ficha del lado del seller, se baja la misma categoría como JSON Schema. En el happy path no se usa (Mabe ya validó con sus propias reglas y pide <code>POST /validations</code>). Ver el ejemplo completo en la página de <a href="catalogacion-por-api-ejemplos.html#api-plantilla">APIs con JSON</a>.</p></template>
+<template id="ej-cat-schema"><h3 slot>GET /categories/{categoryId}/schema<span class="ej-escenario">Validación local · refrigerador</span></h3>
+<p class="ej-nota">Mabe baja la plantilla como JSON Schema y valida sus 50 refris del mes en su propio pipeline antes de llamar al PIM.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/categories/LVP-ELE-REF-TOP-300/schema?business=LVP
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200 (recorte)</h4>
+<pre>{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LVP · Refrigeradores Top-mount 251–350 L",
+  <mark>"version": 7</mark>,
+  "type": "object",
+  "required": ["business", "externalRef", "categoryId", "templateVersion", "base", "attributes", "variants"],
+  "properties": {
+    "attributes": {
+      "type": "array",
+      "contains": [
+        { "properties": { "id": { "const": "BRAND" } }, "required": ["value_id"] },
+        { "properties": { "id": { "const": <mark>"CAPACIDAD_TOTAL"</mark> },
+          "value_struct": { "properties": { "number": { "type": "number", <mark>"minimum": 100, "maximum": 999</mark> }, "unit": { "const": "L" } } } } }
+      ]
+    }
+  }
+}</pre></template>
 
-<template id="ej-cat-changes"><h3 slot>GET /categories/changes<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Se consulta cuando ya hay productos vivos para saber qué plantillas cambiaron. En el alta del refri no se llama. Ver <a href="catalogacion-por-api-ejemplos.html#api-plantilla">la página de ejemplos</a>.</p></template>
+<template id="ej-cat-changes"><h3 slot>GET /categories/changes<span class="ej-escenario">Chequeo semanal · refrigerador</span></h3>
+<p class="ej-nota">Mabe ejecuta esto cada lunes para enterarse si tiene que ajustar su integración. Esta vez Liverpool sumó un atributo recomendado a la plantilla del refri.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/categories/changes?since=2026-11-25T00:00:00Z&amp;business=LVP
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200</h4>
+<pre>{
+  "changes": [
+    { "templateId": <mark class="id">"LVP-ELE-REF-TOP-300"</mark>,
+      <mark>"newVersion": 8</mark>, "previousVersion": 7,
+      <mark>"effectiveFrom": "2027-01-01T00:00:00Z"</mark>,
+      "fields": [
+        { "op": "added", "attribute": "COLOR_INTERIOR",
+          "required": false, "recommended": true,
+          "message": "Nuevo atributo opcional para la foto comparativa" }
+      ] }
+  ],
+  "nextCursor": null
+}</pre></template>
 
-<template id="ej-brand-req"><h3 slot>POST /brand-requests<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Mabe no la usa: la marca ya está en la lista de la categoría. Esta ruta se llama cuando un seller trae una marca nueva que no está en la plantilla.</p>
-<h4>Ejemplo mínimo (ilustrativo)</h4>
-<pre>POST /partner/v1/brand-requests
-{ "brand": "Nueva Marca S.A.", "evidence": [ { "type": "TRADEMARK", "url": "https://…prueba.pdf" } ] }</pre></template>
+<template id="ej-brand-req"><h3 slot>POST /brand-requests<span class="ej-escenario">Alta de marca · otro seller</span></h3>
+<p class="ej-nota">Mabe no la usa (su marca ya está en la lista). Esta ruta se llama cuando un seller trae una marca nueva. Mientras Gobierno de Datos no la apruebe, no se puede catalogar nada con ella.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/brand-requests
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>Idempotency-Key: br-seller-20261103-001</mark></pre>
+<pre>{
+  <mark>"brand": "Nueva Marca S.A."</mark>,
+  "evidence": [
+    { "type": "TRADEMARK", "url": "https://seller.example/evidencia/registro-marca.pdf" },
+    { "type": "DISTRIBUTION_LETTER", "url": "https://seller.example/evidencia/carta-distribucion.pdf" }
+  ]
+}</pre>
+<h4>Response 201</h4>
+<pre>{
+  <mark class="id">"requestId": "br-20261103-00042"</mark>,
+  "brand": "Nueva Marca S.A.",
+  <mark class="est">"status": "PENDING_REVIEW"</mark>,
+  "reviewArea": "GOBIERNO_DE_DATOS",
+  "estimatedResponse": "2-5 días hábiles"
+}</pre></template>
 
 <template id="ej-search"><h3 slot>GET /products/search<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">Último filtro antes de catalogar. Mabe pregunta por el GTIN de la variante acero inoxidable; <code>results</code> vuelve vacío y <code>allowedAction</code> es <code>CREATE_PROPOSAL</code>: se puede catalogar.</p>
@@ -527,11 +582,50 @@ Content-Type: application/json</pre>
   ]
 }</pre></template>
 
-<template id="ej-proposals-media"><h3 slot>PUT /proposals/{id}/media<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Se usa cuando las fotos no iban en el alta. En el refri las URLs van en <code>pictures.source</code> dentro de <code>POST /proposals</code>. Si se subieron con <code>/media/uploads</code>, aquí se fijan por variante antes del SKU.</p></template>
+<template id="ej-proposals-media"><h3 slot>PUT /proposals/{id}/media<span class="ej-escenario">Fijar fotos subidas · refrigerador</span></h3>
+<p class="ej-nota">Variante del escenario: en vez de pasar la URL pública, Mabe subió los archivos con <code>POST /media/uploads</code> y aquí los liga por variante antes del SKU.</p>
+<h4>Request</h4>
+<pre class="http">PUT /partner/v1/proposals/prp-20261103-7A4F2/media
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>If-Match: "1"</mark></pre>
+<pre>{
+  "items": [
+    { <mark>"variantRef": "MABE-RMA300FJMRE0-INOX"</mark>,
+      "pictures": [
+        { "mediaId": "med-01JA7T0M2N", "type": "PRINCIPAL",   "order": 1, "publish": true },
+        { "mediaId": "med-01JA7T0P5Q", "type": "SECUNDARIA",  "order": 2, "publish": true }
+      ] },
+    { "variantRef": "MABE-RMA300FJMRE0-NEGRO",
+      "pictures": [
+        { "mediaId": "med-01JA7T0R7X", "type": "PRINCIPAL",   "order": 1, "publish": true }
+      ] }
+  ]
+}</pre>
+<h4>Response 200</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F2",
+  <mark>"mediaCount": 3</mark>,
+  <mark class="est">"validated": true</mark>
+}</pre></template>
 
-<template id="ej-media-batches"><h3 slot>POST /media/batches<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Carga masiva con un manifiesto que liga cada archivo a su EAN o SKU. En el alta de un solo refri no aplica. Ver <a href="catalogacion-por-api-ejemplos.html#api-subir">la página de ejemplos</a>.</p></template>
+<template id="ej-media-batches"><h3 slot>POST /media/batches<span class="ej-escenario">Carga masiva · catálogo Mabe</span></h3>
+<p class="ej-nota">Mabe sube las fotos de su catálogo mensual. El manifiesto es un CSV que liga cada archivo con el EAN de su variante.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/media/batches
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>Idempotency-Key: bmed-mabe-20261103-001</mark></pre>
+<pre>{ <mark>"manifestUrl": "https://cdn.mabe.example/manifiestos/fotos-nov-2026.csv"</mark> }</pre>
+<p class="ej-nota">El manifiesto trae filas tipo <code>fileUrl, ean, type, order</code>, por ejemplo:
+<code>https://cdn.mabe.example/rma300/inox-01.jpg, 07501234567890, PRINCIPAL, 1</code>.</p>
+<h4>Response 202</h4>
+<pre>{
+  <mark class="id">"batchId": "bmed-20261103-00007"</mark>,
+  <mark class="est">"status": "VALIDATING"</mark>,
+  "receivedFiles": 1850,
+  "manifestChecksum": "sha256:9f4c…b1"
+}</pre></template>
 
 <template id="ej-proposals-create"><h3 slot>POST /proposals<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">La llamada que cataloga. Trae la ficha completa con sus dos variantes de color y las fotos como URL pública. Responde <code>201</code> en línea con el <code>proposalId</code> y el estado <code>IN_APPROVAL</code>.</p>
@@ -654,17 +748,78 @@ Idempotency-Key: bat-mabe-20261103-001</pre>
   "paging": { "page": 1, "size": 50, "total": 2 }
 }</pre></template>
 
-<template id="ej-proposals-patch"><h3 slot>PATCH /proposals/{proposalId}<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">En el happy path el refri pasa validación directo. Si llegara <code>proposal.correction_required</code>, aquí se corrige campo por campo con <code>If-Match</code>. Ejemplo en la <a href="catalogacion-por-api-ejemplos.html#api-corregir">página de ejemplos</a>.</p></template>
+<template id="ej-proposals-patch"><h3 slot>PATCH /proposals/{proposalId}<span class="ej-escenario">Corrección · refrigerador</span></h3>
+<p class="ej-nota">En otra alta de Mabe, el aviso <code>correction_required</code> dijo que <code>CAPACIDAD_TOTAL</code> estaba fuera del rango de la categoría. Aquí se corrige y vuelve a validarse.</p>
+<h4>Request</h4>
+<pre class="http">PATCH /partner/v1/proposals/prp-20261103-7A4F3
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>If-Match: "1"</mark>
+<mark>Idempotency-Key: fix-mabe-20261103-001</mark></pre>
+<pre>{
+  "changes": [
+    { <mark>"path": "/attributes/CAPACIDAD_TOTAL"</mark>, "op": "replace",
+      "value": { "value_struct": { "number": 420, "unit": "L" } } }
+  ]
+}</pre>
+<h4>Response 200</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F3",
+  <mark class="est">"status": "VALIDATING"</mark>,
+  "version": 2,
+  "pendingValidations": ["CAPACIDAD_TOTAL"]
+}</pre></template>
 
-<template id="ej-proposals-variants-add"><h3 slot>POST /proposals/{proposalId}/variants<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Para sumar una variante antes del visto bueno (p. ej. agregar el color BLANCO al refri). En el happy path las dos variantes van en el alta.</p></template>
+<template id="ej-proposals-variants-add"><h3 slot>POST /proposals/{proposalId}/variants<span class="ej-escenario">Variante extra · refrigerador</span></h3>
+<p class="ej-nota">Mabe agrega el color <b>BLANCO</b> al refri después de haber mandado INOX y NEGRO. Sólo se puede antes de que SAP cree el SKU.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/proposals/prp-20261103-7A4F2/variants
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>If-Match: "1"</mark>
+<mark>Idempotency-Key: var-mabe-20261103-003</mark></pre>
+<pre>{
+  <mark>"externalRef": "MABE-RMA300FJMRE0-BLANCO"</mark>,
+  "ean": "07501234567913",
+  "attribute_combinations": [ { "id": "COLOR", "value_id": "BLANCO", "value_name": "Blanco" } ],
+  "pictures": [
+    { "source": "https://cdn.mabe.example/rma300/blanco-01-principal.jpg", "type": "PRINCIPAL", "order": 1 }
+  ]
+}</pre>
+<h4>Response 201</h4>
+<pre>{
+  <mark class="id">"variantId": "var-20261103-9H7K2"</mark>,
+  "externalRef": "MABE-RMA300FJMRE0-BLANCO",
+  "ean": "07501234567913",
+  <mark class="est">"status": "PENDING_SKU"</mark>,
+  "proposalId": "prp-20261103-7A4F2",
+  "proposalVersionAfter": 2
+}</pre></template>
 
-<template id="ej-proposals-variants-del"><h3 slot>DELETE /proposals/{proposalId}/variants/{variantId}<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Borrado lógico de una variante que todavía no tiene SKU. No se usa en el happy path.</p></template>
+<template id="ej-proposals-variants-del"><h3 slot>DELETE /proposals/{proposalId}/variants/{variantId}<span class="ej-escenario">Quitar una variante · refrigerador</span></h3>
+<p class="ej-nota">Mabe decide no sacar el color NEGRO antes del SKU. Borrado lógico; el EAN queda disponible para otra alta.</p>
+<h4>Request</h4>
+<pre class="http">DELETE /partner/v1/proposals/prp-20261103-7A4F2/variants/MABE-RMA300FJMRE0-NEGRO
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+<mark>If-Match: "2"</mark></pre>
+<h4>Response 204</h4>
+<pre>(sin cuerpo — confirmación de borrado. El EAN 07501234567906 queda liberado)</pre></template>
 
-<template id="ej-proposals-cancel"><h3 slot>POST /proposals/{proposalId}/cancel<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Cancelar antes del SKU libera los EAN. No se usa en el happy path.</p></template>
+<template id="ej-proposals-cancel"><h3 slot>POST /proposals/{proposalId}/cancel<span class="ej-escenario">Cancelación · refrigerador</span></h3>
+<p class="ej-nota">Mabe cambia de modelo del refri y cancela el alta. Los dos EAN quedan liberados para la nueva propuesta.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/proposals/prp-20261103-7A4F2/cancel
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>Idempotency-Key: can-mabe-20261103-001</mark></pre>
+<pre>{ <mark>"reason": "Cambio de modelo; reenviamos con el nuevo SKU del proveedor"</mark> }</pre>
+<h4>Response 200</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F2",
+  <mark class="est">"status": "CANCELLED"</mark>,
+  "cancelledAt": "2026-11-03T19:02:00Z",
+  <mark>"releasedEans": ["07501234567890", "07501234567906"]</mark>
+}</pre></template>
 
 <template id="ej-proposals-get"><h3 slot>GET /proposals/{id}<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">A los pocos minutos del alta, Mabe pregunta cómo va la propuesta. La respuesta trae el estado actual, la historia reciente y los SKU por variante cuando ya existen.</p>
@@ -742,8 +897,31 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
   "fieldChanges": []
 }</pre></template>
 
-<template id="ej-products-media"><h3 slot>PUT /products/{id}/media<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Se usa si las fotos no iban en el alta y ya hay SKU. En el refri las fotos entraron con <code>pictures.source</code> en <code>POST /proposals</code>; no se llama.</p></template>
+<template id="ej-products-media"><h3 slot>PUT /products/{id}/media<span class="ej-escenario">Fotos post-SKU · refrigerador</span></h3>
+<p class="ej-nota">Si Mabe no mandó las fotos en el alta, aquí las fija con el producto ya creado. Antes de que el canal publique.</p>
+<h4>Request</h4>
+<pre class="http">PUT /partner/v1/products/PRD-20261103-7A4F2/media
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>If-Match: "2"</mark></pre>
+<pre>{
+  "items": [
+    { "variantRef": "sku-RMA300-INOX",
+      "pictures": [
+        { "source": "https://cdn.mabe.example/rma300/inox-01-principal.jpg", "type": "PRINCIPAL", "order": 1, "publish": true }
+      ] },
+    { "variantRef": "sku-RMA300-NEGRO",
+      "pictures": [
+        { "source": "https://cdn.mabe.example/rma300/negro-01-principal.jpg", "type": "PRINCIPAL", "order": 1, "publish": true }
+      ] }
+  ]
+}</pre>
+<h4>Response 200</h4>
+<pre>{
+  "productId": "PRD-20261103-7A4F2",
+  <mark>"mediaCount": 2</mark>,
+  <mark class="est">"validated": true</mark>
+}</pre></template>
 
 <template id="ej-products-permissions"><h3 slot>GET /products/{id}/permissions<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">Antes de proponer un cambio, Mabe pregunta qué puede tocar. En este producto es dueña del contenido: puede editar imágenes y textos; el atributo pide aprobación; el SKU, el EAN y el negocio son de sólo lectura.</p>
@@ -795,8 +973,29 @@ Content-Type: application/json
   ]
 }</pre></template>
 
-<template id="ej-modifications-batches"><h3 slot>POST /modifications/batches<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Para cambios masivos en varios productos (p. ej. actualizar la ficha técnica de 50 refris). No aplica a un solo producto.</p></template>
+<template id="ej-modifications-batches"><h3 slot>POST /modifications/batches<span class="ej-escenario">Cambio masivo · catálogo Mabe</span></h3>
+<p class="ej-nota">Mabe amplía la garantía a 36 meses en toda su línea de refris. Un solo request, varios productos.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/modifications/batches
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+<mark>Idempotency-Key: modb-mabe-20261112-001</mark></pre>
+<pre>{
+  "items": [
+    { "productId": "PRD-20261103-7A4F2", "ifMatch": "4",
+      "changes": [ { "path": "/attributes/GARANTIA_MESES", "op": "replace",
+        "value": { "value_struct": { "number": 36, "unit": "mes" } } } ] },
+    { "productId": "PRD-20261105-8B3C4", "ifMatch": "2",
+      "changes": [ { "path": "/attributes/GARANTIA_MESES", "op": "replace",
+        "value": { "value_struct": { "number": 36, "unit": "mes" } } } ] }
+  ]
+}</pre>
+<h4>Response 202</h4>
+<pre>{
+  <mark class="id">"batchId": "modb-20261112-00003"</mark>,
+  <mark>"received": 2</mark>,
+  <mark class="est">"status": "VALIDATING"</mark>
+}</pre></template>
 
 <template id="ej-modifications-get"><h3 slot>GET /modifications/{id}<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">Mabe sigue el cambio pendiente. QA con IA aprueba y queda <code>APPLIED</code>; el aviso <code>product.updated</code> cierra el ciclo.</p>
@@ -870,8 +1069,13 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 Content-Type: application/json</pre>
 <pre>{ "url": "https://integraciones.mabe.example/liverpool/webhooks/v2" }</pre></template>
 
-<template id="ej-webhooks-del"><h3 slot>DELETE /webhooks/{id}<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Para dar de baja una suscripción. Devuelve <code>204</code> sin cuerpo.</p></template>
+<template id="ej-webhooks-del"><h3 slot>DELETE /webhooks/{id}<span class="ej-escenario">Baja de webhook · migración</span></h3>
+<p class="ej-nota">Mabe migra el endpoint a un nuevo servicio y da de baja el anterior. Las entregas en vuelo terminan; a partir de aquí no llegan avisos nuevos a esta URL.</p>
+<h4>Request</h4>
+<pre class="http">DELETE /partner/v1/webhooks/wh-mabe-prod-01
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 204</h4>
+<pre>(sin cuerpo — confirmación. Deja de recibir avisos; las entregas en vuelo se completan)</pre></template>
 
 <template id="ej-webhooks-test-secret"><h3 slot>POST /webhooks/{id}/test · /webhooks/{id}/secret<span class="ej-escenario">Fuera del happy path</span></h3>
 <p class="ej-nota">Al configurar: <code>/test</code> manda un <code>ping</code> firmado al endpoint para confirmar que recibe. <code>/secret</code> rota el secreto; el anterior sigue vigente 24 h para no cortar entregas en vuelo.</p>
@@ -948,8 +1152,22 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
   "requiredActions": ["FIX_FIELDS"]
 }</pre></template>
 
-<template id="ej-evt-rejected"><h3 slot>Aviso proposal.rejected<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Final: no se puede catalogar. En el refri de Mabe no aplica (marca válida, sin blacklist). Caso típico: proveedor no autorizado para una familia.</p></template>
+<template id="ej-evt-rejected"><h3 slot>Aviso proposal.rejected<span class="ej-escenario">Rechazo final · otro seller</span></h3>
+<p class="ej-nota">Final: no se puede catalogar. En el refri de Mabe no aplica (marca válida, sin blacklist). Caso típico: proveedor no autorizado para una familia.</p>
+<h4>Entrega al webhook del tercero</h4>
+<pre>{
+  "eventId": "evt-01JA7Z4B",
+  <mark>"type": "proposal.rejected"</mark>,
+  "occurredAt": "2026-11-03T17:30:00Z",
+  "proposalId": "prp-20261103-7A4F9",
+  <mark class="est">"status": "REJECTED"</mark>,
+  "reason": {
+    "code": "SUPPLIER_NOT_AUTHORIZED",
+    "area": "COMPRAS",
+    "message": "El proveedor no tiene autorización para catalogar en esta subfamilia"
+  },
+  <mark>"final": true</mark>
+}</pre></template>
 
 <template id="ej-evt-already"><h3 slot>Aviso proposal.already_exists<span class="ej-escenario">Fuera del happy path</span></h3>
 <p class="ej-nota">Si antes del alta Mabe no hubiera buscado y el EAN ya estuviera cargado, el PIM responde con el SKU existente y la acción permitida. En el happy path la búsqueda fue vacía, así que no llega.</p>
@@ -1027,8 +1245,22 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
   <mark>"url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2"</mark>
 }</pre></template>
 
-<template id="ej-evt-pub-failed"><h3 slot>Aviso product.publication_failed<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Si el canal rechazó o no confirmó, el PIM reintenta y marca el aviso. En el happy path no llega.</p></template>
+<template id="ej-evt-pub-failed"><h3 slot>Aviso product.publication_failed<span class="ej-escenario">Rechazo de canal · ejemplo</span></h3>
+<p class="ej-nota">Si un canal rechaza o no confirma, el PIM reintenta y manda este aviso. En el happy path no llega. El seller sólo observa; Liverpool decide qué hacer.</p>
+<h4>Entrega al webhook del tercero</h4>
+<pre>{
+  "eventId": "evt-01JA8F2X",
+  <mark>"type": "product.publication_failed"</mark>,
+  "occurredAt": "2026-11-04T10:08:50Z",
+  "productId": "PRD-20261103-7A4F2",
+  <mark>"channel": "MIRAKL"</mark>,
+  "error": {
+    "code": "VALIDATION_FAILED",
+    "message": "Mirakl rechazó: 'image.minResolution' no cumple 1200x1200"
+  },
+  <mark>"retries": 3</mark>,
+  "nextRetryAt": "2026-11-04T10:30:00Z"
+}</pre></template>
 
 <template id="ej-evt-updated"><h3 slot>Aviso product.updated<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">Cerró la modificación. Trae el origen (quién lo pidió) y los campos que cambiaron.</p>
@@ -1043,11 +1275,36 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
   "productVersionAfter": 4
 }</pre></template>
 
-<template id="ej-evt-mod-rejected"><h3 slot>Aviso product.modification_rejected<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Si QA no aprobara el cambio, llegaría este aviso con los motivos. En el happy path el cambio pasa.</p></template>
+<template id="ej-evt-mod-rejected"><h3 slot>Aviso product.modification_rejected<span class="ej-escenario">Cambio rechazado · refrigerador</span></h3>
+<p class="ej-nota">Variante del escenario: QA_IA pide evidencia para aceptar la ampliación de garantía a 36 meses. El cambio no aplica; el seller tiene que mandarlo de nuevo con la evidencia.</p>
+<h4>Entrega al webhook del tercero</h4>
+<pre>{
+  "eventId": "evt-01JAEX9F",
+  <mark>"type": "product.modification_rejected"</mark>,
+  "occurredAt": "2026-11-12T09:17:03Z",
+  "productId": "PRD-20261103-7A4F2",
+  <mark class="id">"modificationId": "mod-20261112-9C21E"</mark>,
+  "reason": {
+    "field": "/attributes/GARANTIA_MESES",
+    "area": "QA_IA",
+    "code": "EVIDENCE_REQUIRED",
+    "message": "El cambio a 36 meses requiere evidencia del fabricante"
+  }
+}</pre></template>
 
-<template id="ej-evt-retired"><h3 slot>Aviso product.retired<span class="ej-escenario">Fuera del happy path</span></h3>
-<p class="ej-nota">Se dispara cuando el producto sale de un canal. Si fue el último canal, el estado queda <code>RETIRED</code>.</p></template>
+<template id="ej-evt-retired"><h3 slot>Aviso product.retired<span class="ej-escenario">Retiro del canal · refrigerador</span></h3>
+<p class="ej-nota">Mabe descontinua el modelo. El refri sale del único canal donde estaba (STORE); el estado del producto queda <code>RETIRED</code>.</p>
+<h4>Entrega al webhook del tercero</h4>
+<pre>{
+  "eventId": "evt-01JB4P7D",
+  <mark>"type": "product.retired"</mark>,
+  "occurredAt": "2027-02-10T15:00:00Z",
+  "productId": "PRD-20261103-7A4F2",
+  <mark>"channel": "STORE"</mark>,
+  "reason": "SELLER_REQUEST",
+  <mark>"lastChannel": true</mark>,
+  <mark class="est">"productStatus": "RETIRED"</mark>
+}</pre></template>
 
 <template id="ej-evt-template"><h3 slot>Aviso template.changed<span class="ej-escenario">Happy path · refrigerador (semanas después)</span></h3>
 <p class="ej-nota">Semanas después, Liverpool suma un atributo recomendado a la categoría del refri. Mabe lo recibe y decide si lo completa.</p>
