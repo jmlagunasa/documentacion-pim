@@ -77,7 +77,8 @@ p{margin:0 0 10px}
 #propuesta .engloba .tag.foro{background:#e8f1f8;border:1px solid #c5d7ea;color:#1d4568}
 #propuesta .engloba .tag.dos{background:#e7f3f1;border:1px solid #c5ddd8;color:#1a6b63}
 #propuesta .engloba .tag.quien{background:#f4f3f6;border:1px solid #e3e1e8;color:#3c4150}
-#propuesta .engloba .nums li.resalta{background:#fff6d8;border-radius:8px;padding:4px 8px}
+.nota-marca{background:#fff6d8;border-radius:8px;padding:8px 12px;margin:10px 0 8px;font-size:13.5px;line-height:1.4;color:#3c2a12}
+.nota-marca b{display:block;margin-bottom:2px}
 #elegir .lado h3{font-size:15px}
 #elegir .sub,#elegir .pros{font-size:13px;line-height:1.35}
 .kicker{margin:12px 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta3)}
@@ -113,16 +114,10 @@ p{margin:0 0 10px}
 .muestra.foro{background:#f5f8fb;border:1px solid #d5e3ee;color:#5d7a94}
 .muestra.p360{background:#f8f5f9;border:1px solid #e6dce9;color:#7d6a86}
 .lienzo{background:#f4eef2;border-radius:18px;padding:12px}
-.app{display:grid;grid-template-columns:216px minmax(0,1fr);grid-template-rows:auto auto minmax(320px,1fr);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 14px 36px rgba(29,33,48,.14)}
-.app-bar{grid-column:1 / -1;display:flex;align-items:center;gap:8px;background:#fff;border-bottom:1px solid #eceaef;padding:12px 16px;font-size:13.5px;font-weight:600;color:#1d2130}
-.banner{grid-column:1 / -1;display:flex;align-items:center;gap:18px;padding:18px 20px;background:#fbf6f8;border-bottom:1px solid #f0e4ea}
-.banner .k{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#a07a90}
-.banner b{display:block;margin-top:2px;font-size:20px;line-height:1.15;color:#1d2130}
-.banner .datos{display:flex;gap:22px;margin-left:auto}
-.banner .datos div{font-size:13.5px;font-weight:600;color:#3c2a36}
-.banner .datos span{display:block;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#a07a90}
+.app{display:grid;grid-template-columns:216px minmax(0,1fr);grid-template-rows:auto minmax(320px,1fr);border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 14px 36px rgba(29,33,48,.14)}
+.app-bar{grid-column:1 / -1;display:flex;align-items:center;gap:8px;background:#e10098;padding:12px 16px;font-size:13.5px;font-weight:600;color:#fff}
 .marca-ico{width:18px;height:18px;flex:none;display:block}
-.app-quien{margin-left:auto;font-size:12.5px;font-weight:500;color:var(--tinta3)}
+.app-quien{margin-left:auto;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.22);border-radius:999px;padding:4px 12px}
 .menu{background:#fbf4f8;color:#4a3044;padding:14px 12px}
 .menu button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;color:#5c4554;font:13px/1.3 inherit;padding:7px 8px;border-radius:6px;cursor:pointer}
 .menu button svg{width:15px;height:15px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -196,9 +191,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   nav{position:static}
   .tres,.hoy,.ficha,.queda,.par,.franjas{grid-template-columns:1fr}
   .badge{margin-left:0}
-  .app{grid-template-columns:1fr;grid-template-rows:auto auto auto 1fr}
-  .banner{flex-wrap:wrap}
-  .banner .datos{margin-left:0}
+  .app{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}
   .vista{padding:16px}
   .cifras{grid-template-columns:1fr}
   #propuesta .engloba .nums{grid-template-columns:1fr}
@@ -331,16 +324,15 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
       <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15V8h8v7M12 11h4l2 3v1h-6"/><circle cx="7.5" cy="16.5" r="1.3"/><circle cx="16" cy="16.5" r="1.3"/></svg> SKU y salida a SAP, tienda, OMS y Marketplace <span class="tag dos">Los dos</span></li>
       <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M4.5 19c.6-2.6 2.4-4 4.5-4s3.9 1.4 4.5 4"/><circle cx="17" cy="9" r="2"/><path d="M16 15c1.4.2 2.6 1 3.3 2.4"/></svg> Usuarios y avisos, un solo directorio <span class="tag dos">Los dos</span></li>
     </ol>
-    <p class="kicker">Lo que hoy se hace dos veces, en el mismo diseño</p>
-    <p class="sub">Dejan de copiarse. Quedan en el backend, y el fondo las marca.</p>
+    <p class="nota-marca"><b>Lo que hoy se hace dos veces, en el mismo diseño.</b> Dejan de copiarse. Quedan en el backend.</p>
     <ol class="nums">
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M4.5 19c.6-2.6 2.4-4 4.5-4s3.9 1.4 4.5 4"/><circle cx="17" cy="9" r="2"/><path d="M16 15c1.4.2 2.6 1 3.3 2.4"/></svg> Usuarios y perfiles, un solo directorio <span class="tag cat">Catalogación</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7zM14 3v5h5"/></svg> Una plantilla, en el catálogo <span class="tag quien">Gobierno de Producto</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L18 10l-4-4L4 16v4zM13 7l4 4"/></svg> Una ficha, en el producto <span class="tag cat">Catalogación</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.2"/><path d="M4 16l4.5-4 3.5 3L15 12l5 4"/></svg> La foto y su URL, un archivo <span class="tag foro">Foro</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 13h8M12 9v8"/></svg> Carga masiva, el mismo servicio de fotos <span class="tag dos">Los dos</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg> Un estado del producto <span class="tag dos">Los dos</span></li>
-      <li class="resalta"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.2 2.2 4.8-5"/></svg> Sin copia: se lee la base única <span class="tag dos">Los dos</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9" r="3"/><path d="M4.5 19c.6-2.6 2.4-4 4.5-4s3.9 1.4 4.5 4"/><circle cx="17" cy="9" r="2"/><path d="M16 15c1.4.2 2.6 1 3.3 2.4"/></svg> Usuarios y perfiles, un solo directorio <span class="tag cat">Catalogación</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7zM14 3v5h5"/></svg> Una plantilla, en el catálogo <span class="tag quien">Gobierno de Producto</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L18 10l-4-4L4 16v4zM13 7l4 4"/></svg> Una ficha, en el producto <span class="tag cat">Catalogación</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="10" r="1.2"/><path d="M4 16l4.5-4 3.5 3L15 12l5 4"/></svg> La foto y su URL, un archivo <span class="tag foro">Foro</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 13h8M12 9v8"/></svg> Carga masiva, el mismo servicio de fotos <span class="tag dos">Los dos</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg> Un estado del producto <span class="tag dos">Los dos</span></li>
+      <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M8.5 12.5l2.2 2.2 4.8-5"/></svg> Sin copia: se lee la base única <span class="tag dos">Los dos</span></li>
     </ol>
   </article>
 </section>
@@ -353,15 +345,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
   <div class="lienzo">
   <div class="app" id="app">
-    <div class="app-bar"><svg class="marca-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="#e10098"/><path d="M12 8v8M8 12h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>Sistema de catalogación<span class="app-quien" id="app-quien"></span></div>
-    <div class="banner">
-      <div><div class="k">Producto en curso</div><b>Refrigerador 11 pies</b></div>
-      <div class="datos">
-        <div><span>Negocio</span>Línea blanca</div>
-        <div><span>Propuesta</span>De muestra</div>
-        <div><span>Estatus</span>En curso</div>
-      </div>
-    </div>
+    <div class="app-bar"><svg class="marca-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="#fff"/><path d="M12 8v8M8 12h8" stroke="#e10098" stroke-width="1.8" stroke-linecap="round"/></svg>Sistema de catalogación<span class="app-quien" id="app-quien"></span></div>
     <aside class="menu" id="menu"></aside>
     <div class="vista" id="vista"></div>
   </div>
