@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Nuevo PIM · Avances para Dirección · 20-oct-2026</title>
+<style>
+:root{
+  --navy:#1E2761; --ink:#0F172A; --muted:#64748B; --line:#E2E8F0;
+  --bg:#FFFFFF; --soft:#F5F7FB;
+  --coral:#F96167; --coral-soft:#FFE4E6;
+  --verde:#16A34A; --verde-soft:#D1FAE5;
+  --ambar:#D97706; --ambar-soft:#FEF3C7;
+  --teal:#028090; --teal-soft:#CCFBF1;
+  --rojo:#B91C1C; --rojo-soft:#FEE2E2; --rojo-fondo:#FEF2F2; --rojo-borde:#FECACA;
+  --verde-fondo:#ECFDF5; --verde-borde:#A7F3D0;
+  --morado:#7C3AED; --morado-soft:#EDE9FE;
+  --azul:#0EA5E9; --azul-soft:#E0F2FE;
+  --amarillo:#F59E0B; --amarillo-soft:#FEF3C7;
+  --indigo:#2563EB; --indigo-soft:#DBEAFE;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--soft);color:var(--ink);
+  font:16px/1.5 var(--sans); -webkit-font-smoothing:antialiased;}
+a{color:inherit}
+/* Encabezado del sitio */
+.site-header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);
+  padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.site-header .brand{font-weight:700;font-size:14px}
+.site-header .brand small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+.site-header nav{display:flex;flex-wrap:wrap;gap:4px;margin-left:auto}
+.site-header nav a{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;
+  text-decoration:none;color:var(--muted);border:1px solid transparent}
+.site-header nav a:hover{color:var(--ink);background:var(--soft)}
+.site-header nav a.active{color:var(--navy);border-color:var(--line);background:var(--soft)}
+.site-header .btn-pres{font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;
+  background:#fff;cursor:pointer;color:var(--muted)}
+.site-header .btn-pres:hover{color:var(--ink)}
+/* Lámina */
+.slide{min-height:92vh;padding:60px 40px;max-width:1280px;margin:0 auto;position:relative}
+.slide + .slide{border-top:1px dashed var(--line)}
+.kicker{font-size:12px;font-weight:700;color:var(--coral);letter-spacing:3px;text-transform:uppercase;margin:0 0 10px}
+.titulo{font-family:var(--serif);font-size:34px;line-height:1.15;color:var(--ink);font-weight:700;margin:0 0 20px}
+.pastilla{position:absolute;right:40px;top:60px;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:2px;color:#fff}
+.pastilla.verde{background:var(--verde)}
+.pastilla.ambar{background:var(--ambar)}
+.pastilla.teal{background:var(--teal)}
+/* Portada */
+.slide.portada{background:var(--navy);color:#fff;min-height:92vh;display:flex;flex-direction:column;justify-content:center}
+.slide.portada .kicker{color:var(--coral)}
+.slide.portada .titulo{color:#fff;font-size:52px;margin-bottom:40px}
+.slide.portada .fecha{color:#CADCFC;font-size:18px;margin-bottom:50px}
+.metricas{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.metrica{display:flex;align-items:center;gap:14px}
+.metrica .n{font-family:var(--serif);font-size:60px;font-weight:700;color:var(--coral);line-height:1}
+.metrica .t{font-size:14px;color:#fff}
+/* Comparativo HOY → CÓMO QUEDA */
+.comparativo{display:grid;grid-template-columns:1fr 36px 1fr;gap:20px;align-items:stretch}
+.col-hoy, .col-tobe{padding:20px;border-radius:10px}
+.col-hoy{background:var(--soft);border:1px solid var(--line)}
+.col-tobe{background:var(--navy);color:#fff}
+.col-label{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--muted);margin-bottom:14px}
+.col-tobe .col-label{color:#CADCFC}
+.col-item{padding:12px 0;border-top:1px solid var(--line)}
+.col-tobe .col-item{border-top-color:#334470}
+.col-item:first-of-type{border-top:0}
+.col-item b{display:block;font-size:15px;margin-bottom:4px}
+.col-item span{font-size:13px;color:var(--muted)}
+.col-tobe .col-item span{color:#CADCFC}
+.flecha-mid{display:flex;align-items:center;justify-content:center;color:var(--coral);font-size:34px}
+/* Diagrama AS-IS / TO-BE */
+.diagrama{display:grid;grid-template-columns:1fr 60px 1fr;gap:14px;align-items:stretch}
+.panel{padding:14px 16px 16px;border-radius:10px}
+.panel.hoy{background:var(--rojo-fondo);border:1px solid var(--rojo-borde)}
+.panel.tobe{background:var(--verde-fondo);border:1px solid var(--verde-borde)}
+.panel-label{font-size:11px;font-weight:700;letter-spacing:3px;margin-bottom:10px}
+.panel.hoy .panel-label{color:var(--rojo)}
+.panel.tobe .panel-label{color:#15803D}
+.capa{margin-bottom:14px}
+.capa-label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--muted);margin-bottom:5px}
+.capa-boxes{display:flex;gap:6px;flex-wrap:wrap}
+.caja{flex:1 1 auto;padding:8px 10px;border-radius:6px;background:#fff;border:1px solid var(--line);font-size:12px;text-align:center;min-width:0}
+.caja.rojo{background:var(--rojo-soft);border-color:#EF4444;color:#7F1D1D;font-weight:600}
+.caja.navy{background:var(--navy);color:#fff;font-weight:600;border-color:var(--navy);padding:14px 10px}
+.caja.navy .modulos{display:flex;gap:3px;flex-wrap:wrap;margin-top:8px;justify-content:center}
+.caja.navy .modulos span{font-size:9px;background:#334155;color:#E2E8F0;padding:3px 6px;border-radius:4px;font-weight:600}
+.caja.gw-bff{background:var(--indigo-soft);border-color:#93C5FD;color:#1E3A8A;font-weight:600}
+.caja.gw-api{background:var(--verde-soft);border-color:#86EFAC;color:#14532D;font-weight:600}
+.caja.base{background:#E0F2FE;border-color:#7DD3FC;color:#075985;font-weight:600}
+.caja.apigee{background:var(--rojo-soft);border-color:#FCA5A5;color:var(--rojo);font-weight:600}
+.flecha-diag{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--coral)}
+.flecha-diag svg{width:40px;height:30px;fill:currentColor}
+.flecha-diag small{font-size:10px;color:var(--ink);font-weight:700;margin-top:6px}
+.dup-note{font-size:9px;color:var(--rojo);font-weight:700;text-align:center;margin-top:4px;font-style:italic}
+.wins{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.win{display:flex;align-items:center;gap:10px}
+.win .k{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--coral)}
+.win .t{font-size:13px}
+/* APIs resumen */
+.idea-grande{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin-bottom:22px;font-size:16px;line-height:1.5}
+.cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:22px}
+.cifra{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:16px}
+.cifra .n{font-family:var(--serif);font-size:42px;font-weight:700;color:var(--coral);line-height:1}
+.cifra .t{font-size:13px;font-weight:700;margin-top:6px}
+.cifra .s{font-size:11px;color:var(--muted);margin-top:4px}
+.avances-tit{font-size:11px;letter-spacing:3px;font-weight:700;color:var(--muted);margin-bottom:10px}
+.avances{display:grid;gap:8px}
+.avance{display:grid;grid-template-columns:170px 1fr;gap:14px;align-items:center;font-size:14px}
+.avance b{display:flex;align-items:center;gap:8px}
+.avance b::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}
+/* APIs bloques */
+.alcance{font-size:12px;color:var(--muted);font-style:italic;margin-bottom:20px}
+.bloques{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.bloques .bloque:nth-child(n+5){grid-column:span 1}
+@media (min-width:1100px){.bloques{grid-template-columns:repeat(4,1fr)}}
+.bloque{background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:16px}
+.bloque-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.bloque-n{width:40px;height:40px;border-radius:50%;color:#fff;font-family:var(--serif);font-weight:700;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bloque-tit{font-size:17px;font-weight:700;line-height:1.1}
+.bloque-sub{font-size:11px;color:var(--muted);font-style:italic;margin-top:3px}
+.bloque hr{border:0;border-top:1px solid var(--line);margin:10px 0}
+.bloque ul{list-style:none;margin:0;padding:0}
+.bloque li{font-family:var(--mono);font-size:11px;color:var(--ink);padding:3px 0;display:flex;align-items:center;gap:8px}
+.bloque li::before{content:"";width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.bloque .extra{font-size:11px;color:var(--muted);font-style:italic;margin-top:6px}
+.c-morado .bloque-n{background:var(--morado)} .c-morado li::before{background:var(--morado)}
+.c-azul .bloque-n{background:var(--azul)}       .c-azul li::before{background:var(--azul)}
+.c-amarillo .bloque-n{background:var(--amarillo)} .c-amarillo li::before{background:var(--amarillo)}
+.c-coral .bloque-n{background:var(--coral)}     .c-coral li::before{background:var(--coral)}
+.c-teal .bloque-n{background:var(--teal)}       .c-teal li::before{background:var(--teal)}
+.c-indigo .bloque-n{background:var(--indigo)}   .c-indigo li::before{background:var(--indigo)}
+.c-verde .bloque-n{background:var(--verde)}     .c-verde li::before{background:var(--verde)}
+.flujo-pie{background:var(--navy);color:#fff;border-radius:10px;padding:14px 18px;margin-top:16px;font-size:14px}
+/* Dos columnas */
+.dos-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col-A, .col-B{padding:20px;border-radius:10px}
+.col-A{background:var(--soft);border:1px solid var(--line)}
+.col-B{background:var(--navy);color:#fff}
+.col-A .col-label, .col-B .col-label{font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:14px}
+.col-A .col-label{color:var(--muted)} .col-B .col-label{color:#CADCFC}
+.item{padding:12px 0;display:flex;gap:12px}
+.item + .item{border-top:1px solid var(--line)}
+.col-B .item + .item{border-top-color:#334470}
+.item .bullet{width:10px;height:10px;border-radius:50%;background:var(--coral);flex-shrink:0;margin-top:7px}
+.item b{display:block;font-size:15px;margin-bottom:4px}
+.item span{font-size:13px;color:var(--muted)}
+.col-B .item span{color:#CADCFC}
+/* Lista simple con guión */
+.lista-dash{list-style:none;padding:0;margin:0}
+.lista-dash li{padding:8px 0;font-size:14px;position:relative;padding-left:18px}
+.lista-dash li::before{content:"—";position:absolute;left:0;color:var(--coral);font-weight:700}
+/* Tabla 3 col */
+.tabla3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.col-head{padding:10px;border-radius:6px;text-align:center;font-size:14px;font-weight:700}
+.col-head.step{background:var(--soft);color:var(--ink)} .col-head.p360{background:var(--rojo-soft);color:var(--rojo)} .col-head.tobe{background:var(--navy);color:#fff}
+.fila-tag{grid-column:1 / -1;font-size:10px;letter-spacing:2px;font-weight:700;color:var(--muted);margin-top:8px}
+.celda{padding:10px;text-align:center;font-size:14px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.highlight{background:var(--ambar-soft);border:1px solid #FDE68A;border-radius:8px;padding:14px 16px;margin-top:14px;font-size:14px}
+/* POC scraping */
+.pr-dos{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.reglas{list-style:none;padding:0;margin:0}
+.reglas li{display:flex;gap:14px;padding:10px 0}
+.reglas .num{width:34px;height:34px;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
+.reglas b{display:block;font-size:14px;margin-bottom:3px}
+.reglas span{font-size:12px;color:var(--muted)}
+.pie{font-size:12px;color:var(--muted);font-style:italic;margin-top:14px}
+/* Cierre */
+.slide.cierre{background:var(--navy);color:#fff}
+.slide.cierre .kicker{color:var(--coral)}
+.slide.cierre .titulo{color:#fff}
+.cierre-items{display:grid;gap:10px;margin-top:20px}
+.cierre-item{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center}
+.cierre-item .fecha{background:var(--coral);color:#fff;padding:6px 0;border-radius:6px;text-align:center;font-size:13px;font-weight:700}
+.cierre-item .texto{font-size:15px}
+.gracias{font-family:var(--serif);font-size:28px;color:#CADCFC;margin-top:40px}
+/* Modo presentación: una lámina ocupa toda la pantalla */
+body.modo-presentacion .site-header nav, body.modo-presentacion .site-header .brand{display:none}
+body.modo-presentacion .slide{min-height:100vh;scroll-snap-align:start}
+body.modo-presentacion .slide + .slide{border-top:0}
+body.modo-presentacion main{scroll-snap-type:y mandatory;overflow-y:scroll;height:calc(100vh - 42px);}
+/* Impresión */
+@media print{
+  .site-header{display:none}
+  .slide{page-break-after:always;min-height:auto;padding:30px}
+  .slide + .slide{border-top:0}
+}
+/* Responsivo */
+@media (max-width:900px){
+  .comparativo, .diagrama, .dos-col, .pr-dos{grid-template-columns:1fr}
+  .flecha-mid, .flecha-diag{transform:rotate(90deg);padding:20px}
+  .bloques{grid-template-columns:1fr 1fr}
+  .wins{grid-template-columns:1fr 1fr}
+  .avance{grid-template-columns:1fr}
+  .cierre-item{grid-template-columns:80px 1fr}
+}
+@media (max-width:600px){
+  .bloques{grid-template-columns:1fr}
+  .cifras{grid-template-columns:1fr 1fr}
+  .wins{grid-template-columns:1fr}
+  .slide{padding:40px 20px}
+  .slide.portada .titulo{font-size:36px}
+  .titulo{font-size:26px}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand">Nuevo PIM · Avances para Dirección
+    <small>20 de octubre de 2026</small>
+  </div>
+  <nav><a href="#portada">Inicio</a><a href="#backend">Backend único</a><a href="#diagrama">Diagrama</a><a href="#apis-resumen">APIs · resumen</a><a href="#apis-detalle">APIs · detalle</a><a href="#omega">Omega</a><a href="#estados">Estados</a><a href="#scraping">Scraping</a><a href="#ia">IA</a><a href="#cierre">Qué sigue</a></nav>
+  <button class="btn-pres">▶ Presentar</button>
+</header>
+<main>
+
+<section class="slide portada" id="portada">
+  <div class="kicker">Nuevo PIM · Avances</div>
+  <h1 class="titulo">Un sistema único,<br/>APIs únicas,<br/>decisiones firmes</h1>
+  <div class="fecha">Comité de Dirección · 20 de octubre de 2026</div>
+  <div class="metricas"><div class="metrica"><div class="n">1</div><div class="t">Backend único<br/>ya decidido (ADR-12)</div></div><div class="metrica"><div class="n">4</div><div class="t">Propuestas de arquitectura<br/>en revisión</div></div><div class="metrica"><div class="n">2</div><div class="t">Pilotos técnicos<br/>en construcción</div></div></div>
+</section>
+
+
+<section class="slide" id="backend">
+  <div class="pastilla verde">YA DECIDIDO</div>
+  <div class="kicker">Decisión · 18-oct</div>
+  <h2 class="titulo">Un solo backend para Foro, Entrada Única y la API de proveedores</h2>
+  <div class="comparativo">
+    <div class="col-hoy">
+      <div class="col-label">HOY</div>
+      <div class="col-item"><b>2 backends</b><span>Entrada Única (Vendor Center) y Foro, cada uno con su base</span></div><div class="col-item"><b>9 capacidades duplicadas</b><span>La misma lógica implementada dos veces</span></div><div class="col-item"><b>2 bases de datos</b><span>Datos del mismo producto repartidos y sincronizados a mano</span></div><div class="col-item"><b>Sin contrato para terceros</b><span>Proveedores y sellers no pueden catalogar por API</span></div>
+    </div>
+    <div class="flecha-mid">→</div>
+    <div class="col-tobe">
+      <div class="col-label">CÓMO QUEDA</div>
+      <div class="col-item"><b>1 backend compartido</b><span>15 módulos, un BFF del portal, una sola base pim</span></div><div class="col-item"><b>Los 2 portales se quedan</b><span>Vendor Center y Foro siguen como fronts; cambia lo de abajo</span></div><div class="col-item"><b>API de terceros</b><span>Misma puerta para proveedores, sellers y el portal</span></div><div class="col-item"><b>ADR-12 aprobada</b><span>Resuelve PD-05, PD-06, PD-30 y PD-31</span></div>
+    </div>
+  </div>
+  <p class="pie">Falta ratificar en la TDA · módulo de Foro con Gobierno de Producto</p>
+</section>
+
+
+<section class="slide" id="diagrama">
+  <div class="pastilla verde">YA DECIDIDO</div>
+  <div class="kicker">Diagrama · alto nivel</div>
+  <h2 class="titulo">Antes y después, en una lámina</h2>
+  <div class="diagrama">
+    <div class="panel hoy">
+      <div class="panel-label">HOY</div>
+      <div class="capa"><div class="capa-label">FRONTS</div>
+        <div class="capa-boxes">
+          <div class="caja">Vendor Center</div>
+          <div class="caja">Foro (frontqa)</div>
+        </div></div>
+      <div class="capa"><div class="capa-label">PUERTA</div>
+        <div class="capa-boxes"><div class="caja apigee">Apigee ⚠ validación frágil</div></div></div>
+      <div class="capa"><div class="capa-label">BACKENDS</div>
+        <div class="capa-boxes">
+          <div class="caja rojo">Backend EU<br/><small>161 rutas · 156 handlers</small></div>
+          <div class="caja rojo">Backend Foro<br/><small>198 rutas · logistics</small></div>
+        </div>
+        <div class="dup-note">9 capacidades duplicadas entre los dos</div>
+      </div>
+      <div class="capa"><div class="capa-label">BASES</div>
+        <div class="capa-boxes">
+          <div class="caja">Base EU</div>
+          <div class="caja">Base Foro</div>
+          <div class="caja">Réplica BQ</div>
+        </div></div>
+      <div class="capa"><div class="capa-label">SALIDAS</div>
+        <div class="capa-boxes">
+          <div class="caja">SAP</div><div class="caja">OMS</div>
+          <div class="caja">Tienda</div><div class="caja">Mirakl</div>
+        </div></div>
+    </div>
+    <div class="flecha-diag">
+      <svg viewBox="0 0 40 30"><path d="M0 15 L30 15 L30 5 L40 15 L30 25 L30 15 Z"/></svg>
+      <small>ADR-12</small>
+    </div>
+    <div class="panel tobe">
+      <div class="panel-label">CÓMO QUEDA</div>
+      <div class="capa"><div class="capa-label">FRONTS (SE QUEDAN)</div>
+        <div class="capa-boxes">
+          <div class="caja">Vendor Center</div>
+          <div class="caja">Foro (módulo)</div>
+        </div></div>
+      <div class="capa"><div class="capa-label">PUERTAS</div>
+        <div class="capa-boxes">
+          <div class="caja gw-bff">BFF del portal</div>
+          <div class="caja gw-api">API de terceros</div>
+        </div></div>
+      <div class="capa"><div class="capa-label">BACKEND</div>
+        <div class="capa-boxes">
+          <div class="caja navy">Backend compartido · 15 módulos
+            <div class="modulos">
+              <span>Catálogo</span><span>Plantillas</span><span>Productos</span>
+              <span>Activos</span><span>Estudio</span><span>Avisos</span>
+            </div>
+          </div>
+        </div></div>
+      <div class="capa"><div class="capa-label">BASE</div>
+        <div class="capa-boxes"><div class="caja base">Base pim · una sola</div></div></div>
+      <div class="capa"><div class="capa-label">SALIDAS</div>
+        <div class="capa-boxes">
+          <div class="caja">SAP</div><div class="caja">OMS</div>
+          <div class="caja">Tienda</div><div class="caja">Mirakl</div>
+        </div></div>
+    </div>
+  </div>
+  <div class="wins">
+    <div class="win"><div class="k">–1</div><div class="t">backend</div></div>
+    <div class="win"><div class="k">–1</div><div class="t">base de datos</div></div>
+    <div class="win"><div class="k">–9</div><div class="t">duplicaciones</div></div>
+    <div class="win"><div class="k">+1</div><div class="t">API para terceros</div></div>
+  </div>
+</section>
+
+
+<section class="slide" id="apis-resumen">
+  <div class="pastilla ambar">EN DISEÑO</div>
+  <div class="kicker">En diseño · 16–19 oct</div>
+  <h2 class="titulo">Mismas APIs para catalogar: proveedores, sellers y el portal interno</h2>
+  <div class="idea-grande">Una sola API de terceros adelante del núcleo. Las reglas del producto se quedan en el core y las usan el portal, los proveedores de Mercaderías y los sellers de Marketplace.</div>
+  <div class="cifras"><div class="cifra"><div class="n">8</div><div class="t">llamadas para catalogar un producto</div><div class="s">Alineadas al estándar de Mercado Libre</div></div><div class="cifra"><div class="n">33</div><div class="t">APIs del ciclo completo</div><div class="s">Alta, corrección, estado, modificación, inventario</div></div><div class="cifra"><div class="n">41</div><div class="t">rutas de inventario</div><div class="s">4 de 45 se funden en una</div></div><div class="cifra"><div class="n">17</div><div class="t">avisos (webhooks) firmados</div><div class="s">Al proveedor cuando cambia el estado</div></div></div>
+  <div class="avances-tit">AVANCES DE ESTA SEMANA</div>
+  <div class="avances"><div class="avance"><b>Esta semana</b><span>Sesión con un integrador externo para validar el contrato</span></div><div class="avance"><b>Página pública</b><span>catalogacion-por-api.html y catalogacion-por-api-ejemplos.html</span></div><div class="avance"><b>Siguiente</b><span>Sandbox + piloto con un seller voluntario, después del corte de producto</span></div></div>
+</section>
+
+
+<section class="slide" id="apis-detalle">
+  <div class="pastilla ambar">EN DISEÑO</div>
+  <div class="kicker">En diseño · detalle para seller</div>
+  <h2 class="titulo">Las APIs que llama un seller, en orden</h2>
+  <div class="alcance">7 bloques · 33 endpoints en /partner/v1 · Las 8 llamadas para catalogar un producto viven en los bloques 1, 2 y 4</div>
+  <div class="bloques">
+<div class="bloque c-morado">
+  <div class="bloque-head">
+    <div class="bloque-n">1</div>
+    <div>
+      <div class="bloque-tit">Seguridad</div>
+      <div class="bloque-sub">Antes de empezar</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>POST /oauth/token</li><li>GET /me</li><li>GET /credentials</li></ul>
+  <div class="extra">+ rotar secretos</div>
+</div>
+<div class="bloque c-azul">
+  <div class="bloque-head">
+    <div class="bloque-n">2</div>
+    <div>
+      <div class="bloque-tit">Referencias</div>
+      <div class="bloque-sub">Preparar el envío</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>GET /categories</li><li>GET /templates/{id}</li><li>POST /suggestions/classification</li></ul>
+  <div class="extra">+ /value-lists, /brands, /brand-requests</div>
+</div>
+<div class="bloque c-amarillo">
+  <div class="bloque-head">
+    <div class="bloque-n">3</div>
+    <div>
+      <div class="bloque-tit">Duplicados</div>
+      <div class="bloque-sub">¿Ya existe?</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>POST /products/lookup</li><li>GET /offer-targets/{sku}</li></ul>
+  <div class="extra">por EAN o marca + modelo</div>
+</div>
+<div class="bloque c-coral">
+  <div class="bloque-head">
+    <div class="bloque-n">4</div>
+    <div>
+      <div class="bloque-tit">Catalogación</div>
+      <div class="bloque-sub">Dar de alta</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>POST /validations</li><li>POST /proposals</li><li>POST /batches</li></ul>
+  <div class="extra">+ /media/uploads, PUT /proposals/{id}/media</div>
+</div>
+<div class="bloque c-teal">
+  <div class="bloque-head">
+    <div class="bloque-n">5</div>
+    <div>
+      <div class="bloque-tit">Seguimiento</div>
+      <div class="bloque-sub">Qué pasó con mi envío</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>GET /proposals/{id}</li><li>PATCH /proposals/{id}</li><li>GET /batches/{id}/items</li></ul>
+  <div class="extra">+ /history, /channels, /cancel, /receipts</div>
+</div>
+<div class="bloque c-indigo">
+  <div class="bloque-head">
+    <div class="bloque-n">6</div>
+    <div>
+      <div class="bloque-tit">Modificación</div>
+      <div class="bloque-sub">Después de publicar</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>GET /products/{id}/permissions</li><li>POST /products/{id}/modifications</li><li>POST /modifications/batches</li></ul>
+  <div class="extra">+ cambiar imágenes</div>
+</div>
+<div class="bloque c-verde">
+  <div class="bloque-head">
+    <div class="bloque-n">7</div>
+    <div>
+      <div class="bloque-tit">Avisos</div>
+      <div class="bloque-sub">Enterarme sin preguntar</div>
+    </div>
+  </div>
+  <hr/>
+  <ul><li>POST /webhooks</li><li>GET /events (feed de respaldo)</li></ul>
+  <div class="extra">+ /test, /secret, /deliveries</div>
+</div></div>
+  <div class="flujo-pie">El flujo del alta: 1 → 2 → 3 → 4. Después, 5 corre en paralelo mientras llega el acuse por 7. Al publicar entra 6.</div>
+</section>
+
+
+<section class="slide" id="omega">
+  <div class="pastilla teal">EN MARCHA</div>
+  <div class="kicker">Colaboración · desde 7-oct</div>
+  <h2 class="titulo">Acceso al código de Omega: talleres con el equipo propietario</h2>
+  <div class="dos-col">
+    <div class="col-A">
+      <div class="col-label">EL CONTEXTO</div>
+      <ul class="lista-dash"><li>Omega 2.2.73 corre en producción desde el 27-sep: un reemplazo paralelo de P360 que trabaja sobre Oracle.</li><li>Hay productos que sólo existen ahí; sin acceso al código no podemos migrar ni dar continuidad.</li><li>Antes trabajábamos sobre copias locales que iban 24, 51 y 276 commits atrás de la versión viva.</li></ul>
+    </div>
+    <div class="col-B">
+      <div class="col-label">LO QUE YA FUNCIONA</div>
+      <div class="item"><div class="bullet"></div><div><b>Repositorio único de verdad</b><span>Una copia autorizada, igual al repo original. Todo el equipo lee la misma versión.</span></div></div><div class="item"><div class="bullet"></div><div><b>Cambios por Pull Request</b><span>Los cambios al código vivo se piden al equipo propietario; nada se edita a espaldas del dueño.</span></div></div><div class="item"><div class="bullet"></div><div><b>Sesiones de trabajo</b><span>Equipos de Entrada Única, Foro y PIM revisan con el propietario las piezas que se reutilizarán o decomisan.</span></div></div><div class="item"><div class="bullet"></div><div><b>Riesgo cerrado</b><span>Deja de haber tres copias desincronizadas del código; cada hallazgo se cita contra el commit vigente.</span></div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="slide" id="estados">
+  <div class="pastilla ambar">EN ANÁLISIS</div>
+  <div class="kicker">En análisis · 16-oct</div>
+  <h2 class="titulo">Ciclo de vida del producto: hoy, STEP y la propuesta</h2>
+  <div class="tabla3">
+    <div class="col-head step">STEP (antes)</div><div class="col-head p360">P360 hoy</div><div class="col-head tobe">Propuesta Nuevo PIM</div>
+    <div class="fila-tag">ESTADOS O PASOS</div><div class="celda">19 en alta · 12 en modificación</div><div class="celda">28 códigos</div><div class="celda">7 estados del ciclo</div><div class="fila-tag">RECHAZOS</div><div class="celda">0 (regresan a la bandeja)</div><div class="celda">5 estados dedicados</div><div class="celda">Tarea «Corrección» con motivo</div><div class="fila-tag">TRANSICIONES</div><div class="celda">41 y 25</div><div class="celda">239 en tabla · 34 rutas en código</div><div class="celda">14 del ciclo + reglas por negocio</div><div class="fila-tag">PUBLICACIÓN</div><div class="celda">Fuera del flujo</div><div class="celda">Un solo campo (1007)</div><div class="celda">Un estado por canal</div>
+  </div>
+  <div class="highlight">Idea de la propuesta: tres capas en lugar de un solo estado — ciclo de vida simple + tareas por área en paralelo + estado por canal. El proveedor sigue viendo los mismos nombres de hoy.</div>
+</section>
+
+
+<section class="slide" id="scraping">
+  <div class="pastilla teal">POC LISTA</div>
+  <div class="kicker">POC · 14-oct</div>
+  <h2 class="titulo">Scraping de atributos: enriquecer después de publicar, sin romper el PIM</h2>
+  <div class="pr-dos">
+    <div>
+      <div class="col-label" style="color:var(--muted);font-size:11px;letter-spacing:3px;font-weight:700;margin-bottom:14px">EL PROBLEMA</div>
+      <ul class="lista-dash"><li>El scraping encuentra atributos que la plantilla no pide.</li><li>Hoy se escriben directo en la tienda y no regresan a ninguna fuente.</li><li>El PIM no sabe qué se muestra, ni lo puede apagar.</li><li>Y se repiten atributos que ya están en la ficha.</li></ul>
+    </div>
+    <div class="col-A">
+      <div class="col-label">LAS CUATRO REGLAS</div>
+      <ul class="reglas"><li><div class="num">1</div><div><b>Sólo lo publicado llega a la tienda</b><span>Si el producto no está Aprobado y publicado, lo encontrado queda como sugerencia</span></div></li><li><div class="num">2</div><div><b>La IA parte de la plantilla</b><span>Llena huecos; nunca sobrescribe lo que ya hay</span></div></li><li><div class="num">3</div><div><b>Sinónimo no se propone como atributo nuevo</b><span>Si viene «talla» y hay «tamaño», se compara y va a Gobierno</span></div></li><li><div class="num">4</div><div><b>Gobierno decide una vez por concepto</b><span>Lo nuevo llega agrupado por plantilla; se republica lo aprobado</span></div></li></ul>
+    </div>
+  </div>
+  <div class="pie">Entregables: POC navegable (HTML, 8 vistas) + réplica del front de catalogación con lo que ve cada rol + presentación para Gobierno de Producto</div>
+</section>
+
+
+<section class="slide" id="ia">
+  <div class="pastilla ambar">EN ARRANQUE</div>
+  <div class="kicker">En arranque · 15-oct</div>
+  <h2 class="titulo">Servicios de IA para la catalogación: trabajo con el equipo de Foro Fotográfico</h2>
+  <div class="dos-col">
+    <div class="col-A">
+      <div class="col-label">LO QUE YA EXISTE EN FORO</div>
+      <div class="item"><div class="bullet"></div><div><b>Servicio por atributo</b><span>Recibe plantilla, SKU, imágenes y ficha técnica; devuelve valor y confianza (0–1) por atributo</span></div></div><div class="item"><div class="bullet"></div><div><b>Modo masivo</b><span>Excel con muchos SKUs; regresa enriquecidos</span></div></div><div class="item"><div class="bullet"></div><div><b>Modo sin plantilla</b><span>Se dan atributo y valores posibles en lenguaje natural; el modelo elige uno</span></div></div><div class="item"><div class="bullet"></div><div><b>Trazabilidad</b><span>Resultados guardados para auditoría</span></div></div>
+    </div>
+    <div class="col-B">
+      <div class="col-label">LO QUE ESTAMOS DEFINIENDO</div>
+      <div class="item"><div class="bullet"></div><div><b>Qué servicios se crean</b><span>Qué pieza del PIM invoca a Foro: atributos, títulos y descripciones, imágenes</span></div></div><div class="item"><div class="bullet"></div><div><b>Réplica a embedding lake</b><span>Por Pub/Sub cuando un producto cambia; que Foro tenga el dato fresco</span></div></div><div class="item"><div class="bullet"></div><div><b>En qué momentos entra</b><span>Después del SKU, antes de la aprobación, y en el enriquecimiento continuo</span></div></div><div class="item"><div class="bullet"></div><div><b>Siguiente sesión</b><span>Con Gobierno de Producto y Marketplace para alinear flujo y permisos</span></div></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="slide cierre" id="cierre">
+  <div class="kicker">Qué sigue en las próximas semanas</div>
+  <h2 class="titulo">Las decisiones que buscamos cerrar</h2>
+  <div class="cierre-items"><div class="cierre-item"><div class="fecha">20-oct</div><div class="texto">Ratificar módulo de Foro con Gobierno de Producto</div></div><div class="cierre-item"><div class="fecha">21-oct</div><div class="texto">Sesión Foro + Gobierno + Marketplace: definir servicios de IA</div></div><div class="cierre-item"><div class="fecha">23-oct</div><div class="texto">Registrar backend compartido en la TDA</div></div><div class="cierre-item"><div class="fecha">Semana</div><div class="texto">Sesión con integrador externo: validar contrato de la API de terceros</div></div><div class="cierre-item"><div class="fecha">Semana</div><div class="texto">Cerrar propuesta del ciclo de vida (PD-29) con el equipo de catalogación</div></div><div class="cierre-item"><div class="fecha">Siguiente</div><div class="texto">Decidir alcance del piloto del scraping con Gobierno de Producto</div></div></div>
+  <div class="gracias">Gracias</div>
+</section>
+
+</main>
+<script>
+(function(){
+  const nav = document.querySelectorAll('.site-header nav a');
+  const slides = document.querySelectorAll('.slide');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        nav.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, {threshold:0.4});
+  slides.forEach(s=>io.observe(s));
+
+  const btn = document.querySelector('.btn-pres');
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('modo-presentacion');
+    btn.textContent = document.body.classList.contains('modo-presentacion') ? '✕ Salir' : '▶ Presentar';
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape' && document.body.classList.contains('modo-presentacion')){
+      document.body.classList.remove('modo-presentacion');
+      btn.textContent = '▶ Presentar';
+    }
+    if(e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' '){
+      e.preventDefault();
+      const current = Array.from(slides).find(s=>{
+        const r = s.getBoundingClientRect();
+        return r.top > -50;
+      });
+      if(current){ current.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }
+    if(e.key === 'ArrowUp' || e.key === 'PageUp'){
+      e.preventDefault();
+      const current = Array.from(slides).reverse().find(s=>{
+        const r = s.getBoundingClientRect();
+        return r.top < -50;
+      });
+      if(current){ current.scrollIntoView({behavior:'smooth', block:'start'}); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
