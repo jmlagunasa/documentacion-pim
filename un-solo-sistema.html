@@ -7,8 +7,8 @@
 <title>Un solo sistema para el ciclo de vida del producto</title>
 <style>
 :root{
-  --fondo:#f5f4f7;--papel:#fff;--tinta:#1d2130;--tinta2:#4a5063;--tinta3:#767c8f;
-  --borde:#e3e1e8;--link:#1f62c9;--morado:#6d2a7f;--gris-s:#eef0f3;
+  --fondo:#f7f6f5;--papel:#fff;--tinta:#1d2130;--tinta2:#4a5063;--tinta3:#767c8f;
+  --borde:#e6e4e1;--link:#9a3d66;--morado:#6d2a7f;--gris-s:#f3f2f0;
   --ambar-s:#fff3cd;--ambar:#856404;--verde-s:#e8f4eb;--verde:#1d6b33;
   --rojo-s:#fbecec;--azul-s:#e9f0fc;--morado-s:#f3e8f6;
   --radio:10px;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -18,7 +18,7 @@ html,body{margin:0;background:var(--fondo);color:var(--tinta);font:15px/1.55 -ap
 a{color:var(--link)}
 header{background:var(--papel);border-bottom:1px solid var(--borde);padding:18px 24px}
 header .volver{font-size:13px;text-decoration:none;margin-right:14px}
-h1{font-size:22px;line-height:1.25;margin:6px 0 0}
+h1{font-size:22px;line-height:1.25;font-weight:700;margin:6px 0 0}
 header p{margin:4px 0 0;color:var(--tinta3);font-size:13.5px}
 .estado{display:inline-block;margin-top:8px;background:var(--ambar-s);color:var(--ambar);border:1px solid #f0d98a;border-radius:999px;padding:2px 10px;font-size:12.5px;font-weight:600}
 .marco{display:grid;grid-template-columns:220px minmax(0,1fr);gap:26px;max-width:1180px;padding:22px 24px 36px}
@@ -29,8 +29,8 @@ nav li{margin:4px 0}
 nav a{text-decoration:none}
 main{min-width:0}
 section{background:var(--papel);border:1px solid var(--borde);border-radius:var(--radio);padding:18px 22px;margin:0 0 16px;scroll-margin-top:12px}
-h2{font-size:18px;margin:0 0 8px;color:var(--morado)}
-h3{font-size:15px;margin:14px 0 6px}
+h2{font-size:18px;font-weight:700;margin:0 0 8px;color:var(--tinta)}
+h3{font-size:15px;font-weight:600;margin:14px 0 6px}
 p{margin:0 0 10px}
 .lead{font-size:16px}
 .tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 4px}
@@ -43,20 +43,20 @@ p{margin:0 0 10px}
 .sis h3{margin:8px 0 4px;font-size:15px}
 .sis p{font-size:13px;color:var(--tinta2);margin:0}
 .sis ul{margin:8px 0 0;padding-left:18px;font-size:13px}
-.cil{width:36px;height:44px;margin:0 auto;border-radius:8px 8px 10px 10px;background:linear-gradient(#e7eefc,#d5e2f8);border:2px solid #8eaddd;position:relative}
-.cil:before,.cil:after{content:"";position:absolute;left:-2px;right:-2px;height:10px;border:2px solid #8eaddd;border-radius:50%;background:#f4f8ff}
+.cil{width:36px;height:44px;margin:0 auto;border-radius:8px 8px 10px 10px;background:#f3f2f0;border:2px solid #c9c6c2;position:relative}
+.cil:before,.cil:after{content:"";position:absolute;left:-2px;right:-2px;height:10px;border:2px solid #c9c6c2;border-radius:50%;background:#fafaf8}
 .cil:before{top:-6px}
-.cil:after{bottom:-6px;background:#d5e2f8}
-.base{text-align:center;font-size:12px;font-weight:700;color:#1f4f9c;margin-top:10px}
+.cil:after{bottom:-6px;background:#e8e6e3}
+.base{text-align:center;font-size:12px;font-weight:700;color:var(--tinta2);margin-top:10px}
 .par{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 10px}
 .lado{background:#fff;border:1px solid #e6e4ea;border-radius:8px;padding:14px 16px 12px;border-top-width:4px}
 .lado.front{border-top-color:#c4a15a}
 .lado.back{border-top-color:#1a6b63}
-.lado h3{margin:0;font-size:18px;color:var(--tinta);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.lado h3{margin:0;font-size:16px;font-weight:700;color:var(--tinta);display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .lado .sub{margin:2px 0 10px;font-size:13px;color:var(--tinta3)}
 .badge{margin-left:auto;background:#1a6b63;color:#fff;border-radius:4px;padding:3px 8px;font-size:11px;letter-spacing:.04em;font-weight:700}
 .nums{list-style:none;margin:0;padding:0}
-.nums li{display:flex;gap:8px;margin:0 0 7px;font-size:14.5px}
+.nums li{display:flex;gap:8px;margin:0 0 7px;font-size:13.5px;line-height:1.35}
 .nums b{min-width:1.1em}
 .franjas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .franja{border:1px solid #e6e4ea;border-radius:8px;padding:10px 12px;font-size:14px;border-left-width:4px}
@@ -79,15 +79,14 @@ p{margin:0 0 10px}
 #propuesta .engloba .tag.quien{background:#f4f3f6;border:1px solid #e3e1e8;color:#3c4150}
 .nota-marca{background:#fff6d8;border-radius:8px;padding:8px 12px;margin:10px 0 8px;font-size:13.5px;line-height:1.4;color:#3c2a12}
 .nota-marca b{display:block;margin-bottom:2px}
-#elegir .lado h3{font-size:15px}
-#elegir .sub,#elegir .pros{font-size:13px;line-height:1.35}
+#elegir .sub,#elegir .pros{font-size:13.5px;line-height:1.35}
 .kicker{margin:12px 0 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta3)}
 .rep{background:#ffe08a;border-radius:4px;padding:0 4px}
 .ley{font-size:12.5px;margin:8px 0 0}
 .funcs{margin:8px 0 0;padding-left:18px;font-size:13px}
 .funcs li{margin:3px 0}
-.sistema{border:3px solid var(--morado);border-radius:12px;padding:12px 14px 14px;background:#fbf8fc;margin:8px 0 12px}
-.sistema-titulo{font-size:22px;line-height:1.2;font-weight:800;color:var(--morado);margin:0}
+.sistema{border:1px solid #f0d5e2;border-radius:12px;padding:12px 14px 14px;background:#fff;margin:8px 0 12px}
+.sistema-titulo{font-size:18px;line-height:1.2;font-weight:700;color:var(--tinta);margin:0}
 .sistema .bajada{margin:2px 0 10px;color:var(--tinta2);font-size:13.5px}
 .clave{border-radius:6px;padding:2px 6px}
 .clave.v{background:#c8ebc8}
@@ -137,13 +136,13 @@ svg.ico{width:16px;height:16px;flex:none;margin-top:1px;stroke:currentColor;fill
 .pill.no{background:var(--rojo-s);color:#8a1f1f}
 .cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
 .cifra{background:#f6f5f8;border-radius:10px;padding:12px 12px 10px}
-.cifra b{display:block;font-size:20px;line-height:1.1;color:#1d2130}
+.cifra b{display:block;font-size:18px;line-height:1.1;font-weight:700;color:#1d2130}
 .cifra span{font-size:12px;color:var(--tinta3)}
 #propuesta .sistema{border-width:2px;padding:10px 12px 12px}
 #propuesta .sistema-titulo{font-size:18px}
 #propuesta .bajada{margin-bottom:8px}
 #propuesta .lado{padding:10px 12px 8px}
-#propuesta .nums li{font-size:13px;line-height:1.35;margin:0 0 4px}
+#propuesta .nums li{font-size:13.5px;line-height:1.35;margin:0 0 4px}
 #propuesta .engloba .nums{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}
 #propuesta .engloba .nums li{margin:0}
 #propuesta .kicker{margin:8px 0 4px}
@@ -154,7 +153,7 @@ svg.ico{width:16px;height:16px;flex:none;margin-top:1px;stroke:currentColor;fill
 #pantallas .producto b{color:var(--tinta)}
 .vista[hidden]{display:none}
 .crumb{font-size:12px;color:var(--tinta3);margin-bottom:4px}
-.vista h3{margin:0 0 8px;font-size:16px;color:var(--tinta)}
+.vista h3{margin:0 0 8px;font-size:16px;font-weight:700;color:var(--tinta)}
 .pasos{display:flex;gap:6px;margin:0 0 12px;flex-wrap:wrap}
 .paso{font-size:12px;padding:4px 8px;border-radius:999px;background:var(--gris-s);color:var(--tinta2)}
 .paso.ya{background:var(--verde-s);color:var(--verde)}
@@ -175,11 +174,11 @@ th{background:var(--gris-s);font-weight:600}
 .a2{background:var(--rojo-s);color:#8a1f1f}
 .a3{background:var(--ambar-s);color:var(--ambar)}
 .fotos{display:flex;gap:8px;margin-top:8px}
-.foto{width:86px;height:72px;border-radius:8px;border:1px dashed #c9b3d4;background:var(--morado-s);display:flex;align-items:flex-end;padding:6px;font-size:11px;color:var(--morado);font-weight:700}
-.foto.llena{border-style:solid;background:#f3e8f6}
-.aviso{font-size:12.5px;background:var(--azul-s);color:#1f4f9c;border-radius:8px;padding:8px 10px;margin-top:10px}
-.producto{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;background:var(--morado-s);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:13px}
-.producto b{color:var(--morado)}
+.foto{width:86px;height:72px;border-radius:8px;border:1px dashed #f0d0e0;background:#fdf7f9;display:flex;align-items:flex-end;padding:6px;font-size:11px;color:#9a3d66;font-weight:700}
+.foto.llena{border-style:solid;background:#fdf2f6}
+.aviso{font-size:12.5px;background:#fdf2f6;color:#9a3d66;border-radius:8px;padding:8px 10px;margin-top:10px}
+.producto{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;background:#fff;border:1px solid var(--borde);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:13.5px}
+.producto b{color:var(--tinta)}
 .checks{margin:0;padding:0;list-style:none}
 .checks li{margin:0 0 8px;padding:8px 10px;border-radius:8px;background:var(--verde-s)}
 .queda{display:grid;grid-template-columns:1fr 1fr;gap:10px}
