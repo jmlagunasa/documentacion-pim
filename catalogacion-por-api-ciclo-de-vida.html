@@ -337,13 +337,13 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 X-Request-Id: req-20261103-000001</pre>
 <h4>Response 200</h4>
 <pre>{
-  "partnerId": "prt-mabe-prod",
+  <mark class="id">"partnerId": "prt-mabe-prod"</mark>,
   "partnerType": "SUPPLIER",
   "sapSupplierId": "100045721",
-  "businesses": ["LVP"],
+  <mark>"businesses": ["LVP"]</mark>,
   "shops": [],
   "scopes": ["catalog.read", "proposals.write", "media.write", "webhooks.manage"],
-  "limits": { "reads_per_min": 600, "writes_per_min": 60, "suggestions_per_min": 30, "max_batch_items": 1000, "daily_new_products": 5000 },
+  "limits": { "reads_per_min": 600, "writes_per_min": 60, "suggestions_per_min": 30, <mark>"max_batch_items": 1000</mark>, "daily_new_products": 5000 },
   "usage":  { "writes_last_min": 2, "daily_new_products_today": 11 },
   "env": "prod"
 }</pre></template>
@@ -356,7 +356,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 Content-Type: application/json
 Idempotency-Key: wh-mabe-001</pre>
 <pre>{
-  "url": "https://integraciones.mabe.example/liverpool/webhooks",
+  <mark>"url": "https://integraciones.mabe.example/liverpool/webhooks"</mark>,
   "events": [
     "proposal.received", "proposal.validated", "proposal.correction_required",
     "proposal.accepted", "proposal.rejected", "proposal.already_exists",
@@ -368,9 +368,9 @@ Idempotency-Key: wh-mabe-001</pre>
 }</pre>
 <h4>Response 201</h4>
 <pre>{
-  "webhookId": "wh-mabe-prod-01",
-  "secret": "whs_live_8K7m…guárdalo-ahora-no-se-vuelve-a-mostrar",
-  "status": "ACTIVE",
+  <mark class="id">"webhookId": "wh-mabe-prod-01"</mark>,
+  <mark class="id">"secret": "whs_live_8K7m…guárdalo-ahora-no-se-vuelve-a-mostrar"</mark>,
+  <mark class="est">"status": "ACTIVE"</mark>,
   "createdAt": "2026-11-03T15:02:11Z"
 }</pre></template>
 
@@ -383,8 +383,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <pre>{
   "suggestionId": "sug-20261103-5f91c",
   "templates": [
-    { "categoryId": "LVP-ELE-REF-TOP-300", "name": "Línea blanca / Refrigeradores / Top-mount / 251–350 L",
-      "templateId": "LVP-ELE-REF-TOP-300", "version": 7, "confidence": 0.94,
+    { <mark class="id">"categoryId": "LVP-ELE-REF-TOP-300"</mark>, "name": "Línea blanca / Refrigeradores / Top-mount / 251–350 L",
+      "templateId": "LVP-ELE-REF-TOP-300", "version": 7, <mark class="est">"confidence": 0.94</mark>,
       "reason": "El título contiene «refrigerador», «top mount» y «300 L»" },
     { "categoryId": "LVP-ELE-REF-TOP-500", "name": "Línea blanca / Refrigeradores / Top-mount / 351–500 L",
       "templateId": "LVP-ELE-REF-TOP-500", "version": 7, "confidence": 0.21,
@@ -403,9 +403,9 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <pre>{
   "categoryId": "LVP-ELE-REF-TOP-300",
   "templateId": "LVP-ELE-REF-TOP-300",
-  "version": 7,
+  <mark>"version": 7</mark>,
   "effectiveFrom": "2026-10-01T00:00:00Z",
-  "variantAxes": ["COLOR"],
+  <mark>"variantAxes": ["COLOR"]</mark>,
   "imageRules": {
     "principal": { "backgroundColor": "WHITE", "minResolution": "1200x1200" },
     "maxPerVariant": 20,
@@ -455,8 +455,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <h4>Response 200</h4>
 <pre>{
   "query": { "gtin": "07501234567890", "business": "LVP" },
-  "results": [],
-  "allowedAction": "CREATE_PROPOSAL",
+  <mark>"results": []</mark>,
+  <mark class="est">"allowedAction": "CREATE_PROPOSAL"</mark>,
   "paging": { "total": 0 }
 }</pre>
 <p class="ej-nota">Si otra persona ya hubiera cargado este producto, <code>results</code> traería <code>sku</code>, <code>catalogProductId</code>, el dueño del contenido y <code>allowedAction</code> con el camino alterno (<code>NOT_ALLOWED</code> en Mercaderías, o la oferta en Marketplace).</p></template>
@@ -467,7 +467,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <pre class="http">POST /partner/v1/validations
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 Content-Type: application/json
-Idempotency-Key: val-mabe-20261103-001</pre>
+<mark>Idempotency-Key: val-mabe-20261103-001</mark></pre>
 <pre>{
   "business": "LVP",
   "items": [
@@ -497,9 +497,9 @@ Idempotency-Key: val-mabe-20261103-001</pre>
 <h4>Response 200</h4>
 <pre>{
   "validationId": "val-01JA7S9F2P",
-  "status": "ok",
+  <mark class="est">"status": "ok"</mark>,
   "items": [
-    { "externalRef": "MABE-RMA300FJMRE0", "status": "ok" }
+    { "externalRef": "MABE-RMA300FJMRE0", <mark class="est">"status": "ok"</mark> }
   ],
   "quotas": { "writes_remaining": 58, "resetsAt": "2026-11-03T15:04:00Z" }
 }</pre></template>
@@ -537,13 +537,13 @@ Content-Type: application/json</pre>
 <pre class="http">POST /partner/v1/proposals
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 Content-Type: application/json
-Idempotency-Key: prp-mabe-20261103-001</pre>
+<mark>Idempotency-Key: prp-mabe-20261103-001</mark></pre>
 <pre>{
   "business": "LVP",
-  "externalRef": "MABE-RMA300FJMRE0",
+  <mark>"externalRef": "MABE-RMA300FJMRE0"</mark>,
   "acceptedSuggestionId": "sug-20261103-5f91c",
-  "categoryId": "LVP-ELE-REF-TOP-300",
-  "templateVersion": 7,
+  <mark>"categoryId": "LVP-ELE-REF-TOP-300"</mark>,
+  <mark>"templateVersion": 7</mark>,
   "base": {
     "title": "Refrigerador Mabe 300 L Top Mount Acero Inoxidable",
     "description": "Refrigerador top mount de 300 litros con tecnología inverter, iluminación LED, cajón para frutas y verduras, parrillas de vidrio templado. Garantía de 24 meses."
@@ -593,8 +593,8 @@ Idempotency-Key: prp-mabe-20261103-001</pre>
 }</pre>
 <h4>Response 201</h4>
 <pre>{
-  "proposalId": "prp-20261103-7A4F2",
-  "status": "IN_APPROVAL",
+  <mark class="id">"proposalId": "prp-20261103-7A4F2"</mark>,
+  <mark class="est">"status": "IN_APPROVAL"</mark>,
   "version": 1,
   "externalRef": "MABE-RMA300FJMRE0",
   "correctionDueAt": "2026-12-02T15:04:00Z",
@@ -672,13 +672,13 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <h4>Response 200</h4>
 <pre>{
   "proposalId": "prp-20261103-7A4F2",
-  "status": "SKU_CREATED",
+  <mark class="est">"status": "SKU_CREATED"</mark>,
   "externalRef": "MABE-RMA300FJMRE0",
-  "productId": "PRD-20261103-7A4F2",
+  <mark class="id">"productId": "PRD-20261103-7A4F2"</mark>,
   "approvedBy": { "area": "COMPRAS", "approvedAt": "2026-11-03T18:12:40Z" },
   "variants": [
-    { "externalRef": "MABE-RMA300FJMRE0-INOX",  "sku": "sku-RMA300-INOX",  "ean": "07501234567890" },
-    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", "sku": "sku-RMA300-NEGRO", "ean": "07501234567906" }
+    { "externalRef": "MABE-RMA300FJMRE0-INOX",  <mark class="id">"sku": "sku-RMA300-INOX"</mark>,  "ean": "07501234567890" },
+    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", <mark class="id">"sku": "sku-RMA300-NEGRO"</mark>, "ean": "07501234567906" }
   ],
   "channels": [
     { "channel": "STORE", "status": "PENDING" }
@@ -692,15 +692,15 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <h4>Response 200 (recorte)</h4>
 <pre>{
-  "productId": "PRD-20261103-7A4F2",
-  "status": "PUBLISHED",
-  "webCategory": "linea-blanca/refrigeradores/top-mount",
+  <mark class="id">"productId": "PRD-20261103-7A4F2"</mark>,
+  <mark class="est">"status": "PUBLISHED"</mark>,
+  <mark>"webCategory": "linea-blanca/refrigeradores/top-mount"</mark>,
   "base": { "title": "Refrigerador Mabe 300 L Top Mount Acero Inoxidable", "description": "…" },
   "variants": [
-    { "sku": "sku-RMA300-INOX",  "ean": "07501234567890",
+    { <mark class="id">"sku": "sku-RMA300-INOX"</mark>,  "ean": "07501234567890",
       "attribute_combinations": [ { "id": "COLOR", "value_id": "INOX",  "value_name": "Acero inoxidable" } ],
       "pictures": [ { "source": "https://cdn.mabe.example/rma300/inox-01-principal.jpg", "type": "PRINCIPAL", "order": 1 } ] },
-    { "sku": "sku-RMA300-NEGRO", "ean": "07501234567906",
+    { <mark class="id">"sku": "sku-RMA300-NEGRO"</mark>, "ean": "07501234567906",
       "attribute_combinations": [ { "id": "COLOR", "value_id": "NEGRO", "value_name": "Negro" } ],
       "pictures": [ { "source": "https://cdn.mabe.example/rma300/negro-01-principal.jpg", "type": "PRINCIPAL", "order": 1 } ] }
   ],
@@ -716,9 +716,9 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <pre>{
   "productId": "PRD-20261103-7A4F2",
   "channels": [
-    { "channel": "STORE", "status": "PUBLISHED",
+    { "channel": "STORE", <mark class="est">"status": "PUBLISHED"</mark>,
       "sentAt": "2026-11-04T10:08:33Z", "publishedAt": "2026-11-04T10:12:00Z",
-      "url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2" }
+      <mark>"url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2"</mark> }
   ]
 }</pre></template>
 
@@ -735,7 +735,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
     { "at": "2026-11-03T18:25:11Z", "from": "ACCEPTED",    "to": "SKU_CREATED"    },
     { "at": "2026-11-03T18:40:03Z", "from": "SKU_CREATED", "to": "IN_PREPARATION", "area": "QA" },
     { "at": "2026-11-04T10:08:33Z", "from": "IN_PREPARATION", "to": "PUBLISHING"  },
-    { "at": "2026-11-04T10:12:00Z", "from": "PUBLISHING",  "to": "PUBLISHED",      "channel": "STORE" }
+    { "at": "2026-11-04T10:12:00Z", "from": "PUBLISHING",  <mark class="est">"to": "PUBLISHED"</mark>,      "channel": "STORE" }
   ],
   "fieldChanges": []
 }</pre></template>
@@ -748,7 +748,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <h4>Response 200</h4>
 <pre>{
   "productId": "PRD-20261103-7A4F2",
-  "isContentOwner": true,
+  <mark class="est">"isContentOwner": true</mark>,
   "groups": [
     { "group": "TEXTOS",          "fields": ["title", "description"],
       "editable": true,  "requiresApproval": false, "readOnly": false },
@@ -770,8 +770,8 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <pre class="http">POST /partner/v1/products/PRD-20261103-7A4F2/modifications
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
 Content-Type: application/json
-Idempotency-Key: mod-mabe-20261112-001
-If-Match: "3"</pre>
+<mark>Idempotency-Key: mod-mabe-20261112-001</mark>
+<mark>If-Match: "3"</mark></pre>
 <pre>{
   "changes": [
     { "path": "/base/description", "op": "replace",
@@ -782,8 +782,8 @@ If-Match: "3"</pre>
 }</pre>
 <h4>Response 202</h4>
 <pre>{
-  "modificationId": "mod-20261112-9C21E",
-  "status": "IN_MODIFICATION",
+  <mark class="id">"modificationId": "mod-20261112-9C21E"</mark>,
+  <mark class="est">"status": "IN_MODIFICATION"</mark>,
   "productVersionAfter": 4,
   "pending": [
     { "field": "/attributes/GARANTIA_MESES", "area": "QA_IA" }
@@ -801,7 +801,7 @@ If-Match: "3"</pre>
 <h4>Response 200</h4>
 <pre>{
   "modificationId": "mod-20261112-9C21E",
-  "status": "APPLIED",
+  <mark class="est">"status": "APPLIED"</mark>,
   "productId": "PRD-20261103-7A4F2",
   "steps": [
     { "at": "2026-11-12T09:14:02Z", "from": null,                 "to": "IN_MODIFICATION" },
@@ -827,7 +827,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
     { "eventId": "evt-01JA8E7P9K", "type": "product.publication_sent", "occurredAt": "2026-11-04T10:08:33Z", "productId": "PRD-20261103-7A4F2", "channel": "STORE" },
     { "eventId": "evt-01JA8E9Z1D", "type": "product.published",        "occurredAt": "2026-11-04T10:12:00Z", "productId": "PRD-20261103-7A4F2", "channel": "STORE" }
   ],
-  "nextCursor": "evt-01JA8E9Z1D",
+  <mark>"nextCursor": "evt-01JA8E9Z1D"</mark>,
   "hasMore": false
 }</pre></template>
 
@@ -839,10 +839,10 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
 <h4>Response 200</h4>
 <pre>{
   "requestId": "req-20261103-000045",
-  "idempotencyKey": "prp-mabe-20261103-001",
+  <mark>"idempotencyKey": "prp-mabe-20261103-001"</mark>,
   "operation": "POST /partner/v1/proposals",
-  "status": 201,
-  "resourceId": "prp-20261103-7A4F2",
+  <mark class="est">"status": 201</mark>,
+  <mark class="id">"resourceId": "prp-20261103-7A4F2"</mark>,
   "receivedAt": "2026-11-03T15:04:00Z",
   "respondedAt": "2026-11-03T15:04:00Z"
 }</pre></template>
@@ -907,13 +907,13 @@ X-Liverpool-Timestamp: 1793457840
 X-Liverpool-Signature: v1=7b1f…c9</pre>
 <pre>{
   "eventId": "evt-01JA7Y1A",
-  "type": "proposal.received",
+  <mark>"type": "proposal.received"</mark>,
   "occurredAt": "2026-11-03T15:04:00Z",
   "partnerId": "prt-mabe-prod",
   "business": "LVP",
-  "proposalId": "prp-20261103-7A4F2",
+  <mark class="id">"proposalId": "prp-20261103-7A4F2"</mark>,
   "externalRef": "MABE-RMA300FJMRE0",
-  "status": "RECEIVED",
+  <mark class="est">"status": "RECEIVED"</mark>,
   "version": 1
 }</pre></template>
 
@@ -921,11 +921,11 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
 <p class="ej-nota">La ficha pasó estructura, listas, EAN, blacklist y coincidencias. Pasa a <code>IN_APPROVAL</code>: Compras la revisará.</p>
 <pre>{
   "eventId": "evt-01JA7Y1B",
-  "type": "proposal.validated",
+  <mark>"type": "proposal.validated"</mark>,
   "occurredAt": "2026-11-03T15:04:22Z",
   "proposalId": "prp-20261103-7A4F2",
   "externalRef": "MABE-RMA300FJMRE0",
-  "status": "IN_APPROVAL",
+  <mark class="est">"status": "IN_APPROVAL"</mark>,
   "previousStatus": "VALIDATING",
   "version": 2
 }</pre></template>
@@ -973,10 +973,10 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
 <p class="ej-nota">Compras acepta. El PIM pide el SKU a SAP. El seller ya no toca nada.</p>
 <pre>{
   "eventId": "evt-01JA7Y2P",
-  "type": "proposal.accepted",
+  <mark>"type": "proposal.accepted"</mark>,
   "occurredAt": "2026-11-03T18:12:40Z",
   "proposalId": "prp-20261103-7A4F2",
-  "status": "ACCEPTED",
+  <mark class="est">"status": "ACCEPTED"</mark>,
   "approvedBy": { "area": "COMPRAS" }
 }</pre></template>
 
@@ -984,13 +984,13 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
 <p class="ej-nota">SAP devuelve el 122: dos SKU, uno por variante. Se crea el <code>productId</code> en el PIM.</p>
 <pre>{
   "eventId": "evt-01JA8B1Q",
-  "type": "product.sku_created",
+  <mark>"type": "product.sku_created"</mark>,
   "occurredAt": "2026-11-03T18:25:11Z",
   "proposalId": "prp-20261103-7A4F2",
-  "productId": "PRD-20261103-7A4F2",
+  <mark class="id">"productId": "PRD-20261103-7A4F2"</mark>,
   "variants": [
-    { "externalRef": "MABE-RMA300FJMRE0-INOX",  "sku": "sku-RMA300-INOX",  "ean": "07501234567890" },
-    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", "sku": "sku-RMA300-NEGRO", "ean": "07501234567906" }
+    { "externalRef": "MABE-RMA300FJMRE0-INOX",  <mark class="id">"sku": "sku-RMA300-INOX"</mark>,  "ean": "07501234567890" },
+    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", <mark class="id">"sku": "sku-RMA300-NEGRO"</mark>, "ean": "07501234567906" }
   ]
 }</pre></template>
 
@@ -998,31 +998,31 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
 <p class="ej-nota">QA con IA revisa la ficha y la categoría web se asigna.</p>
 <pre>{
   "eventId": "evt-01JA8B2M",
-  "type": "product.in_preparation",
+  <mark>"type": "product.in_preparation"</mark>,
   "occurredAt": "2026-11-03T18:40:03Z",
   "productId": "PRD-20261103-7A4F2",
-  "steps": ["QA_IA", "CATEGORY"]
+  <mark>"steps": ["QA_IA", "CATEGORY"]</mark>
 }</pre></template>
 
 <template id="ej-evt-pub-sent"><h3 slot>Aviso product.publication_sent<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">El PIM envió el refri al canal <code>STORE</code>. Falta el acuse.</p>
 <pre>{
   "eventId": "evt-01JA8E7P",
-  "type": "product.publication_sent",
+  <mark>"type": "product.publication_sent"</mark>,
   "occurredAt": "2026-11-04T10:08:33Z",
   "productId": "PRD-20261103-7A4F2",
-  "channel": "STORE"
+  <mark>"channel": "STORE"</mark>
 }</pre></template>
 
 <template id="ej-evt-published"><h3 slot>Aviso product.published<span class="ej-escenario">Happy path · refrigerador</span></h3>
 <p class="ej-nota">La tienda confirmó. El refri está vivo en liverpool.com.mx.</p>
 <pre>{
   "eventId": "evt-01JA8E9Z",
-  "type": "product.published",
+  <mark>"type": "product.published"</mark>,
   "occurredAt": "2026-11-04T10:12:00Z",
   "productId": "PRD-20261103-7A4F2",
   "channel": "STORE",
-  "url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2"
+  <mark>"url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2"</mark>
 }</pre></template>
 
 <template id="ej-evt-pub-failed"><h3 slot>Aviso product.publication_failed<span class="ej-escenario">Fuera del happy path</span></h3>
@@ -1032,12 +1032,12 @@ X-Liverpool-Signature: v1=7b1f…c9</pre>
 <p class="ej-nota">Cerró la modificación. Trae el origen (quién lo pidió) y los campos que cambiaron.</p>
 <pre>{
   "eventId": "evt-01JAEX8Q",
-  "type": "product.updated",
+  <mark>"type": "product.updated"</mark>,
   "occurredAt": "2026-11-12T09:15:48Z",
   "productId": "PRD-20261103-7A4F2",
-  "modificationId": "mod-20261112-9C21E",
+  <mark class="id">"modificationId": "mod-20261112-9C21E"</mark>,
   "source": { "actor": "PARTNER", "partnerId": "prt-mabe-prod" },
-  "changedFields": ["/base/description", "/attributes/GARANTIA_MESES"],
+  <mark>"changedFields": ["/base/description", "/attributes/GARANTIA_MESES"]</mark>,
   "productVersionAfter": 4
 }</pre></template>
 
