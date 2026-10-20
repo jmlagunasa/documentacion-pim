@@ -73,8 +73,27 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 .p-funcional{background:var(--azul-s);color:#1f4f9c;border-color:#bcd0f2}
 .p-tecnico{background:var(--verde-s);color:#1d6b33;border-color:#b9dcc2}
 .p-abierto{background:var(--ambar-s);color:var(--ambar);border-color:#f0d98a}
+tr[data-ej]{cursor:pointer}
+tr[data-ej]:hover>td{background:#fbfafd}
+tr[data-ej]:focus{outline:2px solid var(--link);outline-offset:-2px}
+tr[data-ej] td:last-child::after{content:" ›";color:var(--link);font-weight:700}
+.ej-pie{font-size:12px;color:var(--tinta3);margin:4px 0 0}
+dialog#ej-modal{border:none;border-radius:12px;max-width:min(960px,96vw);width:960px;padding:0;background:var(--papel);color:var(--tinta);box-shadow:0 20px 60px rgba(29,33,48,.25)}
+dialog#ej-modal::backdrop{background:rgba(29,33,48,.55)}
+#ej-modal .ej-head{padding:14px 20px;border-bottom:1px solid var(--borde);display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+#ej-modal .ej-head h3{margin:0;font-size:16px;line-height:1.3}
+#ej-modal .ej-cerrar{margin-left:auto;background:transparent;border:0;font-size:24px;line-height:1;cursor:pointer;color:var(--tinta2);padding:0 6px}
+#ej-modal .ej-cerrar:hover{color:var(--tinta)}
+#ej-modal .ej-body{padding:14px 20px 18px;max-height:min(72vh,780px);overflow:auto}
+#ej-modal pre{margin:6px 0 10px;background:#f8f8fb;border:1px solid var(--borde);border-radius:8px;padding:10px 12px;overflow-x:auto;font:12.5px/1.5 var(--mono);white-space:pre}
+#ej-modal pre.http{background:#f0f2f6;color:var(--tinta2)}
+#ej-modal h4{font-size:12px;color:var(--tinta3);margin:12px 0 4px;letter-spacing:.06em;text-transform:uppercase}
+#ej-modal h4:first-child{margin-top:0}
+#ej-modal .ej-nota{font-size:12.5px;color:var(--tinta2);margin:0 0 6px;background:var(--gris-s);border-radius:6px;padding:8px 10px}
+#ej-modal .ej-nota.abierto{background:var(--ambar-s);color:var(--ambar)}
+#ej-modal .ej-escenario{display:inline-block;background:var(--azul-s);color:#1f4f9c;border:1px solid #bcd0f2;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:600;margin-left:6px}
 @media (max-width:820px){.marco{grid-template-columns:1fr}nav{position:static;max-height:none}.resumen{grid-template-columns:1fr}}
-@media print{nav{display:none}.marco{display:block}section{break-inside:avoid}}
+@media print{nav{display:none}.marco{display:block}section{break-inside:avoid}dialog#ej-modal{display:none}}
 </style>
 </head>
 <body>
@@ -108,7 +127,8 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 
 <section id="inicio">
   <h2>Mirada rápida</h2>
-  <p>El ciclo de vida de un producto que entra por API va de la credencial a los cambios después de publicar. Cada etapa tiene unas APIs que lanza el seller y unos avisos que recibe. Esta página pone, por etapa, qué pasa en el flujo (<span class="pill p-funcional">funcional</span>) y qué APIs mueven el estado (<span class="pill p-tecnico">técnico</span>).</p>
+  <p>El ciclo de vida de un producto que entra por API va de la credencial a los cambios después de publicar. Cada etapa tiene unas APIs que lanza el seller y unos avisos que recibe. Esta página pone, por etapa, qué pasa en el flujo (<span class="pill p-funcional">funcional</span>) y qué APIs mueven el estado (<span class="pill p-tecnico">técnico</span>). <b>Haz clic en cualquier fila</b> para ver el ejemplo con request y response del <b>happy path de un refrigerador</b>.</p>
+  <p class="marca"><b>El refri del ejemplo.</b> Proveedor de Mercaderías (<code>business=LVP</code>) da de alta un refrigerador top-mount de 300 L, acero inoxidable, con dos colores: <code>INOX</code> y <code>NEGRO</code>. Marca Mabe (ya está en la lista), modelo <code>RMA300FJMRE0</code>, GTIN 13 dígitos. La ficha pasa validación, Compras acepta, SAP devuelve dos SKU (uno por color) y el canal <code>STORE</code> publica. Todos los datos son inventados: identificadores (<code>prt-…</code>, <code>prp-…</code>, <code>bat-…</code>, <code>sku-…</code>), GTIN y URLs no corresponden a productos reales.</p>
   <div class="cifras">
     <div><b class="cifra">7</b><span>etapas del ciclo de vida</span></div>
     <div><b class="cifra">41</b><span>rutas bajo <code>/partner/v1</code></span></div>
@@ -173,9 +193,9 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/oauth/token</td><td>Pide un token de 15 minutos. Lo da el proveedor de identidad</td><td><code>grant_type=client_credentials</code>, <code>client_id</code>, <code>client_secret</code>, <code>scope</code></td><td><code>access_token</code>, <code>expires_in</code>, <code>scope</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/me</td><td>Saber quién es, qué puede hacer y sus límites</td><td>—</td><td><code>partnerId</code>, tipo, negocios, tiendas, alcances, límites y consumo</td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/webhooks</td><td>Suscribirse a los avisos. Se hace una vez</td><td><code>url</code> (HTTPS), <code>events[]</code></td><td><code>webhookId</code> y <code>secret</code> (se muestra una vez)</td></tr>
+      <tr data-ej="oauth-token" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/oauth/token</td><td>Pide un token de 15 minutos. Lo da el proveedor de identidad</td><td><code>grant_type=client_credentials</code>, <code>client_id</code>, <code>client_secret</code>, <code>scope</code></td><td><code>access_token</code>, <code>expires_in</code>, <code>scope</code></td></tr>
+      <tr data-ej="me" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/me</td><td>Saber quién es, qué puede hacer y sus límites</td><td>—</td><td><code>partnerId</code>, tipo, negocios, tiendas, alcances, límites y consumo</td></tr>
+      <tr data-ej="webhooks-create" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/webhooks</td><td>Suscribirse a los avisos. Se hace una vez</td><td><code>url</code> (HTTPS), <code>events[]</code></td><td><code>webhookId</code> y <code>secret</code> (se muestra una vez)</td></tr>
     </tbody>
   </table></div>
   <p class="marca abierto"><b>Abierto · PD-26.</b> Quién emite el token (Auth0 u otro) y cuál es la vigencia que se publicará. Los 15 minutos están como cota de arranque. El plan y la cuota del proveedor de identidad siguen abiertos.</p>
@@ -193,12 +213,12 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/categories/discovery?q=</td><td>Predecir la categoría a partir del título</td><td><code>business</code>, <code>q</code> (título) o <code>imageUrls[]</code></td><td>De una a tres categorías con <code>confidence</code> y <code>templateId</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/categories/{categoryId}</td><td>Bajar atributos, valores, variantes y versión de esa categoría</td><td><code>business</code></td><td><code>templateId</code>, <code>version</code>, <code>attributes[]</code>, <code>variantAxes[]</code>, <code>imageRules</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/categories/{categoryId}/schema</td><td>La misma plantilla como JSON Schema, para validar del lado del seller</td><td><code>business</code></td><td>JSON Schema</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/categories/changes?since=</td><td>Qué cambió en las plantillas que usa</td><td><code>since</code></td><td>Cambios con <code>templateId</code>, <code>version</code>, <code>effectiveFrom</code> y campos</td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/brand-requests</td><td>Pedir una marca que no está en la lista</td><td>marca, evidencia</td><td><code>requestId</code>, estado</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/products/search</td><td>Saber si ya existe, por GTIN o por texto</td><td><code>gtin</code> o <code>q</code>, <code>business</code></td><td><code>results[]</code> con <code>sku</code>, <code>allowedAction</code> y <code>offer.miraklStatus</code></td></tr>
+      <tr data-ej="cat-discovery" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/categories/discovery?q=</td><td>Predecir la categoría a partir del título</td><td><code>business</code>, <code>q</code> (título) o <code>imageUrls[]</code></td><td>De una a tres categorías con <code>confidence</code> y <code>templateId</code></td></tr>
+      <tr data-ej="cat-get" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/categories/{categoryId}</td><td>Bajar atributos, valores, variantes y versión de esa categoría</td><td><code>business</code></td><td><code>templateId</code>, <code>version</code>, <code>attributes[]</code>, <code>variantAxes[]</code>, <code>imageRules</code></td></tr>
+      <tr data-ej="cat-schema" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/categories/{categoryId}/schema</td><td>La misma plantilla como JSON Schema, para validar del lado del seller</td><td><code>business</code></td><td>JSON Schema</td></tr>
+      <tr data-ej="cat-changes" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/categories/changes?since=</td><td>Qué cambió en las plantillas que usa</td><td><code>since</code></td><td>Cambios con <code>templateId</code>, <code>version</code>, <code>effectiveFrom</code> y campos</td></tr>
+      <tr data-ej="brand-req" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/brand-requests</td><td>Pedir una marca que no está en la lista</td><td>marca, evidencia</td><td><code>requestId</code>, estado</td></tr>
+      <tr data-ej="search" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/products/search</td><td>Saber si ya existe, por GTIN o por texto</td><td><code>gtin</code> o <code>q</code>, <code>business</code></td><td><code>results[]</code> con <code>sku</code>, <code>allowedAction</code> y <code>offer.miraklStatus</code></td></tr>
     </tbody>
   </table></div>
   <p class="marca"><b>allowedAction</b> es la señal clave: <code>CREATE_PROPOSAL</code> cataloga (etapa 4). <code>CREATE_OFFER</code>, <code>MULTI_OFFER</code> y <code>STOCK_OUT_OFFER</code> arman la oferta en Mirakl. <code>REQUEST_EAN_RELEASE</code> pide liberar el EAN. <code>NOT_ALLOWED</code> no crea nada.</p>
@@ -217,10 +237,10 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/validations</td><td>Probar hasta 100 productos sin crear nada</td><td>El mismo cuerpo del alta</td><td>Errores por campo (JSON Pointer) o <code>ok</code></td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/media/uploads</td><td>Pedir URL firmadas para subir cada archivo</td><td><code>files[]</code> con <code>fileName</code>, <code>contentType</code>, <code>size</code>, <code>sha256</code></td><td>Por archivo, <code>mediaId</code> y <code>uploadUrl</code> (vence en 15 min)</td></tr>
-      <tr><td><span class="metodo m-put">PUT</span></td><td>/proposals/{id}/media</td><td>Fijar las imágenes por variante antes del SKU</td><td><code>items[]</code> con <code>mediaId</code> o <code>url</code>, <code>type</code>, <code>order</code>, <code>variantRef</code>, <code>publish</code></td><td>El juego guardado y validado</td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/media/batches</td><td>Carga masiva con manifiesto que liga cada archivo a su SKU o EAN</td><td><code>manifestUrl</code></td><td><code>batchId</code> y resultado por archivo</td></tr>
+      <tr data-ej="validations" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/validations</td><td>Probar hasta 100 productos sin crear nada</td><td>El mismo cuerpo del alta</td><td>Errores por campo (JSON Pointer) o <code>ok</code></td></tr>
+      <tr data-ej="media-uploads" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/media/uploads</td><td>Pedir URL firmadas para subir cada archivo</td><td><code>files[]</code> con <code>fileName</code>, <code>contentType</code>, <code>size</code>, <code>sha256</code></td><td>Por archivo, <code>mediaId</code> y <code>uploadUrl</code> (vence en 15 min)</td></tr>
+      <tr data-ej="proposals-media" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-put">PUT</span></td><td>/proposals/{id}/media</td><td>Fijar las imágenes por variante antes del SKU</td><td><code>items[]</code> con <code>mediaId</code> o <code>url</code>, <code>type</code>, <code>order</code>, <code>variantRef</code>, <code>publish</code></td><td>El juego guardado y validado</td></tr>
+      <tr data-ej="media-batches" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/media/batches</td><td>Carga masiva con manifiesto que liga cada archivo a su SKU o EAN</td><td><code>manifestUrl</code></td><td><code>batchId</code> y resultado por archivo</td></tr>
     </tbody>
   </table></div>
   <p class="marca"><b>Cuándo subir.</b> Si tiene URL pública, no abra esta etapa: póngala en el alta como <code>pictures.source</code>. Si no, suba aquí antes del alta (quedan como <code>mediaId</code>) o después del SKU en la etapa 5.</p>
@@ -238,26 +258,26 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/proposals</td><td>Mandar un producto; responde en el momento</td><td><code>business</code>, <code>externalRef</code>, <code>categoryId</code>, <code>templateVersion</code>, <code>base</code>, <code>attributes[]</code>, <code>variants[]</code>, <code>pictures[]</code>, <code>logistics</code></td><td><code>201</code> con <code>proposalId</code> y estado <code>IN_APPROVAL</code></td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/batches</td><td>Mandar hasta 1,000 productos de golpe</td><td><code>business</code>, <code>items[]</code> (cada renglón, el JSON del alta) o <code>fileUrl</code></td><td><code>202</code> con <code>batchId</code> y <code>received</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/batches/{batchId}</td><td>Avance del lote</td><td>—</td><td>Resumen: recibidos, válidos, creados, ya existen, con error</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/batches/{batchId}/items?result=</td><td>Resultado por producto</td><td><code>result</code></td><td>Por producto, <code>externalRef</code> con su <code>proposalId</code> o <code>errors[]</code></td></tr>
-      <tr><td><span class="metodo m-patch">PATCH</span></td><td>/proposals/{proposalId}</td><td>Corregir lo que se pidió</td><td><code>If-Match</code>, los campos a corregir</td><td>Nuevo estado (<code>VALIDATING</code>)</td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/proposals/{proposalId}/variants</td><td>Agregar una variante antes del visto bueno</td><td>la variante</td><td>Variante con <code>variantId</code></td></tr>
-      <tr><td><span class="metodo m-delete">DELETE</span></td><td>/proposals/{proposalId}/variants/{variantId}</td><td>Quitar una variante sin SKU (borrado lógico)</td><td>—</td><td><code>204</code></td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/proposals/{proposalId}/cancel</td><td>Cancelar antes del SKU; libera los EAN</td><td><code>reason</code></td><td><code>CANCELLED</code></td></tr>
+      <tr data-ej="proposals-create" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/proposals</td><td>Mandar un producto; responde en el momento</td><td><code>business</code>, <code>externalRef</code>, <code>categoryId</code>, <code>templateVersion</code>, <code>base</code>, <code>attributes[]</code>, <code>variants[]</code>, <code>pictures[]</code>, <code>logistics</code></td><td><code>201</code> con <code>proposalId</code> y estado <code>IN_APPROVAL</code></td></tr>
+      <tr data-ej="batches-create" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/batches</td><td>Mandar hasta 1,000 productos de golpe</td><td><code>business</code>, <code>items[]</code> (cada renglón, el JSON del alta) o <code>fileUrl</code></td><td><code>202</code> con <code>batchId</code> y <code>received</code></td></tr>
+      <tr data-ej="batches-get" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/batches/{batchId}</td><td>Avance del lote</td><td>—</td><td>Resumen: recibidos, válidos, creados, ya existen, con error</td></tr>
+      <tr data-ej="batches-items" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/batches/{batchId}/items?result=</td><td>Resultado por producto</td><td><code>result</code></td><td>Por producto, <code>externalRef</code> con su <code>proposalId</code> o <code>errors[]</code></td></tr>
+      <tr data-ej="proposals-patch" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-patch">PATCH</span></td><td>/proposals/{proposalId}</td><td>Corregir lo que se pidió</td><td><code>If-Match</code>, los campos a corregir</td><td>Nuevo estado (<code>VALIDATING</code>)</td></tr>
+      <tr data-ej="proposals-variants-add" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/proposals/{proposalId}/variants</td><td>Agregar una variante antes del visto bueno</td><td>la variante</td><td>Variante con <code>variantId</code></td></tr>
+      <tr data-ej="proposals-variants-del" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-delete">DELETE</span></td><td>/proposals/{proposalId}/variants/{variantId}</td><td>Quitar una variante sin SKU (borrado lógico)</td><td>—</td><td><code>204</code></td></tr>
+      <tr data-ej="proposals-cancel" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/proposals/{proposalId}/cancel</td><td>Cancelar antes del SKU; libera los EAN</td><td><code>reason</code></td><td><code>CANCELLED</code></td></tr>
     </tbody>
   </table></div>
   <h3>Avisos que recibe en esta etapa</h3>
   <div class="tabla"><table>
     <thead><tr><th>Aviso</th><th>Qué significa</th></tr></thead>
     <tbody>
-      <tr><td><span class="aviso">proposal.received</span></td><td>El PIM recibió el producto (del lote, uno por renglón)</td></tr>
-      <tr><td><span class="aviso">proposal.validated</span></td><td>Pasó la validación; entra a revisión</td></tr>
-      <tr><td><span class="aviso">proposal.correction_required</span></td><td>Hay que corregir, campo por campo</td></tr>
-      <tr><td><span class="aviso">proposal.rejected</span></td><td>No se puede catalogar; es final</td></tr>
-      <tr><td><span class="aviso">proposal.already_exists</span></td><td>Ya existe; trae la acción (oferta, multioferta, stock out, nada)</td></tr>
-      <tr><td><span class="aviso">batch.completed</span></td><td>Terminó el lote, con su resumen</td></tr>
+      <tr data-ej="evt-received" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.received</span></td><td>El PIM recibió el producto (del lote, uno por renglón)</td></tr>
+      <tr data-ej="evt-validated" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.validated</span></td><td>Pasó la validación; entra a revisión</td></tr>
+      <tr data-ej="evt-correction" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.correction_required</span></td><td>Hay que corregir, campo por campo</td></tr>
+      <tr data-ej="evt-rejected" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.rejected</span></td><td>No se puede catalogar; es final</td></tr>
+      <tr data-ej="evt-already" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.already_exists</span></td><td>Ya existe; trae la acción (oferta, multioferta, stock out, nada)</td></tr>
+      <tr data-ej="evt-batch" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">batch.completed</span></td><td>Terminó el lote, con su resumen</td></tr>
     </tbody>
   </table></div>
   <p class="marca"><b>Si ya existe (ALREADY_EXISTS):</b> si el seller aun así manda el alta, el cuerpo lleva sólo <code>catalogProductId</code> y no la ficha. No se crea propuesta: la respuesta trae el SKU y la <code>allowedAction</code>.</p>
@@ -277,23 +297,23 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/proposals/{id}</td><td>Estado y datos de una propuesta</td><td><code>view</code></td><td>Estado externo, motivos, acciones pendientes, SKU por variante y canales</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/products/{id}</td><td>La ficha del producto que ve el seller</td><td><code>view</code></td><td>Datos, SKU por variante, categoría web asignada, estado</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/products/{id}/channels</td><td>Entrega por canal</td><td>—</td><td>Por canal: <code>PENDING</code>, <code>SENT</code>, <code>PUBLISHED</code>, <code>FAILED</code> o <code>RETIRED</code>, con fechas</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/proposals/{id}/history · /products/{id}/history</td><td>Historia de estados, con fecha, motivo y área</td><td>—</td><td>Transiciones y cambios por campo (antes/después)</td></tr>
-      <tr><td><span class="metodo m-put">PUT</span></td><td>/products/{id}/media</td><td>Fijar las imágenes de un producto ya con SKU (si no iban antes)</td><td><code>items[]</code> por variante</td><td>El juego guardado</td></tr>
+      <tr data-ej="proposals-get" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/proposals/{id}</td><td>Estado y datos de una propuesta</td><td><code>view</code></td><td>Estado externo, motivos, acciones pendientes, SKU por variante y canales</td></tr>
+      <tr data-ej="products-get" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/products/{id}</td><td>La ficha del producto que ve el seller</td><td><code>view</code></td><td>Datos, SKU por variante, categoría web asignada, estado</td></tr>
+      <tr data-ej="products-channels" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/products/{id}/channels</td><td>Entrega por canal</td><td>—</td><td>Por canal: <code>PENDING</code>, <code>SENT</code>, <code>PUBLISHED</code>, <code>FAILED</code> o <code>RETIRED</code>, con fechas</td></tr>
+      <tr data-ej="proposals-history" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/proposals/{id}/history · /products/{id}/history</td><td>Historia de estados, con fecha, motivo y área</td><td>—</td><td>Transiciones y cambios por campo (antes/después)</td></tr>
+      <tr data-ej="products-media" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-put">PUT</span></td><td>/products/{id}/media</td><td>Fijar las imágenes de un producto ya con SKU (si no iban antes)</td><td><code>items[]</code> por variante</td><td>El juego guardado</td></tr>
     </tbody>
   </table></div>
   <h3>Avisos que recibe en esta etapa</h3>
   <div class="tabla"><table>
     <thead><tr><th>Aviso</th><th>Qué significa</th></tr></thead>
     <tbody>
-      <tr><td><span class="aviso">proposal.accepted</span></td><td>Compras aceptó o el score alcanzó; se pide el SKU a SAP</td></tr>
-      <tr><td><span class="aviso">product.sku_created</span></td><td>SAP asignó SKU y EAN por variante</td></tr>
-      <tr><td><span class="aviso">product.in_preparation</span></td><td>Liverpool trabaja fotos, calidad o categoría web</td></tr>
-      <tr><td><span class="aviso">product.publication_sent</span></td><td>Se envió a un canal</td></tr>
-      <tr><td><span class="aviso">product.published</span></td><td>El canal confirmó</td></tr>
-      <tr><td><span class="aviso">product.publication_failed</span></td><td>El canal rechazó o no confirmó; Liverpool lo revisa</td></tr>
+      <tr data-ej="evt-accepted" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">proposal.accepted</span></td><td>Compras aceptó o el score alcanzó; se pide el SKU a SAP</td></tr>
+      <tr data-ej="evt-sku" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.sku_created</span></td><td>SAP asignó SKU y EAN por variante</td></tr>
+      <tr data-ej="evt-prep" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.in_preparation</span></td><td>Liverpool trabaja fotos, calidad o categoría web</td></tr>
+      <tr data-ej="evt-pub-sent" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.publication_sent</span></td><td>Se envió a un canal</td></tr>
+      <tr data-ej="evt-published" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.published</span></td><td>El canal confirmó</td></tr>
+      <tr data-ej="evt-pub-failed" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.publication_failed</span></td><td>El canal rechazó o no confirmó; Liverpool lo revisa</td></tr>
     </tbody>
   </table></div>
   <p class="marca abierto"><b>Abierto · PD-24.</b> Si el score de Marketplace bloquea la creación del SKU o sólo la publicación. Si bloquea, aquí entra un <code>CORRECTION_REQUIRED</code> antes de <code>ACCEPTED</code>.</p>
@@ -311,19 +331,19 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/products/{id}/permissions</td><td>Qué puede cambiar de este producto</td><td>—</td><td><code>isContentOwner</code>; por grupo, <code>editable</code>, <code>requiresApproval</code> o <code>readOnly</code>; acciones</td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/products/{id}/modifications</td><td>Mandar un cambio</td><td><code>If-Match</code>, <code>changes[]</code>, <code>addVariants[]</code></td><td><code>202</code> con <code>modificationId</code> y estado <code>IN_MODIFICATION</code></td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/modifications/batches</td><td>Modificación masiva, sólo de atributos editables</td><td><code>items[]</code></td><td><code>batchId</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/modifications/{id}</td><td>Seguir el cambio</td><td>—</td><td>Estado, por dónde va (QA, Compras o SAP) y motivos</td></tr>
+      <tr data-ej="products-permissions" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/products/{id}/permissions</td><td>Qué puede cambiar de este producto</td><td>—</td><td><code>isContentOwner</code>; por grupo, <code>editable</code>, <code>requiresApproval</code> o <code>readOnly</code>; acciones</td></tr>
+      <tr data-ej="products-modifications" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/products/{id}/modifications</td><td>Mandar un cambio</td><td><code>If-Match</code>, <code>changes[]</code>, <code>addVariants[]</code></td><td><code>202</code> con <code>modificationId</code> y estado <code>IN_MODIFICATION</code></td></tr>
+      <tr data-ej="modifications-batches" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/modifications/batches</td><td>Modificación masiva, sólo de atributos editables</td><td><code>items[]</code></td><td><code>batchId</code></td></tr>
+      <tr data-ej="modifications-get" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/modifications/{id}</td><td>Seguir el cambio</td><td>—</td><td>Estado, por dónde va (QA, Compras o SAP) y motivos</td></tr>
     </tbody>
   </table></div>
   <h3>Avisos que recibe en esta etapa</h3>
   <div class="tabla"><table>
     <thead><tr><th>Aviso</th><th>Qué significa</th></tr></thead>
     <tbody>
-      <tr><td><span class="aviso">product.updated</span></td><td>Quedó aplicado un cambio, suyo o de Liverpool, con su origen y los campos</td></tr>
-      <tr><td><span class="aviso">product.modification_rejected</span></td><td>No se aprobó el cambio</td></tr>
-      <tr><td><span class="aviso">product.retired</span></td><td>Se retiró de un canal; si fue el último, el producto queda retirado</td></tr>
+      <tr data-ej="evt-updated" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.updated</span></td><td>Quedó aplicado un cambio, suyo o de Liverpool, con su origen y los campos</td></tr>
+      <tr data-ej="evt-mod-rejected" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.modification_rejected</span></td><td>No se aprobó el cambio</td></tr>
+      <tr data-ej="evt-retired" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">product.retired</span></td><td>Se retiró de un canal; si fue el último, el producto queda retirado</td></tr>
     </tbody>
   </table></div>
   <p class="marca"><b>Dueño del contenido.</b> Puede modificar quien dio de alta el producto (el comprador o el primer seller). Los demás sellers se suman con su oferta, sin cambiar datos ni fotos. Ningún seller cambia productos catalogados por Liverpool.</p>
@@ -342,20 +362,20 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
   <div class="tabla"><table class="t-apis">
     <thead><tr><th></th><th>Ruta</th><th>Para qué</th><th>Entra</th><th>Sale</th></tr></thead>
     <tbody>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/events?since=&amp;types=&amp;cursor=</td><td>Feed de eventos, respaldo de los webhooks</td><td>cursor</td><td>Eventos en orden, de los últimos 30 días</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/receipts/{requestId}</td><td>Recibo de cualquier escritura</td><td>—</td><td>El recibo</td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/webhooks</td><td>Listar suscripciones</td><td>—</td><td>Las suscripciones</td></tr>
-      <tr><td><span class="metodo m-patch">PATCH</span></td><td>/webhooks/{id}</td><td>Cambiar URL o eventos</td><td>campos</td><td>La suscripción actualizada</td></tr>
-      <tr><td><span class="metodo m-delete">DELETE</span></td><td>/webhooks/{id}</td><td>Borrar una suscripción</td><td>—</td><td><code>204</code></td></tr>
-      <tr><td><span class="metodo m-post">POST</span></td><td>/webhooks/{id}/test · /webhooks/{id}/secret</td><td>Mandar un ping firmado · rotar el secreto (el anterior vale 24 h más)</td><td>—</td><td>Resultado de la entrega · nuevo <code>secret</code></td></tr>
-      <tr><td><span class="metodo m-get">GET</span></td><td>/webhooks/{id}/deliveries · <span class="metodo m-post">POST</span> /webhooks/{id}/deliveries/{deliveryId}/retry</td><td>Ver entregas y reintentarlas</td><td>—</td><td>Intentos, código y error</td></tr>
+      <tr data-ej="events" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/events?since=&amp;types=&amp;cursor=</td><td>Feed de eventos, respaldo de los webhooks</td><td>cursor</td><td>Eventos en orden, de los últimos 30 días</td></tr>
+      <tr data-ej="receipts" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/receipts/{requestId}</td><td>Recibo de cualquier escritura</td><td>—</td><td>El recibo</td></tr>
+      <tr data-ej="webhooks-list" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/webhooks</td><td>Listar suscripciones</td><td>—</td><td>Las suscripciones</td></tr>
+      <tr data-ej="webhooks-patch" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-patch">PATCH</span></td><td>/webhooks/{id}</td><td>Cambiar URL o eventos</td><td>campos</td><td>La suscripción actualizada</td></tr>
+      <tr data-ej="webhooks-del" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-delete">DELETE</span></td><td>/webhooks/{id}</td><td>Borrar una suscripción</td><td>—</td><td><code>204</code></td></tr>
+      <tr data-ej="webhooks-test-secret" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-post">POST</span></td><td>/webhooks/{id}/test · /webhooks/{id}/secret</td><td>Mandar un ping firmado · rotar el secreto (el anterior vale 24 h más)</td><td>—</td><td>Resultado de la entrega · nuevo <code>secret</code></td></tr>
+      <tr data-ej="webhooks-deliveries" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="metodo m-get">GET</span></td><td>/webhooks/{id}/deliveries · <span class="metodo m-post">POST</span> /webhooks/{id}/deliveries/{deliveryId}/retry</td><td>Ver entregas y reintentarlas</td><td>—</td><td>Intentos, código y error</td></tr>
     </tbody>
   </table></div>
   <h3>Aviso que llega aquí</h3>
   <div class="tabla"><table>
     <thead><tr><th>Aviso</th><th>Qué significa</th></tr></thead>
     <tbody>
-      <tr><td><span class="aviso">template.changed</span></td><td>Cambió una plantilla que usa, con su fecha de vigencia. Mantiene el nombre hasta cerrar el catálogo de eventos</td></tr>
+      <tr data-ej="evt-template" tabindex="0" role="button" aria-haspopup="dialog"><td><span class="aviso">template.changed</span></td><td>Cambió una plantilla que usa, con su fecha de vigencia. Mantiene el nombre hasta cerrar el catálogo de eventos</td></tr>
     </tbody>
   </table></div>
   <p class="marca">Las URL de descarga para subir imágenes de la etapa 3 vencen en 15 minutos. Un alta con cuerpo demasiado grande responde <code>413</code>: se rechaza completo.</p>
@@ -363,6 +383,809 @@ footer{max-width:1200px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 
 </main>
 </div>
+
+<dialog id="ej-modal" aria-labelledby="ej-titulo">
+  <div class="ej-head">
+    <h3 id="ej-titulo">Ejemplo</h3>
+    <button type="button" class="ej-cerrar" data-cerrar aria-label="Cerrar">×</button>
+  </div>
+  <div class="ej-body" id="ej-slot"></div>
+</dialog>
+
+<template id="ej-oauth-token"><h3 slot>POST /oauth/token<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">El sistema de Mabe pide un token de 15 minutos al proveedor de identidad. Lo guarda y lo reutiliza hasta que esté por vencer.</p>
+<h4>Request</h4>
+<pre class="http">POST /oauth/token
+Host: identidad.liverpool.com.mx
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&amp;client_id=prt-mabe-prod&amp;client_secret=&lt;omitido&gt;&amp;scope=catalog.read%20proposals.write%20media.write%20webhooks.manage</pre>
+<h4>Response 200</h4>
+<pre>{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.…ejemplo…",
+  "token_type": "Bearer",
+  "expires_in": 900,
+  "scope": "catalog.read proposals.write media.write webhooks.manage"
+}</pre></template>
+
+<template id="ej-me"><h3 slot>GET /me<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Al conectarse por primera vez, el sistema del seller lee quién es, qué negocios tiene abiertos y sus límites.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/me
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+X-Request-Id: req-20261103-000001</pre>
+<h4>Response 200</h4>
+<pre>{
+  "partnerId": "prt-mabe-prod",
+  "partnerType": "SUPPLIER",
+  "sapSupplierId": "100045721",
+  "businesses": ["LVP"],
+  "shops": [],
+  "scopes": ["catalog.read", "proposals.write", "media.write", "webhooks.manage"],
+  "limits": { "reads_per_min": 600, "writes_per_min": 60, "suggestions_per_min": 30, "max_batch_items": 1000, "daily_new_products": 5000 },
+  "usage":  { "writes_last_min": 2, "daily_new_products_today": 11 },
+  "env": "prod"
+}</pre></template>
+
+<template id="ej-webhooks-create"><h3 slot>POST /webhooks<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Mabe deja la URL donde quiere recibir los avisos y marca los eventos que le interesan. El PIM responde con el secreto que firma cada aviso: se muestra una sola vez.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/webhooks
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+Idempotency-Key: wh-mabe-001</pre>
+<pre>{
+  "url": "https://integraciones.mabe.example/liverpool/webhooks",
+  "events": [
+    "proposal.received", "proposal.validated", "proposal.correction_required",
+    "proposal.accepted", "proposal.rejected", "proposal.already_exists",
+    "product.sku_created", "product.in_preparation",
+    "product.publication_sent", "product.published", "product.publication_failed",
+    "product.updated", "product.retired", "batch.completed", "template.changed"
+  ],
+  "description": "Integración Mabe · entorno de producción"
+}</pre>
+<h4>Response 201</h4>
+<pre>{
+  "webhookId": "wh-mabe-prod-01",
+  "secret": "whs_live_8K7m…guárdalo-ahora-no-se-vuelve-a-mostrar",
+  "status": "ACTIVE",
+  "createdAt": "2026-11-03T15:02:11Z"
+}</pre></template>
+
+<template id="ej-cat-discovery"><h3 slot>GET /categories/discovery<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Con el título que trae su catálogo, Mabe le pregunta a la IA qué categoría le toca. En el ejemplo la primera coincide con confianza alta y se usará ésa.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/categories/discovery?business=LVP&amp;q=Refrigerador%20Mabe%20300%20litros%20top%20mount%20acero%20inoxidable
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200</h4>
+<pre>{
+  "suggestionId": "sug-20261103-5f91c",
+  "templates": [
+    { "categoryId": "LVP-ELE-REF-TOP-300", "name": "Línea blanca / Refrigeradores / Top-mount / 251–350 L",
+      "templateId": "LVP-ELE-REF-TOP-300", "version": 7, "confidence": 0.94,
+      "reason": "El título contiene «refrigerador», «top mount» y «300 L»" },
+    { "categoryId": "LVP-ELE-REF-TOP-500", "name": "Línea blanca / Refrigeradores / Top-mount / 351–500 L",
+      "templateId": "LVP-ELE-REF-TOP-500", "version": 7, "confidence": 0.21,
+      "reason": "Hay términos compartidos; capacidad fuera del rango" }
+  ],
+  "webCategory": "linea-blanca/refrigeradores",
+  "expiresAt": "2026-11-03T15:35:00Z"
+}</pre></template>
+
+<template id="ej-cat-get"><h3 slot>GET /categories/{categoryId}<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">La vista efectiva de la plantilla para Liverpool: los atributos que pide, qué valores aceptan, cuáles arman variante (COLOR) y las reglas de la foto principal. Se baja una vez por categoría; cambios posteriores llegan por <code>template.changed</code>.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/categories/LVP-ELE-REF-TOP-300?business=LVP
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200 (recorte)</h4>
+<pre>{
+  "categoryId": "LVP-ELE-REF-TOP-300",
+  "templateId": "LVP-ELE-REF-TOP-300",
+  "version": 7,
+  "effectiveFrom": "2026-10-01T00:00:00Z",
+  "variantAxes": ["COLOR"],
+  "imageRules": {
+    "principal": { "backgroundColor": "WHITE", "minResolution": "1200x1200" },
+    "maxPerVariant": 20,
+    "allowedTypes": ["PRINCIPAL", "SECUNDARIA", "AMBIENTACION"]
+  },
+  "attributes": [
+    { "id": "BRAND", "name": "Marca", "type": "list", "required": true, "filledBy": "SELLER",
+      "values": [ { "id": "BR-MABE", "name": "Mabe" }, { "id": "BR-SAMSUNG", "name": "Samsung" }, { "id": "BR-LG", "name": "LG" } ] },
+    { "id": "MODELO", "name": "Modelo", "type": "text", "required": true, "filledBy": "SELLER" },
+    { "id": "CAPACIDAD_TOTAL", "name": "Capacidad total", "type": "number_unit", "required": true,
+      "allowedUnits": ["L"], "min": 100, "max": 999, "filledBy": "SELLER" },
+    { "id": "TIPO_PUERTA", "name": "Tipo de puerta", "type": "list", "required": true,
+      "values": [ { "id": "TOP_MOUNT", "name": "Top mount" }, { "id": "BOTTOM", "name": "Bottom mount" },
+                  { "id": "SIDE_BY_SIDE", "name": "Side by side" }, { "id": "FRENCH_DOOR", "name": "French door" } ] },
+    { "id": "COLOR", "name": "Color", "type": "list", "required": true, "allowVariations": true,
+      "values": [ { "id": "INOX", "name": "Acero inoxidable" }, { "id": "NEGRO", "name": "Negro" },
+                  { "id": "BLANCO", "name": "Blanco" }, { "id": "GRIS", "name": "Gris" } ] },
+    { "id": "EFICIENCIA_ENERGETICA", "name": "Eficiencia energética", "type": "list", "required": true,
+      "values": [ { "id": "A_PLUS", "name": "A+" }, { "id": "A", "name": "A" }, { "id": "B", "name": "B" } ] },
+    { "id": "CONSUMO_KWH_ANUAL", "name": "Consumo anual", "type": "number_unit",
+      "allowedUnits": ["kWh"], "required": true },
+    { "id": "NOM_015", "name": "Certificación NOM-015-ENER", "type": "boolean", "required": true },
+    { "id": "GARANTIA_MESES", "name": "Garantía", "type": "number_unit", "allowedUnits": ["mes"], "required": true },
+    { "id": "ALTURA", "name": "Altura", "type": "number_unit", "allowedUnits": ["cm"], "required": true },
+    { "id": "ANCHO",  "name": "Ancho",  "type": "number_unit", "allowedUnits": ["cm"], "required": true },
+    { "id": "FONDO",  "name": "Fondo",  "type": "number_unit", "allowedUnits": ["cm"], "required": true }
+  ]
+}</pre></template>
+
+<template id="ej-cat-schema"><h3 slot>GET /categories/{categoryId}/schema<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Para validar la ficha del lado del seller, se baja la misma categoría como JSON Schema. En el happy path no se usa (Mabe ya validó con sus propias reglas y pide <code>POST /validations</code>). Ver el ejemplo completo en la página de <a href="catalogacion-por-api-ejemplos.html#api-plantilla">APIs con JSON</a>.</p></template>
+
+<template id="ej-cat-changes"><h3 slot>GET /categories/changes<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Se consulta cuando ya hay productos vivos para saber qué plantillas cambiaron. En el alta del refri no se llama. Ver <a href="catalogacion-por-api-ejemplos.html#api-plantilla">la página de ejemplos</a>.</p></template>
+
+<template id="ej-brand-req"><h3 slot>POST /brand-requests<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Mabe no la usa: la marca ya está en la lista de la categoría. Esta ruta se llama cuando un seller trae una marca nueva que no está en la plantilla.</p>
+<h4>Ejemplo mínimo (ilustrativo)</h4>
+<pre>POST /partner/v1/brand-requests
+{ "brand": "Nueva Marca S.A.", "evidence": [ { "type": "TRADEMARK", "url": "https://…prueba.pdf" } ] }</pre></template>
+
+<template id="ej-search"><h3 slot>GET /products/search<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Último filtro antes de catalogar. Mabe pregunta por el GTIN de la variante acero inoxidable; <code>results</code> vuelve vacío y <code>allowedAction</code> es <code>CREATE_PROPOSAL</code>: se puede catalogar.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/products/search?business=LVP&amp;gtin=07501234567890
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200</h4>
+<pre>{
+  "query": { "gtin": "07501234567890", "business": "LVP" },
+  "results": [],
+  "allowedAction": "CREATE_PROPOSAL",
+  "paging": { "total": 0 }
+}</pre>
+<p class="ej-nota">Si otra persona ya hubiera cargado este producto, <code>results</code> traería <code>sku</code>, <code>catalogProductId</code>, el dueño del contenido y <code>allowedAction</code> con el camino alterno (<code>NOT_ALLOWED</code> en Mercaderías, o la oferta en Marketplace).</p></template>
+
+<template id="ej-validations"><h3 slot>POST /validations<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Antes del alta, Mabe prueba la ficha con el mismo cuerpo. Si todo pasa, la respuesta es <code>ok</code> y los contadores de uso avanzan. No se crea producto.</p>
+<h4>Request (recorte del cuerpo)</h4>
+<pre class="http">POST /partner/v1/validations
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+Idempotency-Key: val-mabe-20261103-001</pre>
+<pre>{
+  "business": "LVP",
+  "items": [
+    {
+      "externalRef": "MABE-RMA300FJMRE0",
+      "categoryId": "LVP-ELE-REF-TOP-300",
+      "templateVersion": 7,
+      "base": {
+        "title": "Refrigerador Mabe 300 L Top Mount Acero Inoxidable",
+        "description": "Refrigerador top mount de 300 litros, acabado acero inoxidable…"
+      },
+      "attributes": [
+        { "id": "BRAND", "value_id": "BR-MABE", "value_name": "Mabe" },
+        { "id": "MODELO", "value_name": "RMA300FJMRE0" },
+        { "id": "CAPACIDAD_TOTAL", "value_struct": { "number": 300, "unit": "L" } },
+        { "id": "TIPO_PUERTA", "value_id": "TOP_MOUNT", "value_name": "Top mount" }
+      ],
+      "variants": [
+        { "externalRef": "MABE-RMA300FJMRE0-INOX",   "ean": "07501234567890",
+          "attribute_combinations": [ { "id": "COLOR", "value_id": "INOX",  "value_name": "Acero inoxidable" } ] },
+        { "externalRef": "MABE-RMA300FJMRE0-NEGRO",  "ean": "07501234567906",
+          "attribute_combinations": [ { "id": "COLOR", "value_id": "NEGRO", "value_name": "Negro" } ] }
+      ]
+    }
+  ]
+}</pre>
+<h4>Response 200</h4>
+<pre>{
+  "validationId": "val-01JA7S9F2P",
+  "status": "ok",
+  "items": [
+    { "externalRef": "MABE-RMA300FJMRE0", "status": "ok" }
+  ],
+  "quotas": { "writes_remaining": 58, "resetsAt": "2026-11-03T15:04:00Z" }
+}</pre></template>
+
+<template id="ej-media-uploads"><h3 slot>POST /media/uploads<span class="ej-escenario">Fuera del happy path (opcional)</span></h3>
+<p class="ej-nota">En el happy path del refri Mabe pone sus fotos como <code>pictures.source</code> con la URL pública de su CDN y no sube archivos. Si no tuviera URL, pediría aquí los <code>uploadUrl</code> firmados y haría <code>PUT</code> a cada uno (vencen en 15 min).</p>
+<h4>Request (ilustrativo)</h4>
+<pre class="http">POST /partner/v1/media/uploads
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json</pre>
+<pre>{
+  "files": [
+    { "fileName": "mabe-rma300-inox-01.jpg", "contentType": "image/jpeg",
+      "size": 418203, "sha256": "a1b2c3…" }
+  ]
+}</pre>
+<h4>Response 201</h4>
+<pre>{
+  "items": [
+    { "mediaId": "med-01JA7T0M2N",
+      "uploadUrl": "https://media.liverpool.com.mx/upload/signed/…",
+      "expiresAt": "2026-11-03T15:17:00Z" }
+  ]
+}</pre></template>
+
+<template id="ej-proposals-media"><h3 slot>PUT /proposals/{id}/media<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Se usa cuando las fotos no iban en el alta. En el refri las URLs van en <code>pictures.source</code> dentro de <code>POST /proposals</code>. Si se subieron con <code>/media/uploads</code>, aquí se fijan por variante antes del SKU.</p></template>
+
+<template id="ej-media-batches"><h3 slot>POST /media/batches<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Carga masiva con un manifiesto que liga cada archivo a su EAN o SKU. En el alta de un solo refri no aplica. Ver <a href="catalogacion-por-api-ejemplos.html#api-subir">la página de ejemplos</a>.</p></template>
+
+<template id="ej-proposals-create"><h3 slot>POST /proposals<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">La llamada que cataloga. Trae la ficha completa con sus dos variantes de color y las fotos como URL pública. Responde <code>201</code> en línea con el <code>proposalId</code> y el estado <code>IN_APPROVAL</code>.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/proposals
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+Idempotency-Key: prp-mabe-20261103-001</pre>
+<pre>{
+  "business": "LVP",
+  "externalRef": "MABE-RMA300FJMRE0",
+  "acceptedSuggestionId": "sug-20261103-5f91c",
+  "categoryId": "LVP-ELE-REF-TOP-300",
+  "templateVersion": 7,
+  "base": {
+    "title": "Refrigerador Mabe 300 L Top Mount Acero Inoxidable",
+    "description": "Refrigerador top mount de 300 litros con tecnología inverter, iluminación LED, cajón para frutas y verduras, parrillas de vidrio templado. Garantía de 24 meses."
+  },
+  "attributes": [
+    { "id": "BRAND", "value_id": "BR-MABE", "value_name": "Mabe" },
+    { "id": "MODELO", "value_name": "RMA300FJMRE0" },
+    { "id": "CAPACIDAD_TOTAL",      "value_struct": { "number": 300, "unit": "L" } },
+    { "id": "TIPO_PUERTA",          "value_id": "TOP_MOUNT",    "value_name": "Top mount" },
+    { "id": "EFICIENCIA_ENERGETICA","value_id": "A",            "value_name": "A" },
+    { "id": "CONSUMO_KWH_ANUAL",    "value_struct": { "number": 358, "unit": "kWh" } },
+    { "id": "NOM_015",              "value_name": "true" },
+    { "id": "GARANTIA_MESES",       "value_struct": { "number": 24, "unit": "mes" } },
+    { "id": "ALTURA",               "value_struct": { "number": 169.5, "unit": "cm" } },
+    { "id": "ANCHO",                "value_struct": { "number": 60.6,  "unit": "cm" } },
+    { "id": "FONDO",                "value_struct": { "number": 67.9,  "unit": "cm" } }
+  ],
+  "variants": [
+    {
+      "externalRef": "MABE-RMA300FJMRE0-INOX",
+      "ean": "07501234567890",
+      "attribute_combinations": [ { "id": "COLOR", "value_id": "INOX", "value_name": "Acero inoxidable" } ],
+      "pictures": [
+        { "source": "https://cdn.mabe.example/rma300/inox-01-principal.jpg", "type": "PRINCIPAL", "order": 1 },
+        { "source": "https://cdn.mabe.example/rma300/inox-02-abierto.jpg",   "type": "SECUNDARIA", "order": 2 },
+        { "source": "https://cdn.mabe.example/rma300/inox-03-ambiente.jpg",  "type": "AMBIENTACION", "order": 3 }
+      ]
+    },
+    {
+      "externalRef": "MABE-RMA300FJMRE0-NEGRO",
+      "ean": "07501234567906",
+      "attribute_combinations": [ { "id": "COLOR", "value_id": "NEGRO", "value_name": "Negro" } ],
+      "pictures": [
+        { "source": "https://cdn.mabe.example/rma300/negro-01-principal.jpg", "type": "PRINCIPAL", "order": 1 },
+        { "source": "https://cdn.mabe.example/rma300/negro-02-abierto.jpg",   "type": "SECUNDARIA", "order": 2 }
+      ]
+    }
+  ],
+  "logistics": {
+    "package": { "heightCm": 175, "widthCm": 65, "lengthCm": 72, "grossWeightKg": 56.5, "netWeightKg": 52.0 },
+    "assembly": { "required": false }
+  },
+  "commercial": {
+    "cost": { "amount": 7850.00, "currency": "MXN" },
+    "suggestedPrice": { "amount": 11999.00, "currency": "MXN" }
+  }
+}</pre>
+<h4>Response 201</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F2",
+  "status": "IN_APPROVAL",
+  "version": 1,
+  "externalRef": "MABE-RMA300FJMRE0",
+  "correctionDueAt": "2026-12-02T15:04:00Z",
+  "links": {
+    "self":    "/partner/v1/proposals/prp-20261103-7A4F2",
+    "history": "/partner/v1/proposals/prp-20261103-7A4F2/history",
+    "cancel":  "/partner/v1/proposals/prp-20261103-7A4F2/cancel"
+  }
+}</pre>
+<p class="ej-nota abierto"><b>Abierto · PD-24.</b> Marketplace tendría primero <code>VALIDATING</code> y, con el score, <code>IN_APPROVAL</code> o <code>CORRECTION_REQUIRED</code>. En Mercaderías pasa directo a <code>IN_APPROVAL</code> porque entra Compras.</p></template>
+
+<template id="ej-batches-create"><h3 slot>POST /batches<span class="ej-escenario">Fuera del happy path (ilustrativo)</span></h3>
+<p class="ej-nota">Para dar de alta uno solo, el happy path usa <code>POST /proposals</code>. El lote responde <code>202</code> y se procesa atrás. Cada renglón es el mismo JSON de <code>/proposals</code>.</p>
+<h4>Request (dos refris en un lote, ilustrativo)</h4>
+<pre class="http">POST /partner/v1/batches
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+Idempotency-Key: bat-mabe-20261103-001</pre>
+<pre>{
+  "business": "LVP",
+  "items": [
+    { "externalRef": "MABE-RMA300FJMRE0", "categoryId": "LVP-ELE-REF-TOP-300", "templateVersion": 7, "base": { "title": "…" }, "attributes": [ … ], "variants": [ … ] },
+    { "externalRef": "MABE-RMA420FJMRE0", "categoryId": "LVP-ELE-REF-TOP-500", "templateVersion": 7, "base": { "title": "…" }, "attributes": [ … ], "variants": [ … ] }
+  ]
+}</pre>
+<h4>Response 202</h4>
+<pre>{
+  "batchId": "bat-20261103-00042",
+  "received": 2,
+  "status": "VALIDATING",
+  "links": { "self": "/partner/v1/batches/bat-20261103-00042",
+             "items": "/partner/v1/batches/bat-20261103-00042/items" }
+}</pre></template>
+
+<template id="ej-batches-get"><h3 slot>GET /batches/{batchId}<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Resumen del lote. En el alta de un solo refri no aplica.</p>
+<h4>Response 200 (ilustrativo)</h4>
+<pre>{
+  "batchId": "bat-20261103-00042",
+  "status": "COMPLETED",
+  "summary": { "received": 2, "valid": 2, "created": 2, "already_exists": 0, "with_errors": 0 },
+  "startedAt":  "2026-11-03T15:10:12Z",
+  "finishedAt": "2026-11-03T15:11:48Z"
+}</pre></template>
+
+<template id="ej-batches-items"><h3 slot>GET /batches/{batchId}/items<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Resultado por producto del lote, con <code>externalRef</code> y su <code>proposalId</code> o sus <code>errors[]</code>. Útil cuando el aviso <code>batch.completed</code> dice que hay renglones con error.</p>
+<h4>Response 200 (ilustrativo)</h4>
+<pre>{
+  "batchId": "bat-20261103-00042",
+  "items": [
+    { "externalRef": "MABE-RMA300FJMRE0", "status": "created", "proposalId": "prp-20261103-7A4F2" },
+    { "externalRef": "MABE-RMA420FJMRE0", "status": "created", "proposalId": "prp-20261103-7A4F3" }
+  ],
+  "paging": { "page": 1, "size": 50, "total": 2 }
+}</pre></template>
+
+<template id="ej-proposals-patch"><h3 slot>PATCH /proposals/{proposalId}<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">En el happy path el refri pasa validación directo. Si llegara <code>proposal.correction_required</code>, aquí se corrige campo por campo con <code>If-Match</code>. Ejemplo en la <a href="catalogacion-por-api-ejemplos.html#api-corregir">página de ejemplos</a>.</p></template>
+
+<template id="ej-proposals-variants-add"><h3 slot>POST /proposals/{proposalId}/variants<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Para sumar una variante antes del visto bueno (p. ej. agregar el color BLANCO al refri). En el happy path las dos variantes van en el alta.</p></template>
+
+<template id="ej-proposals-variants-del"><h3 slot>DELETE /proposals/{proposalId}/variants/{variantId}<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Borrado lógico de una variante que todavía no tiene SKU. No se usa en el happy path.</p></template>
+
+<template id="ej-proposals-cancel"><h3 slot>POST /proposals/{proposalId}/cancel<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Cancelar antes del SKU libera los EAN. No se usa en el happy path.</p></template>
+
+<template id="ej-proposals-get"><h3 slot>GET /proposals/{id}<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">A los pocos minutos del alta, Mabe pregunta cómo va la propuesta. La respuesta trae el estado actual, la historia reciente y los SKU por variante cuando ya existen.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/proposals/prp-20261103-7A4F2?view=full
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F2",
+  "status": "SKU_CREATED",
+  "externalRef": "MABE-RMA300FJMRE0",
+  "productId": "PRD-20261103-7A4F2",
+  "approvedBy": { "area": "COMPRAS", "approvedAt": "2026-11-03T18:12:40Z" },
+  "variants": [
+    { "externalRef": "MABE-RMA300FJMRE0-INOX",  "sku": "sku-RMA300-INOX",  "ean": "07501234567890" },
+    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", "sku": "sku-RMA300-NEGRO", "ean": "07501234567906" }
+  ],
+  "channels": [
+    { "channel": "STORE", "status": "PENDING" }
+  ]
+}</pre></template>
+
+<template id="ej-products-get"><h3 slot>GET /products/{id}<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Una vez publicado, el producto se consulta por su <code>productId</code>: la ficha, los SKU, la categoría web asignada por Liverpool y el estado por canal.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/products/PRD-20261103-7A4F2?view=full
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200 (recorte)</h4>
+<pre>{
+  "productId": "PRD-20261103-7A4F2",
+  "status": "PUBLISHED",
+  "webCategory": "linea-blanca/refrigeradores/top-mount",
+  "base": { "title": "Refrigerador Mabe 300 L Top Mount Acero Inoxidable", "description": "…" },
+  "variants": [
+    { "sku": "sku-RMA300-INOX",  "ean": "07501234567890",
+      "attribute_combinations": [ { "id": "COLOR", "value_id": "INOX",  "value_name": "Acero inoxidable" } ],
+      "pictures": [ { "source": "https://cdn.mabe.example/rma300/inox-01-principal.jpg", "type": "PRINCIPAL", "order": 1 } ] },
+    { "sku": "sku-RMA300-NEGRO", "ean": "07501234567906",
+      "attribute_combinations": [ { "id": "COLOR", "value_id": "NEGRO", "value_name": "Negro" } ],
+      "pictures": [ { "source": "https://cdn.mabe.example/rma300/negro-01-principal.jpg", "type": "PRINCIPAL", "order": 1 } ] }
+  ],
+  "channels": [
+    { "channel": "STORE", "status": "PUBLISHED", "publishedAt": "2026-11-04T10:12:00Z" }
+  ],
+  "version": 3
+}</pre></template>
+
+<template id="ej-products-channels"><h3 slot>GET /products/{id}/channels<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Entrega por canal. Mabe sólo ve los canales en los que participa: la tienda (<code>STORE</code>). OMS, Señalización y DWH no se exponen.</p>
+<h4>Response 200</h4>
+<pre>{
+  "productId": "PRD-20261103-7A4F2",
+  "channels": [
+    { "channel": "STORE", "status": "PUBLISHED",
+      "sentAt": "2026-11-04T10:08:33Z", "publishedAt": "2026-11-04T10:12:00Z",
+      "url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2" }
+  ]
+}</pre></template>
+
+<template id="ej-proposals-history"><h3 slot>GET /proposals/{id}/history<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Toda la línea de tiempo del refri: cada transición con fecha, área y motivo, más los cambios de campo con antes y después (si los hubo).</p>
+<h4>Response 200</h4>
+<pre>{
+  "proposalId": "prp-20261103-7A4F2",
+  "transitions": [
+    { "at": "2026-11-03T15:04:00Z", "from": null,          "to": "RECEIVED"       },
+    { "at": "2026-11-03T15:04:12Z", "from": "RECEIVED",    "to": "VALIDATING"     },
+    { "at": "2026-11-03T15:04:22Z", "from": "VALIDATING",  "to": "IN_APPROVAL"    },
+    { "at": "2026-11-03T18:12:40Z", "from": "IN_APPROVAL", "to": "ACCEPTED",       "area": "COMPRAS" },
+    { "at": "2026-11-03T18:25:11Z", "from": "ACCEPTED",    "to": "SKU_CREATED"    },
+    { "at": "2026-11-03T18:40:03Z", "from": "SKU_CREATED", "to": "IN_PREPARATION", "area": "QA" },
+    { "at": "2026-11-04T10:08:33Z", "from": "IN_PREPARATION", "to": "PUBLISHING"  },
+    { "at": "2026-11-04T10:12:00Z", "from": "PUBLISHING",  "to": "PUBLISHED",      "channel": "STORE" }
+  ],
+  "fieldChanges": []
+}</pre></template>
+
+<template id="ej-products-media"><h3 slot>PUT /products/{id}/media<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Se usa si las fotos no iban en el alta y ya hay SKU. En el refri las fotos entraron con <code>pictures.source</code> en <code>POST /proposals</code>; no se llama.</p></template>
+
+<template id="ej-products-permissions"><h3 slot>GET /products/{id}/permissions<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Antes de proponer un cambio, Mabe pregunta qué puede tocar. En este producto es dueña del contenido: puede editar imágenes y textos; el atributo pide aprobación; el SKU, el EAN y el negocio son de sólo lectura.</p>
+<h4>Response 200</h4>
+<pre>{
+  "productId": "PRD-20261103-7A4F2",
+  "isContentOwner": true,
+  "groups": [
+    { "group": "TEXTOS",          "fields": ["title", "description"],
+      "editable": true,  "requiresApproval": false, "readOnly": false },
+    { "group": "IMAGENES",        "fields": ["pictures"],
+      "editable": true,  "requiresApproval": false, "readOnly": false },
+    { "group": "ATRIBUTOS",       "fields": ["CAPACIDAD_TOTAL", "EFICIENCIA_ENERGETICA", "GARANTIA_MESES", "ALTURA", "ANCHO", "FONDO"],
+      "editable": true,  "requiresApproval": true,  "readOnly": false },
+    { "group": "VARIANTES_NUEVAS", "fields": [],
+      "editable": true,  "requiresApproval": true,  "readOnly": false,
+      "actions": ["ADD_VARIANT"] },
+    { "group": "IDENTIFICADORES", "fields": ["sku", "ean", "business"],
+      "editable": false, "requiresApproval": false, "readOnly": true }
+  ]
+}</pre></template>
+
+<template id="ej-products-modifications"><h3 slot>POST /products/{id}/modifications<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Mabe cambia la descripción (texto libre, sin aprobación) y actualiza la garantía de 24 a 36 meses (atributo, pide aprobación). Lleva <code>If-Match</code> con la versión del producto para evitar carreras.</p>
+<h4>Request</h4>
+<pre class="http">POST /partner/v1/products/PRD-20261103-7A4F2/modifications
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json
+Idempotency-Key: mod-mabe-20261112-001
+If-Match: "3"</pre>
+<pre>{
+  "changes": [
+    { "path": "/base/description", "op": "replace",
+      "value": "Refrigerador top mount de 300 litros con tecnología inverter, iluminación LED, cajón para frutas y verduras, parrillas de vidrio templado. Nuevo acabado antihuellas." },
+    { "path": "/attributes/GARANTIA_MESES", "op": "replace",
+      "value": { "value_struct": { "number": 36, "unit": "mes" } } }
+  ]
+}</pre>
+<h4>Response 202</h4>
+<pre>{
+  "modificationId": "mod-20261112-9C21E",
+  "status": "IN_MODIFICATION",
+  "productVersionAfter": 4,
+  "pending": [
+    { "field": "/attributes/GARANTIA_MESES", "area": "QA_IA" }
+  ],
+  "applied": [
+    { "field": "/base/description" }
+  ]
+}</pre></template>
+
+<template id="ej-modifications-batches"><h3 slot>POST /modifications/batches<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Para cambios masivos en varios productos (p. ej. actualizar la ficha técnica de 50 refris). No aplica a un solo producto.</p></template>
+
+<template id="ej-modifications-get"><h3 slot>GET /modifications/{id}<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Mabe sigue el cambio pendiente. QA con IA aprueba y queda <code>APPLIED</code>; el aviso <code>product.updated</code> cierra el ciclo.</p>
+<h4>Response 200</h4>
+<pre>{
+  "modificationId": "mod-20261112-9C21E",
+  "status": "APPLIED",
+  "productId": "PRD-20261103-7A4F2",
+  "steps": [
+    { "at": "2026-11-12T09:14:02Z", "from": null,                 "to": "IN_MODIFICATION" },
+    { "at": "2026-11-12T09:14:11Z", "from": "IN_MODIFICATION",    "to": "QA_IA_REVIEW"    },
+    { "at": "2026-11-12T09:15:48Z", "from": "QA_IA_REVIEW",       "to": "APPLIED",         "area": "QA_IA" }
+  ],
+  "appliedChanges": [
+    { "path": "/base/description",            "appliedAt": "2026-11-12T09:14:02Z" },
+    { "path": "/attributes/GARANTIA_MESES",   "appliedAt": "2026-11-12T09:15:48Z" }
+  ]
+}</pre></template>
+
+<template id="ej-events"><h3 slot>GET /events<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Si el webhook se cayera, Mabe recupera los eventos en orden desde su último cursor conocido.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/events?since=2026-11-04T09:00:00Z&amp;types=product.*&amp;cursor=0
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200 (recorte)</h4>
+<pre>{
+  "events": [
+    { "eventId": "evt-01JA8B1Q4R", "type": "product.sku_created",      "occurredAt": "2026-11-03T18:25:11Z", "productId": "PRD-20261103-7A4F2" },
+    { "eventId": "evt-01JA8B2M7T", "type": "product.in_preparation",   "occurredAt": "2026-11-03T18:40:03Z", "productId": "PRD-20261103-7A4F2" },
+    { "eventId": "evt-01JA8E7P9K", "type": "product.publication_sent", "occurredAt": "2026-11-04T10:08:33Z", "productId": "PRD-20261103-7A4F2", "channel": "STORE" },
+    { "eventId": "evt-01JA8E9Z1D", "type": "product.published",        "occurredAt": "2026-11-04T10:12:00Z", "productId": "PRD-20261103-7A4F2", "channel": "STORE" }
+  ],
+  "nextCursor": "evt-01JA8E9Z1D",
+  "hasMore": false
+}</pre></template>
+
+<template id="ej-receipts"><h3 slot>GET /receipts/{requestId}<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Si Mabe reintenta el alta con la misma <code>Idempotency-Key</code> por una duda de red, el PIM devuelve el mismo recibo (sin volver a crear). Aquí lo consulta por el id de la petición.</p>
+<h4>Request</h4>
+<pre class="http">GET /partner/v1/receipts/req-20261103-000045
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…</pre>
+<h4>Response 200</h4>
+<pre>{
+  "requestId": "req-20261103-000045",
+  "idempotencyKey": "prp-mabe-20261103-001",
+  "operation": "POST /partner/v1/proposals",
+  "status": 201,
+  "resourceId": "prp-20261103-7A4F2",
+  "receivedAt": "2026-11-03T15:04:00Z",
+  "respondedAt": "2026-11-03T15:04:00Z"
+}</pre></template>
+
+<template id="ej-webhooks-list"><h3 slot>GET /webhooks<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Verifica cuántas suscripciones hay y cuáles están activas. Útil al cambiar de ambiente.</p>
+<h4>Response 200</h4>
+<pre>{
+  "items": [
+    { "webhookId": "wh-mabe-prod-01",
+      "url": "https://integraciones.mabe.example/liverpool/webhooks",
+      "events": ["proposal.*", "product.*", "batch.completed", "template.changed"],
+      "status": "ACTIVE",
+      "lastDeliveryAt": "2026-11-04T10:12:01Z" }
+  ]
+}</pre></template>
+
+<template id="ej-webhooks-patch"><h3 slot>PATCH /webhooks/{id}<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Cambiar la URL o la lista de eventos de una suscripción existente.</p>
+<h4>Request (ilustrativo)</h4>
+<pre class="http">PATCH /partner/v1/webhooks/wh-mabe-prod-01
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs…
+Content-Type: application/json</pre>
+<pre>{ "url": "https://integraciones.mabe.example/liverpool/webhooks/v2" }</pre></template>
+
+<template id="ej-webhooks-del"><h3 slot>DELETE /webhooks/{id}<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Para dar de baja una suscripción. Devuelve <code>204</code> sin cuerpo.</p></template>
+
+<template id="ej-webhooks-test-secret"><h3 slot>POST /webhooks/{id}/test · /webhooks/{id}/secret<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Al configurar: <code>/test</code> manda un <code>ping</code> firmado al endpoint para confirmar que recibe. <code>/secret</code> rota el secreto; el anterior sigue vigente 24 h para no cortar entregas en vuelo.</p>
+<h4>Response 200 · /test</h4>
+<pre>{
+  "delivery": { "status": 200, "latencyMs": 118, "receivedAt": "2026-11-03T15:03:02Z" }
+}</pre>
+<h4>Response 200 · /secret</h4>
+<pre>{
+  "secret": "whs_live_9N3h…nuevo-secreto",
+  "previousSecretExpiresAt": "2026-11-04T15:03:02Z"
+}</pre></template>
+
+<template id="ej-webhooks-deliveries"><h3 slot>GET /webhooks/{id}/deliveries · retry<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Si una entrega falló, aquí se ven los intentos y se puede reintentar la que interesa.</p>
+<h4>Response 200 (ilustrativo)</h4>
+<pre>{
+  "items": [
+    { "deliveryId": "dlv-01JA7Z2M", "eventId": "evt-01JA7Y1R", "type": "product.published",
+      "attempts": [
+        { "at": "2026-11-04T10:12:04Z", "status": 504, "error": "Gateway Timeout" },
+        { "at": "2026-11-04T10:12:34Z", "status": 200 }
+      ],
+      "status": "DELIVERED" }
+  ]
+}</pre></template>
+
+<template id="ej-evt-received"><h3 slot>Aviso proposal.received<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Primer aviso: el PIM confirma que recibió la propuesta. Llega al endpoint registrado, firmado con HMAC.</p>
+<h4>Entrega al webhook del tercero</h4>
+<pre class="http">POST https://integraciones.mabe.example/liverpool/webhooks
+X-Liverpool-Event-Id: evt-01JA7Y1A
+X-Liverpool-Event-Type: proposal.received
+X-Liverpool-Timestamp: 1793457840
+X-Liverpool-Signature: v1=7b1f…c9</pre>
+<pre>{
+  "eventId": "evt-01JA7Y1A",
+  "type": "proposal.received",
+  "occurredAt": "2026-11-03T15:04:00Z",
+  "partnerId": "prt-mabe-prod",
+  "business": "LVP",
+  "proposalId": "prp-20261103-7A4F2",
+  "externalRef": "MABE-RMA300FJMRE0",
+  "status": "RECEIVED",
+  "version": 1
+}</pre></template>
+
+<template id="ej-evt-validated"><h3 slot>Aviso proposal.validated<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">La ficha pasó estructura, listas, EAN, blacklist y coincidencias. Pasa a <code>IN_APPROVAL</code>: Compras la revisará.</p>
+<pre>{
+  "eventId": "evt-01JA7Y1B",
+  "type": "proposal.validated",
+  "occurredAt": "2026-11-03T15:04:22Z",
+  "proposalId": "prp-20261103-7A4F2",
+  "externalRef": "MABE-RMA300FJMRE0",
+  "status": "IN_APPROVAL",
+  "previousStatus": "VALIDATING",
+  "version": 2
+}</pre></template>
+
+<template id="ej-evt-correction"><h3 slot>Aviso proposal.correction_required<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">En el happy path no llega. Si llegara, trae los motivos campo por campo y la acción esperada.</p>
+<h4>Ejemplo (ilustrativo, no es del refri)</h4>
+<pre>{
+  "eventId": "evt-01JA7Z4A",
+  "type": "proposal.correction_required",
+  "occurredAt": "2026-11-03T17:05:12Z",
+  "proposalId": "prp-20261103-7A4F2",
+  "status": "CORRECTION_REQUIRED",
+  "reasons": [
+    { "attribute": "CAPACIDAD_TOTAL", "code": "OUT_OF_RANGE", "area": "VALIDACION",
+      "message": "La capacidad declarada excede el rango de la categoría (100–999 L)" }
+  ],
+  "requiredActions": ["FIX_FIELDS"]
+}</pre></template>
+
+<template id="ej-evt-rejected"><h3 slot>Aviso proposal.rejected<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Final: no se puede catalogar. En el refri de Mabe no aplica (marca válida, sin blacklist). Caso típico: proveedor no autorizado para una familia.</p></template>
+
+<template id="ej-evt-already"><h3 slot>Aviso proposal.already_exists<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Si antes del alta Mabe no hubiera buscado y el EAN ya estuviera cargado, el PIM responde con el SKU existente y la acción permitida. En el happy path la búsqueda fue vacía, así que no llega.</p>
+<pre>{
+  "eventId": "evt-01JA7Z4C",
+  "type": "proposal.already_exists",
+  "proposalId": "prp-20261103-7A4F2",
+  "status": "ALREADY_EXISTS",
+  "match": { "ean": "07501234567890", "sku": "sku-xxxx", "catalogProductId": "PRD-yyyy" },
+  "allowedAction": "NOT_ALLOWED"
+}</pre></template>
+
+<template id="ej-evt-batch"><h3 slot>Aviso batch.completed<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Terminó un lote, con su resumen. En el happy path no hay lote; aplica cuando Mabe cargue varios refris de golpe.</p>
+<pre>{
+  "eventId": "evt-01JA8A1Z",
+  "type": "batch.completed",
+  "batchId": "bat-20261103-00042",
+  "summary": { "received": 2, "valid": 2, "created": 2, "already_exists": 0, "with_errors": 0 }
+}</pre></template>
+
+<template id="ej-evt-accepted"><h3 slot>Aviso proposal.accepted<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Compras acepta. El PIM pide el SKU a SAP. El seller ya no toca nada.</p>
+<pre>{
+  "eventId": "evt-01JA7Y2P",
+  "type": "proposal.accepted",
+  "occurredAt": "2026-11-03T18:12:40Z",
+  "proposalId": "prp-20261103-7A4F2",
+  "status": "ACCEPTED",
+  "approvedBy": { "area": "COMPRAS" }
+}</pre></template>
+
+<template id="ej-evt-sku"><h3 slot>Aviso product.sku_created<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">SAP devuelve el 122: dos SKU, uno por variante. Se crea el <code>productId</code> en el PIM.</p>
+<pre>{
+  "eventId": "evt-01JA8B1Q",
+  "type": "product.sku_created",
+  "occurredAt": "2026-11-03T18:25:11Z",
+  "proposalId": "prp-20261103-7A4F2",
+  "productId": "PRD-20261103-7A4F2",
+  "variants": [
+    { "externalRef": "MABE-RMA300FJMRE0-INOX",  "sku": "sku-RMA300-INOX",  "ean": "07501234567890" },
+    { "externalRef": "MABE-RMA300FJMRE0-NEGRO", "sku": "sku-RMA300-NEGRO", "ean": "07501234567906" }
+  ]
+}</pre></template>
+
+<template id="ej-evt-prep"><h3 slot>Aviso product.in_preparation<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">QA con IA revisa la ficha y la categoría web se asigna.</p>
+<pre>{
+  "eventId": "evt-01JA8B2M",
+  "type": "product.in_preparation",
+  "occurredAt": "2026-11-03T18:40:03Z",
+  "productId": "PRD-20261103-7A4F2",
+  "steps": ["QA_IA", "CATEGORY"]
+}</pre></template>
+
+<template id="ej-evt-pub-sent"><h3 slot>Aviso product.publication_sent<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">El PIM envió el refri al canal <code>STORE</code>. Falta el acuse.</p>
+<pre>{
+  "eventId": "evt-01JA8E7P",
+  "type": "product.publication_sent",
+  "occurredAt": "2026-11-04T10:08:33Z",
+  "productId": "PRD-20261103-7A4F2",
+  "channel": "STORE"
+}</pre></template>
+
+<template id="ej-evt-published"><h3 slot>Aviso product.published<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">La tienda confirmó. El refri está vivo en liverpool.com.mx.</p>
+<pre>{
+  "eventId": "evt-01JA8E9Z",
+  "type": "product.published",
+  "occurredAt": "2026-11-04T10:12:00Z",
+  "productId": "PRD-20261103-7A4F2",
+  "channel": "STORE",
+  "url": "https://www.liverpool.com.mx/tienda/pdp/refrigerador-mabe-300l/PRD-20261103-7A4F2"
+}</pre></template>
+
+<template id="ej-evt-pub-failed"><h3 slot>Aviso product.publication_failed<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Si el canal rechazó o no confirmó, el PIM reintenta y marca el aviso. En el happy path no llega.</p></template>
+
+<template id="ej-evt-updated"><h3 slot>Aviso product.updated<span class="ej-escenario">Happy path · refrigerador</span></h3>
+<p class="ej-nota">Cerró la modificación. Trae el origen (quién lo pidió) y los campos que cambiaron.</p>
+<pre>{
+  "eventId": "evt-01JAEX8Q",
+  "type": "product.updated",
+  "occurredAt": "2026-11-12T09:15:48Z",
+  "productId": "PRD-20261103-7A4F2",
+  "modificationId": "mod-20261112-9C21E",
+  "source": { "actor": "PARTNER", "partnerId": "prt-mabe-prod" },
+  "changedFields": ["/base/description", "/attributes/GARANTIA_MESES"],
+  "productVersionAfter": 4
+}</pre></template>
+
+<template id="ej-evt-mod-rejected"><h3 slot>Aviso product.modification_rejected<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Si QA no aprobara el cambio, llegaría este aviso con los motivos. En el happy path el cambio pasa.</p></template>
+
+<template id="ej-evt-retired"><h3 slot>Aviso product.retired<span class="ej-escenario">Fuera del happy path</span></h3>
+<p class="ej-nota">Se dispara cuando el producto sale de un canal. Si fue el último canal, el estado queda <code>RETIRED</code>.</p></template>
+
+<template id="ej-evt-template"><h3 slot>Aviso template.changed<span class="ej-escenario">Happy path · refrigerador (semanas después)</span></h3>
+<p class="ej-nota">Semanas después, Liverpool suma un atributo recomendado a la categoría del refri. Mabe lo recibe y decide si lo completa.</p>
+<pre>{
+  "eventId": "evt-01JB2M4Q",
+  "type": "template.changed",
+  "occurredAt": "2026-12-02T12:00:00Z",
+  "templateId": "LVP-ELE-REF-TOP-300",
+  "version": 8,
+  "previousVersion": 7,
+  "effectiveFrom": "2027-01-01T00:00:00Z",
+  "changes": [
+    { "op": "added", "attribute": "COLOR_INTERIOR", "required": false, "recommended": true }
+  ]
+}</pre></template>
+
+<script>
+(function(){
+  var dlg = document.getElementById('ej-modal');
+  var slot = document.getElementById('ej-slot');
+  var titulo = document.getElementById('ej-titulo');
+  if (!dlg || !slot) return;
+  function abrir(key){
+    var tpl = document.getElementById('ej-' + key);
+    slot.innerHTML = '';
+    if (!tpl) {
+      slot.innerHTML = '<p class="ej-nota">Sin ejemplo cargado para este elemento.</p>';
+      titulo.textContent = 'Ejemplo';
+    } else {
+      var contenido = tpl.content.cloneNode(true);
+      var h3 = contenido.querySelector('h3');
+      if (h3) {
+        titulo.innerHTML = h3.innerHTML;
+        h3.remove();
+      } else {
+        titulo.textContent = 'Ejemplo';
+      }
+      slot.appendChild(contenido);
+    }
+    if (typeof dlg.showModal === 'function') { dlg.showModal(); }
+    else { dlg.setAttribute('open', ''); dlg.style.position='fixed'; dlg.style.top='5vh'; dlg.style.left='50%'; dlg.style.transform='translateX(-50%)'; }
+    slot.scrollTop = 0;
+  }
+  function cerrar(){
+    if (typeof dlg.close === 'function') dlg.close();
+    else dlg.removeAttribute('open');
+  }
+  document.body.addEventListener('click', function(e){
+    if (e.target.closest('[data-cerrar]')) { cerrar(); return; }
+    var tr = e.target.closest('tr[data-ej]');
+    if (tr) { abrir(tr.getAttribute('data-ej')); return; }
+    if (e.target === dlg) cerrar();
+  });
+  document.body.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var tr = e.target.closest && e.target.closest('tr[data-ej]');
+    if (tr) { e.preventDefault(); abrir(tr.getAttribute('data-ej')); }
+  });
+})();
+</script>
+
 <footer>
   <p>Página autocontenida, generada desde <code>docs/arquitectura/catalogacion-por-api/plantilla-ciclo-de-vida.html</code>. El contenido sale de la propuesta funcional del 16-oct-2026 (<code>docs/catalogacion-por-api/propuesta-flujo-catalogacion-api.md</code>) y de la propuesta de arquitectura (<code>docs/arquitectura/catalogacion-por-api/</code>). Si una decisión se cierra, actualice la propuesta y vuelva a generar esta página.</p>
 </footer>
