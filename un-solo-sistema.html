@@ -83,6 +83,10 @@ p{margin:0 0 10px}
 .clave{border-radius:6px;padding:2px 6px}
 .clave.v{background:#c8ebc8}
 .clave.d{background:#f6c9c9}
+.tit-v,.tit-d{display:inline-block;border-radius:6px;padding:3px 10px;color:#fff;font-size:13px;letter-spacing:.04em}
+.tit-v{background:#1d6b33}
+.tit-d{background:#8a1f1f}
+.t-amarillo td:first-child{background:#fff6d8}
 .menu button:disabled{opacity:1;cursor:default}
 .menu button.on:disabled{color:#fff}
 .pros{margin:0 0 8px;padding-left:18px}
@@ -271,12 +275,26 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
       <li><b>8</b> SKU y salida a SAP, tienda, OMS y Marketplace <span class="tag">Los dos</span></li>
       <li><b>9</b> Usuarios y avisos, un solo directorio <span class="tag">Los dos</span></li>
     </ol>
+    <p class="kicker">Lo amarillo de hoy queda en el backend</p>
+    <p>Esas funciones dejan de hacerse dos veces. Pasan a los servicios de PIM Headless. Usuarios y perfiles también: no se quedan en cada portal. Hay un solo directorio; Catalogación conserva la pantalla para dar de alta, y Foro deja de copiar cada usuario.</p>
+    <div class="tabla"><table class="t-amarillo">
+      <thead><tr><th>Hoy, en los dos</th><th>Dónde queda</th><th>Quién lo usa</th></tr></thead>
+      <tbody>
+        <tr><td>Usuarios y perfiles</td><td>Un directorio, en el backend</td><td>Catalogación los administra</td></tr>
+        <tr><td>Copia de plantillas</td><td>Una plantilla, en el catálogo del PIM</td><td>Gobierno de Producto</td></tr>
+        <tr><td>Captura de atributos</td><td>Una ficha, en el producto</td><td>Catalogación y el capturista</td></tr>
+        <tr><td>Guardar la foto y su URL</td><td>Un archivo, en activos</td><td>Proveedor, fotógrafo y editor</td></tr>
+        <tr><td>Carga masiva de imágenes</td><td>El mismo servicio de activos</td><td>Proveedor y Foro</td></tr>
+        <tr><td>Cambio de estado</td><td>Un estado del producto</td><td>Todos lo consultan</td></tr>
+        <tr><td>Copia del producto</td><td>Deja de haber copia. Se lee la base única</td><td>Todos</td></tr>
+      </tbody>
+    </table></div>
   </article>
 </section>
 
 <section id="pantallas">
   <h2>Qué ve cada quien</h2>
-  <p>Ocho perfiles de hoy. Cada uno ve sólo su menú y puede entrar a sus opciones. Las pantallas son ilustración, con la forma de Entrada Única Catalogación y de Foro.</p>
+  <p>Cada perfil ve sólo su menú y puede entrar a sus opciones. Las plantillas las gestiona Gobierno de Producto. Los datos maestros, Gobierno de Datos. QA revisa la ficha cuando la calidad no se aprueba sola. Las pantallas son ilustración.</p>
   <div class="roles" id="roles" role="tablist"></div>
   <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
   <div class="app">
@@ -292,14 +310,14 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
     <article class="lado front">
       <h3>Unificar el flujo</h3>
       <p class="sub">Foro es un módulo del sistema de catalogación. Un ciclo y una ficha.</p>
-      <p><b>Ventajas</b></p>
+      <p><span class="tit-v">Ventajas</span></p>
       <ul class="pros">
         <li><span class="clave v">El producto se escribe una vez. Se acaba la sincronización entre tres bases.</span></li>
-        <li><span class="clave v">La ficha tiene una sola puerta.</span></li>
+        <li><span class="clave v">La ficha se edita en un solo lugar. Hoy los atributos, el título y la descripción se pueden cambiar en Entrada Única Catalogación y también en Foro. Aquí esa edición queda en Catalogación. Foro sigue con la muestra, la toma y la foto.</span></li>
         <li>Cada perfil ve sólo su menú, dentro del mismo sistema.</li>
         <li>El ciclo queda junto, como en STEP, sin las restricciones de STEP.</li>
       </ul>
-      <p><b>Desventajas</b></p>
+      <p><span class="tit-d">Desventajas</span></p>
       <ul class="pros no">
         <li><span class="clave d">Quien hoy edita o enriquece en el portal de Foro pasa a hacerlo en Catalogación.</span></li>
         <li>Esas pantallas se construyen en el sistema de catalogación.</li>
@@ -309,15 +327,15 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
     <article class="lado back">
       <h3>Dejar los dos sistemas</h3>
       <p class="sub">Entrada Única y Foro siguen separados. Sólo se unifica el backend con PIM Headless.</p>
-      <p><b>Ventajas</b></p>
+      <p><span class="tit-v">Ventajas</span></p>
       <ul class="pros">
         <li><span class="clave v">Nadie cambia de portal.</span></li>
         <li>Cada equipo sigue en el sistema que ya usa.</li>
         <li>La base y el backend pasan a ser uno solo, y los dos les preguntan a él.</li>
       </ul>
-      <p><b>Desventajas</b></p>
+      <p><span class="tit-d">Desventajas</span></p>
       <ul class="pros no">
-        <li><span class="clave d">La ficha sigue con dos puertas.</span></li>
+        <li><span class="clave d">La ficha se sigue editando en los dos sistemas, y los atributos se pueden desfasar.</span></li>
         <li><span class="clave d">Hay que seguir sincronizando: el mismo dato se puede volver a desfasar.</span></li>
         <li>Hay dos menús para un solo producto.</li>
       </ul>
@@ -353,6 +371,24 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         ["Categorías", "Consulta y mantiene el árbol de categorías."],
         ["Reportes", "Propuestas, imágenes y campos, y el tablero por proveedor."]
       ]},
+    { id: "gproducto", nombre: "Gobierno de Producto", marca: "Sistema de catalogación", grupo: "",
+      opciones: [
+        ["Plantillas", "Crea y cambia la plantilla: los campos y los obligatorios de cada tipo de producto. Catalogación la usa; no la diseña."],
+        ["Atributos", "Define los atributos que ve quien captura y los que ve el cliente."],
+        ["Reglas de calidad", "Define qué tiene que cumplir la ficha para aprobarse."]
+      ]},
+    { id: "gdp", nombre: "Gobierno de Datos", marca: "Sistema de catalogación", grupo: "",
+      opciones: [
+        ["Datos maestros", "Corrige los datos que usa SAP: los del artículo, no la foto ni la propuesta del proveedor."],
+        ["Datos erróneos", "Recibe el SKU que Foro o QA marcaron con un dato mal. El menú de Foro para enviarlo probablemente no llegó a producción; la corrección sí se hace."],
+        ["Reintento de SKU", "Cuando SAP no crea el artículo, corrige y el alta se vuelve a intentar."]
+      ]},
+    { id: "qa", nombre: "QA", marca: "Sistema de catalogación", grupo: "",
+      opciones: [
+        ["Bandeja de calidad", "Ve las fichas que la revisión automática no aprobó."],
+        ["Revisión", "Revisa la ficha a mano: datos, fotos y completitud."],
+        ["Enviar a corregir", "La regresa a quien debe corregirla: proveedor, Compras, Gobierno de Datos o repoblamiento."]
+      ]},
     { id: "logistica", nombre: "Logística", marca: "Sistema de catalogación", grupo: "Módulo Foro",
       opciones: [
         ["Carga de SKU", "Sube el archivo. Cada producto queda en tomar, no tomar, no existe o error."],
@@ -378,12 +414,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         ["Atributos", "Completa lo que la IA predijo. SKU, marca y talla vienen del producto y no se reescriben."],
         ["Título y descripción", "Cuando los atributos obligatorios están completos, revisa el título y la descripción."]
       ]},
-    { id: "gdp", nombre: "GDP", marca: "Sistema de catalogación", grupo: "",
-      opciones: [
-        ["Datos erróneos", "Recibe el SKU con un dato maestro mal. El menú de Foro para enviarlo probablemente no llegó a producción; la corrección del dato sí se hace."],
-        ["Corrección", "Corrige el dato maestro. No toma la foto ni captura la propuesta."],
-        ["Reintento de SKU", "Cuando SAP no crea el artículo, corrige y el alta se vuelve a intentar."]
-      ]}
+
   ];
   var quien = 0, cual = 0;
   var roles = document.getElementById("roles");
