@@ -91,7 +91,6 @@ p{margin:0 0 10px}
 .menu button.on:disabled{color:#fff}
 .pros{margin:0 0 8px;padding-left:18px}
 .pros li{margin:3px 0}
-.pros.no{color:#6d3030}
 .roles{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
 .roles button{font:600 13px/1.2 inherit;border:1px solid var(--borde);background:#fff;color:var(--tinta);border-radius:999px;padding:6px 12px;cursor:pointer}
 .roles button[aria-selected="true"]{background:var(--morado);color:#fff;border-color:var(--morado)}
@@ -99,11 +98,30 @@ p{margin:0 0 10px}
 .roles button.eu[aria-selected="true"]{background:#a6843a;color:#fff;border-color:#a6843a}
 .roles button.foro{background:#e8f1f8;border-color:#3d6b9a;color:#1d4568}
 .roles button.foro[aria-selected="true"]{background:#3d6b9a;color:#fff;border-color:#3d6b9a}
+.roles button.p360{background:#f3e8f6;border-color:#6d2a7f;color:#4a1d5c}
+.roles button.p360[aria-selected="true"]{background:#6d2a7f;color:#fff;border-color:#6d2a7f}
 .muestra{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;margin:0 6px 0 0}
 .muestra.eu{background:#fff6e4;border:1px solid #c4a15a;color:#6a4b12}
 .muestra.foro{background:#e8f1f8;border:1px solid #3d6b9a;color:#1d4568}
+.muestra.p360{background:#f3e8f6;border:1px solid #6d2a7f;color:#4a1d5c}
 .app{display:grid;grid-template-columns:196px minmax(0,1fr);border:1px solid #d9d4e2;border-radius:12px;overflow:hidden;min-height:360px;background:#fff;box-shadow:0 8px 24px rgba(29,33,48,.06)}
+.app.eu{border-color:#c4a15a}
+.app.foro{border-color:#3d6b9a}
+.app.p360{border-color:#6d2a7f}
 .menu{background:#3d1d52;color:#f6eef8;padding:14px 12px}
+.menu.eu{background:#5c4314;color:#fff8e8}
+.menu.foro{background:#163a5c;color:#e8f1f8}
+.menu.p360{background:#3d1d52;color:#f6eef8}
+.hoy-de{display:inline-block;margin:0 0 10px;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.menu.eu .hoy-de{background:#a6843a;color:#fff}
+.menu.foro .hoy-de{background:#3d6b9a;color:#fff}
+.menu.p360 .hoy-de{background:#6d2a7f;color:#fff}
+.menu.eu button{color:#f3e6c4}
+.menu.foro button{color:#d5e6f4}
+.menu.p360 button{color:#e7d4ee}
+.menu.eu button.on{background:#a6843a}
+.menu.foro button.on{background:#3d6b9a}
+.menu.p360 button.on{background:#6d2a7f}
 .marca{font-weight:700;font-size:13px;letter-spacing:.02em;margin-bottom:12px}
 .menu button{display:block;width:100%;text-align:left;border:0;background:transparent;color:#e7d4ee;font:13px/1.3 inherit;padding:7px 8px;border-radius:6px;cursor:pointer}
 .menu button.on{background:#6d2a7f;color:#fff}
@@ -302,10 +320,10 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 <section id="pantallas">
   <h2>Qué ve cada quien</h2>
   <p>Cada perfil ve sólo su menú y puede entrar a sus opciones. Las plantillas las gestiona Gobierno de Producto. Los datos maestros, Gobierno de Datos. QA revisa la ficha cuando la calidad no se aprueba sola. Las pantallas son ilustración.</p>
-  <p class="ley"><span class="muestra eu">Entrada Única Catalogación</span><span class="muestra foro">Foro</span> El resto entra hoy por P360, no por esos dos portales.</p>
+  <p class="ley"><span class="muestra eu">Entrada Única Catalogación</span><span class="muestra foro">Foro</span><span class="muestra p360">P360</span></p>
   <div class="roles" id="roles" role="tablist"></div>
   <div class="producto"><span>Mismo producto</span><b>Refrigerador 11 pies</b><span>Liverpool · propuesta de muestra</span></div>
-  <div class="app">
+  <div class="app" id="app">
     <aside class="menu" id="menu"></aside>
     <div class="vista" id="vista"></div>
   </div>
@@ -326,10 +344,8 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         <li>El ciclo queda junto, como en STEP, sin las restricciones de STEP.</li>
       </ul>
       <p><span class="tit-d">Desventajas</span></p>
-      <ul class="pros no">
+      <ul class="pros">
         <li><span class="clave d">Quien hoy edita o enriquece en el portal de Foro pasa a hacerlo en Catalogación.</span></li>
-        <li>Esas pantallas se construyen en el sistema de catalogación.</li>
-        <li>La muestra y la toma siguen en el estudio, y cambian de lugar en el menú.</li>
       </ul>
     </article>
     <article class="lado back">
@@ -342,7 +358,7 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         <li>La base y el backend pasan a ser uno solo, y los dos les preguntan a él.</li>
       </ul>
       <p><span class="tit-d">Desventajas</span></p>
-      <ul class="pros no">
+      <ul class="pros">
         <li><span class="clave d">La ficha se sigue editando en los dos sistemas, y los atributos se pueden desfasar.</span></li>
         <li><span class="clave d">Hay que seguir sincronizando: el mismo dato se puede volver a desfasar.</span></li>
         <li>Hay dos menús para un solo producto.</li>
@@ -379,19 +395,19 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
         ["Categorías", "Consulta y mantiene el árbol de categorías."],
         ["Reportes", "Propuestas, imágenes y campos, y el tablero por proveedor."]
       ]},
-    { id: "gproducto", nombre: "Gobierno de Producto", marca: "Sistema de catalogación", grupo: "",
+    { id: "gproducto", nombre: "Gobierno de Producto", marca: "Sistema de catalogación", origen: "p360", grupo: "",
       opciones: [
         ["Plantillas", "Crea y cambia la plantilla: los campos y los obligatorios de cada tipo de producto. Catalogación la usa; no la diseña."],
         ["Atributos", "Define los atributos que ve quien captura y los que ve el cliente."],
         ["Reglas de calidad", "Define qué tiene que cumplir la ficha para aprobarse."]
       ]},
-    { id: "gdp", nombre: "Gobierno de Datos", marca: "Sistema de catalogación", grupo: "",
+    { id: "gdp", nombre: "Gobierno de Datos", marca: "Sistema de catalogación", origen: "p360", grupo: "",
       opciones: [
         ["Datos maestros", "Corrige los datos que usa SAP: los del artículo, no la foto ni la propuesta del proveedor."],
         ["Datos erróneos", "Recibe el SKU que Foro o QA marcaron con un dato mal. El menú de Foro para enviarlo probablemente no llegó a producción; la corrección sí se hace."],
         ["Reintento de SKU", "Cuando SAP no crea el artículo, corrige y el alta se vuelve a intentar."]
       ]},
-    { id: "qa", nombre: "QA", marca: "Sistema de catalogación", grupo: "",
+    { id: "qa", nombre: "QA", marca: "Sistema de catalogación", origen: "p360", grupo: "",
       opciones: [
         ["Bandeja de calidad", "Ve las fichas que la revisión automática no aprobó."],
         ["Revisión", "Revisa la ficha a mano: datos, fotos y completitud."],
@@ -425,9 +441,11 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
 
   ];
   var quien = 0, cual = 0;
+  var hoyNombre = { eu: "Entrada Única Catalogación", foro: "Foro", p360: "P360" };
   var roles = document.getElementById("roles");
   var menu = document.getElementById("menu");
   var vista = document.getElementById("vista");
+  var app = document.getElementById("app");
   function esc(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
   }
@@ -436,7 +454,9 @@ footer{max-width:1180px;padding:0 24px 40px;font-size:12.5px;color:var(--tinta3)
     roles.innerHTML = gente.map(function (p, i) {
       return '<button type="button" role="tab" class="' + (p.origen || "") + '" aria-selected="' + (i === quien ? "true" : "false") + '">' + esc(p.nombre) + "</button>";
     }).join("");
-    var html = '<div class="marca">' + esc(g.marca) + "</div>";
+    app.className = "app " + (g.origen || "");
+    menu.className = "menu " + (g.origen || "");
+    var html = '<div class="hoy-de">Hoy en ' + esc(hoyNombre[g.origen] || "") + '</div><div class="marca">' + esc(g.marca) + "</div>";
     if (g.grupo) html += '<div class="grupo">' + esc(g.grupo) + "</div>";
     g.opciones.forEach(function (op, i) {
       html += '<button type="button" data-op="' + i + '"' + (i === cual ? ' class="on"' : "") + ">" + esc(op[0]) + "</button>";
