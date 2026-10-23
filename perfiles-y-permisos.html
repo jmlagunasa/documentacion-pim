@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Perfiles y permisos del Nuevo PIM · Propuesta base</title>
+<style>
+:root{--bg:#f4f5f8;--paper:#fff;--ink:#192233;--muted:#596579;--line:#dfe3eb;--navy:#173f73;--blue:#2366d1;--purple:#6b3fa0;--green:#19765b;--amber:#9a5b00;--red:#a43b3b;--soft:#eef3fb}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:var(--blue)}code{font:12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;background:#eef0f4;border-radius:5px;padding:2px 6px}
+.hero{background:linear-gradient(125deg,#102f56,#5a2c76);color:#fff;padding:48px 24px 40px}.hero>div{max-width:1180px;margin:auto}.eyebrow{font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(30px,5vw,54px);line-height:1.05;margin:12px 0}.hero p{max-width:850px;font-size:18px;color:#e8edf7}.status{display:inline-block;background:#ffe5a7;color:#593a00;border-radius:99px;padding:7px 12px;font-weight:800}
+nav{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:10px 24px;overflow:auto;white-space:nowrap}nav div{max-width:1180px;margin:auto}nav a{margin-right:18px;text-decoration:none;font-weight:700}
+main{max-width:1180px;margin:auto;padding:28px 24px 70px}section{scroll-margin-top:64px;margin:0 0 48px}h2{font-size:28px;margin:0 0 10px}h3{margin:8px 0}.lead{color:var(--muted);font-size:17px;max-width:920px}
+.callout{background:#fff8e7;border-left:5px solid #e3a51d;padding:16px 18px;border-radius:8px;margin:20px 0}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}.metric{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px}.metric b{display:block;font-size:28px;color:var(--navy)}.metric span{color:var(--muted)}
+.principles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0;list-style:none}.principles li{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px}
+.legend-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.legend{padding:6px 10px;border-radius:7px;border:1px solid var(--line);background:#fff}.legend.view{background:#edf4ff}.legend.work{background:#eaf8f3}.legend.decide{background:#fff2d9}.legend.admin{background:#f2eafa}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}thead th{background:#172f50;color:#fff;position:sticky;top:0;z-index:1}.matrix{min-width:1300px}.matrix th:first-child{min-width:250px;position:sticky;left:0;z-index:2;background:#fff}.matrix thead th:first-child{background:#172f50;z-index:3}.matrix td{text-align:center;min-width:96px}.matrix td span{display:block;font-size:10px;color:var(--muted)}.matrix .view{background:#edf4ff}.matrix .work{background:#eaf8f3}.matrix .decide{background:#fff2d9}.matrix .admin{background:#f2eafa}.matrix .none{color:#a0a7b3}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 12px;cursor:pointer;font-weight:700}button.active{background:var(--navy);color:#fff}.profiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.profile{background:#fff;border:1px solid var(--line);border-top:4px solid var(--purple);border-radius:12px;padding:16px}.profile-head{display:flex;justify-content:space-between}.profile-id{font-weight:900;color:var(--navy)}.badge{font-size:12px;background:var(--soft);border-radius:99px;padding:3px 8px}.profile p,.profile dd{color:var(--muted)}dl{margin:12px 0}dt{font-size:12px;text-transform:uppercase;font-weight:800}dd{margin:2px 0 9px}h4{margin:12px 0 6px}.chips{display:flex;flex-wrap:wrap;gap:5px}details{margin-top:12px}summary{font-weight:700;cursor:pointer}.profile small{display:block;margin-top:12px;color:#7a8391;border-top:1px solid var(--line);padding-top:8px}
+.steps{counter-reset:step;display:grid;gap:12px}.step{counter-increment:step;background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 15px 15px 58px;position:relative}.step:before{content:counter(step);position:absolute;left:15px;top:14px;background:var(--navy);color:#fff;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-weight:900}
+.sources{font-size:13px;color:var(--muted)}footer{background:#16243a;color:#dce4ef;padding:24px}footer div{max-width:1180px;margin:auto}
+@media(max-width:900px){.summary,.profiles{grid-template-columns:repeat(2,1fr)}.principles{grid-template-columns:1fr}}@media(max-width:620px){.summary,.profiles{grid-template-columns:1fr}.hero{padding-top:32px}main{padding-left:16px;padding-right:16px}}
+@media print{nav,.filters{display:none}.profile{break-inside:avoid}body{background:#fff}}
+</style>
+</head>
+<body>
+<header class="hero"><div>
+  <div class="eyebrow">Nuevo PIM · Un solo frente, permisos por módulo</div>
+  <h1>Perfiles y permisos<br>del sistema unificado</h1>
+  <p>Base para unir Entrada Única, Foro Fotográfico y PIM en un mismo frente sin que “estar dentro” signifique poder hacerlo todo.</p>
+  <span class="status">[Propuesta] Sin aprobar · DUD-22 sigue abierta</span>
+</div></header>
+<nav><div><a href="#resumen">Resumen</a><a href="#modelo">Modelo</a><a href="#matriz">Matriz</a><a href="#perfiles">Perfiles</a><a href="#construccion">Cómo construirlo</a><a href="#pendientes">Pendientes</a></div></nav>
+<main>
+<section id="resumen">
+  <h2>La propuesta en una pantalla</h2>
+  <p class="lead">El frente es uno; los menús, bandejas, datos y acciones cambian por perfil y alcance. IA, SAP, API y automatizaciones son actores técnicos, no perfiles de persona.</p>
+  <div class="summary"><div class="metric"><b>18</b><span>perfiles base</span></div><div class="metric"><b>10</b><span>dominios de permiso</span></div><div class="metric"><b>5</b><span>niveles de acceso</span></div><div class="metric"><b>1</b><span>catálogo de acciones</span></div></div>
+  <div class="callout"><b>Decisión de diseño propuesta:</b> proveedor y seller no necesitan perfiles distintos. Comparten <em>Catalogador externo</em>; el alcance de negocio y organización cambia el flujo permitido. Tampoco se crean cinco perfiles para Legal, Sostenibilidad, VAS, Logística y E-commerce: comparten <em>Dueño de sección</em> y se limita el grupo de atributos.</div>
+</section>
+<section id="modelo"><h2>Cómo funciona el permiso</h2><p class="lead">Permiso efectivo = perfil + acción + alcance + tarea vigente. Las cuatro condiciones deben cumplirse.</p><ul class="principles"><li><b>Separar perfil y alcance.</b> El perfil dice qué clase de acción puede hacer; el alcance limita dónde: negocio, organización, categoría, sección, sede o canal.</li><li><b>Componer perfiles.</b> Una persona puede tener más de un perfil. No se crea un “superperfil” nuevo por cada combinación.</li><li><b>Denegar por omisión.</b> Si una acción no aparece concedida y dentro del alcance, se rechaza.</li><li><b>Separar trabajar de decidir.</b> Quien captura no obtiene automáticamente permiso para aprobar. Administrar usuarios tampoco concede autoridad sobre productos.</li><li><b>No usar estatus como permiso.</b> El estado crea una tarea; el perfil y el alcance deciden quién puede ejecutarla.</li><li><b>Validar dos veces.</b> El frente oculta lo no permitido, pero el módulo dueño vuelve a validar cada acción.</li><li><b>Auditar decisiones.</b> Aceptar, rechazar, cancelar, reasignar, cambiar reglas y administrar accesos dejan quién, cuándo, antes, después y motivo.</li></ul></section>
+<section id="matriz"><h2>Matriz ejecutiva por módulo</h2><p class="lead">Resume la intensidad máxima del perfil en cada módulo. El detalle real se expresa con acciones como <code>propuestas.aceptar</code>, nunca sólo con “acceso al módulo”.</p><div class="legend-row"><span class="legend none"><b>-</b> Sin acceso</span><span class="legend view"><b>V</b> Consulta</span><span class="legend work"><b>T</b> Trabaja</span><span class="legend decide"><b>D</b> Decide</span><span class="legend admin"><b>A</b> Administra</span></div><div class="table-wrap"><table class="matrix"><thead><tr><th>Perfil</th><th><span>Inicio y bandejas</span></th><th><span>Catalogación</span></th><th><span>Compras</span></th><th><span>Datos y plantillas</span></th><th><span>Estudio / Foro</span></th><th><span>Calidad y categoría</span></th><th><span>Publicación</span></th><th><span>Usuarios y accesos</span></th><th><span>Integraciones</span></th><th><span>Auditoría</span></th></tr></thead><tbody><tr><th><a href="#p01">P01 · Administrador de plataforma</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="admin" title="Administra"><b>A</b><span>Administra</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="admin" title="Administra"><b>A</b><span>Administra</span></td></tr><tr><th><a href="#p02">P02 · Administrador de organización externa</a></th><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p03">P03 · Catalogador externo</a></th><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p04">P04 · Compras</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="decide" title="Decide"><b>D</b><span>Decide</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p05">P05 · Gobierno de Producto</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="admin" title="Administra"><b>A</b><span>Administra</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p06">P06 · Gobierno de Datos</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="decide" title="Decide"><b>D</b><span>Decide</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p07">P07 · Dueño de sección</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p08">P08 · Coordinador de estudio</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="admin" title="Administra"><b>A</b><span>Administra</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p09">P09 · Logística de estudio</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p10">P10 · Fotógrafo</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p11">P11 · Editor de imágenes</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p12">P12 · Enriquecedor / capturista interno</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p13">P13 · QA de calidad y matching</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="decide" title="Decide"><b>D</b><span>Decide</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p14">P14 · Category manager</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="decide" title="Decide"><b>D</b><span>Decide</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p15">P15 · Repoblamiento / operación de contenido</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="work" title="Trabaja"><b>T</b><span>Trabaja</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="decide" title="Decide"><b>D</b><span>Decide</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p16">P16 · KAM / soporte Marketplace</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p17">P17 · Administrador de integraciones</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="none" title="Sin acceso"><b>-</b><span>Sin acceso</span></td><td class="admin" title="Administra"><b>A</b><span>Administra</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr><tr><th><a href="#p18">P18 · Auditor / consulta</a></th><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td><td class="view" title="Consulta"><b>V</b><span>Consulta</span></td></tr></tbody></table></div></section>
+<section id="perfiles"><h2>Perfiles propuestos</h2><p class="lead">Los códigos son nombres de trabajo, no contratos aprobados. Filtra por familia para revisar el corte con cada área.</p><div class="filters"><button class="active" data-filter="all">Todos</button><button data-filter="Calidad">Calidad</button><button data-filter="Control">Control</button><button data-filter="Estudio">Estudio</button><button data-filter="Externos">Externos</button><button data-filter="Gobierno">Gobierno</button><button data-filter="Negocio">Negocio</button><button data-filter="Operación">Operación</button><button data-filter="Plataforma">Plataforma</button></div><div class="profiles">
+    <article class="profile" id="p01" data-group="Plataforma">
+      <div class="profile-head"><span class="profile-id">P01</span><span class="badge">Plataforma</span></div>
+      <h3>Administrador de plataforma</h3>
+      <p>Mantiene usuarios internos, perfiles, membresías y configuración de acceso.</p>
+      <dl><dt>Alcance</dt><dd>Todo el sistema para administración; sin permiso implícito para aprobar productos.</dd><dt>Código propuesto</dt><dd><code>PIM_PLATFORM_ADMIN</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>usuarios.crear</code><code>usuarios.activar_desactivar</code><code>membresias.asignar</code><code>perfiles.configurar</code><code>accesos.auditar</code></div>
+      <details><summary>No le concede</summary><ul><li>Aceptar propuestas</li><li>Aprobar calidad o categoría</li><li>Modificar contenido sólo por ser administrador</li></ul></details>
+      <small>Arquitectura citada; permiso fino propuesto</small>
+    </article>
+    <article class="profile" id="p02" data-group="Externos">
+      <div class="profile-head"><span class="profile-id">P02</span><span class="badge">Externos</span></div>
+      <h3>Administrador de organización externa</h3>
+      <p>Administra las personas de su proveedor o seller y conserva las mismas tareas de catalogación externa.</p>
+      <dl><dt>Alcance</dt><dd>Una organización y los negocios habilitados; nunca otra organización.</dd><dt>Código propuesto</dt><dd><code>PIM_ORG_ADMIN</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>organizacion.usuarios_gestionar</code><code>propuestas.crear</code><code>propuestas.editar_propias</code><code>propuestas.enviar</code><code>estado.consultar</code></div>
+      <details><summary>No le concede</summary><ul><li>Asignar perfiles internos</li><li>Aprobar su propia propuesta</li><li>Ver productos privados de otra organización</li></ul></details>
+      <small>Equivalente funcional citado; alcance propuesto</small>
+    </article>
+    <article class="profile" id="p03" data-group="Externos">
+      <div class="profile-head"><span class="profile-id">P03</span><span class="badge">Externos</span></div>
+      <h3>Catalogador externo</h3>
+      <p>Captura productos, corrige rechazos y aporta archivos o imágenes.</p>
+      <dl><dt>Alcance</dt><dd>Proveedor o seller, organización, negocio, categorías y marcas autorizadas.</dd><dt>Código propuesto</dt><dd><code>PIM_EXTERNAL_CATALOGER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>productos.buscar</code><code>propuestas.crear</code><code>propuestas.editar_propias</code><code>cargas.ejecutar</code><code>imagenes.aportar</code><code>propuestas.enviar</code><code>estado.consultar</code></div>
+      <details><summary>No le concede</summary><ul><li>Editar fichas ajenas</li><li>Liberar EAN</li><li>Aprobar propuestas, calidad o publicación</li></ul></details>
+      <small>Flujo TO-BE citado</small>
+    </article>
+    <article class="profile" id="p04" data-group="Negocio">
+      <div class="profile-head"><span class="profile-id">P04</span><span class="badge">Negocio</span></div>
+      <h3>Compras</h3>
+      <p>Resuelve la revisión comercial de Mercaderías y las excepciones que le corresponden.</p>
+      <dl><dt>Alcance</dt><dd>Negocio, sección comercial, proveedores y grupos de artículo asignados.</dd><dt>Código propuesto</dt><dd><code>PIM_BUYER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>propuestas.consultar_asignadas</code><code>propuestas.aceptar</code><code>propuestas.rechazar</code><code>propuestas.cancelar</code><code>ean.liberacion_resolver</code><code>datos_maestros.editar_autorizados</code></div>
+      <details><summary>No le concede</summary><ul><li>Aprobar Marketplace por defecto</li><li>Editar cualquier campo</li><li>Crear el SKU o dar por válida la respuesta de SAP</li></ul></details>
+      <small>Flujo citado; campos editables pendientes P-29</small>
+    </article>
+    <article class="profile" id="p05" data-group="Gobierno">
+      <div class="profile-head"><span class="profile-id">P05</span><span class="badge">Gobierno</span></div>
+      <h3>Gobierno de Producto</h3>
+      <p>Define el modelo de captura y las reglas de calidad del producto.</p>
+      <dl><dt>Alcance</dt><dd>Dominios, familias, plantillas, atributos y canales bajo su responsabilidad.</dd><dt>Código propuesto</dt><dd><code>PIM_PRODUCT_GOVERNANCE</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>plantillas.gestionar</code><code>atributos.gestionar</code><code>reglas_calidad.gestionar</code><code>listas_solicitar_cambio</code><code>modelo.consultar_impacto</code></div>
+      <details><summary>No le concede</summary><ul><li>Cambiar datos de una propuesta sin tarea</li><li>Aprobar una categoría por sustitución</li><li>Administrar identidades</li></ul></details>
+      <small>Responsabilidad TO-BE citada</small>
+    </article>
+    <article class="profile" id="p06" data-group="Gobierno">
+      <div class="profile-head"><span class="profile-id">P06</span><span class="badge">Gobierno</span></div>
+      <h3>Gobierno de Datos</h3>
+      <p>Corrige datos maestros y atiende errores de SAP, Foro o calidad.</p>
+      <dl><dt>Alcance</dt><dd>Grupos de atributos maestros y negocios asignados.</dd><dt>Código propuesto</dt><dd><code>PIM_DATA_STEWARD</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>datos_maestros.consultar</code><code>datos_maestros.corregir</code><code>listas.valor_resolver</code><code>sap.error_reintentar</code><code>tareas.devolver_compras</code></div>
+      <details><summary>No le concede</summary><ul><li>Modificar contenido comercial fuera de su grupo</li><li>Aprobar calidad final</li><li>Cambiar reglas de acceso</li></ul></details>
+      <small>Flujo TO-BE citado</small>
+    </article>
+    <article class="profile" id="p07" data-group="Gobierno">
+      <div class="profile-head"><span class="profile-id">P07</span><span class="badge">Gobierno</span></div>
+      <h3>Dueño de sección</h3>
+      <p>Completa o valida únicamente una sección: Legal, Sostenibilidad, VAS, Logística o E-commerce.</p>
+      <dl><dt>Alcance</dt><dd>Grupo de atributos y categorías asignadas; el tipo de sección es un alcance, no otro perfil.</dd><dt>Código propuesto</dt><dd><code>PIM_SECTION_OWNER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>seccion.consultar_asignada</code><code>seccion.editar</code><code>seccion.validar</code><code>tareas.devolver</code></div>
+      <details><summary>No le concede</summary><ul><li>Editar otras secciones</li><li>Aprobar todo el producto</li><li>Cambiar plantillas o reglas globales</li></ul></details>
+      <small>Propuesta P-22, sin perfil vigente</small>
+    </article>
+    <article class="profile" id="p08" data-group="Estudio">
+      <div class="profile-head"><span class="profile-id">P08</span><span class="badge">Estudio</span></div>
+      <h3>Coordinador de estudio</h3>
+      <p>Organiza la cola física y reasigna trabajo de logística, fotografía, edición y enriquecimiento.</p>
+      <dl><dt>Alcance</dt><dd>Estudio, sede, turno y categorías atendidas.</dd><dt>Código propuesto</dt><dd><code>PIM_STUDIO_COORDINATOR</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>estudio.cola_consultar</code><code>estudio.tarea_asignar</code><code>estudio.tarea_reasignar</code><code>estudio.excepcion_resolver</code><code>estudio.capacidad_consultar</code></div>
+      <details><summary>No le concede</summary><ul><li>Aceptar propuesta comercial</li><li>Aprobar producto para publicación</li><li>Editar datos maestros sin tarea</li></ul></details>
+      <small>Jefaturas existentes; atribuciones finas propuestas</small>
+    </article>
+    <article class="profile" id="p09" data-group="Estudio">
+      <div class="profile-head"><span class="profile-id">P09</span><span class="badge">Estudio</span></div>
+      <h3>Logística de estudio</h3>
+      <p>Registra recepción, ubicación, movimiento y salida de muestras.</p>
+      <dl><dt>Alcance</dt><dd>Sede y tareas asignadas.</dd><dt>Código propuesto</dt><dd><code>PIM_STUDIO_LOGISTICS</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>muestras.recibir</code><code>muestras.ubicar</code><code>muestras.transferir</code><code>muestras.devolver</code><code>tareas.consultar_asignadas</code></div>
+      <details><summary>No le concede</summary><ul><li>Editar contenido del producto</li><li>Subir una edición final</li><li>Aprobar calidad</li></ul></details>
+      <small>Actividad citada; perfil consolidado propuesto</small>
+    </article>
+    <article class="profile" id="p10" data-group="Estudio">
+      <div class="profile-head"><span class="profile-id">P10</span><span class="badge">Estudio</span></div>
+      <h3>Fotógrafo</h3>
+      <p>Toma y transfiere imágenes para el SKU o variante asignados.</p>
+      <dl><dt>Alcance</dt><dd>Sede, cabina y tareas asignadas.</dd><dt>Código propuesto</dt><dd><code>PIM_PHOTOGRAPHER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>fotografia.tarea_iniciar</code><code>fotografia.archivo_transferir</code><code>fotografia.toma_repetir</code><code>fotografia.tarea_terminar</code></div>
+      <details><summary>No le concede</summary><ul><li>Editar atributos</li><li>Aprobar imágenes finales</li><li>Trabajar una muestra no asignada</li></ul></details>
+      <small>Actividad citada</small>
+    </article>
+    <article class="profile" id="p11" data-group="Estudio">
+      <div class="profile-head"><span class="profile-id">P11</span><span class="badge">Estudio</span></div>
+      <h3>Editor de imágenes</h3>
+      <p>Edita el material recibido y entrega una versión candidata.</p>
+      <dl><dt>Alcance</dt><dd>Sede, especialidad y tareas asignadas.</dd><dt>Código propuesto</dt><dd><code>PIM_IMAGE_EDITOR</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>edicion.tarea_iniciar</code><code>edicion.version_subir</code><code>edicion.observacion_registrar</code><code>edicion.tarea_terminar</code></div>
+      <details><summary>No le concede</summary><ul><li>Cambiar el producto</li><li>Aprobar publicación</li><li>Sustituir el original sin versionado</li></ul></details>
+      <small>Perfil actual citado</small>
+    </article>
+    <article class="profile" id="p12" data-group="Estudio">
+      <div class="profile-head"><span class="profile-id">P12</span><span class="badge">Estudio</span></div>
+      <h3>Enriquecedor / capturista interno</h3>
+      <p>Completa atributos y corrige contenido asignado, con apoyo opcional de IA.</p>
+      <dl><dt>Alcance</dt><dd>Grupos de atributos, categorías y tareas asignadas.</dd><dt>Código propuesto</dt><dd><code>PIM_ENRICHER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>enriquecimiento.consultar</code><code>enriquecimiento.editar_asignado</code><code>ia.sugerencia_aceptar</code><code>ia.sugerencia_rechazar</code><code>tareas.terminar</code></div>
+      <details><summary>No le concede</summary><ul><li>Aceptar sugerencias de IA en bloque sin revisión</li><li>Editar datos maestros protegidos</li><li>Aprobar calidad final</li></ul></details>
+      <small>Perfil actual citado</small>
+    </article>
+    <article class="profile" id="p13" data-group="Calidad">
+      <div class="profile-head"><span class="profile-id">P13</span><span class="badge">Calidad</span></div>
+      <h3>QA de calidad y matching</h3>
+      <p>Resuelve casos que las reglas o la IA no pueden concluir y dirige la corrección.</p>
+      <dl><dt>Alcance</dt><dd>Negocio, canal, categorías y tipo de validación.</dd><dt>Código propuesto</dt><dd><code>PIM_QUALITY_REVIEWER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>calidad.caso_consultar</code><code>matching.resolver</code><code>calidad.aprobar</code><code>calidad.rechazar</code><code>calidad.asignar_correccion</code></div>
+      <details><summary>No le concede</summary><ul><li>Modificar el contenido para aprobarlo</li><li>Cambiar umbrales globales</li><li>Aceptar comercialmente una propuesta</li></ul></details>
+      <small>Flujo TO-BE citado; umbrales pendientes</small>
+    </article>
+    <article class="profile" id="p14" data-group="Calidad">
+      <div class="profile-head"><span class="profile-id">P14</span><span class="badge">Calidad</span></div>
+      <h3>Category manager</h3>
+      <p>Revisa la categoría propuesta cuando la política exige validación humana.</p>
+      <dl><dt>Alcance</dt><dd>Sitios, árboles y categorías asignadas.</dd><dt>Código propuesto</dt><dd><code>PIM_CATEGORY_MANAGER</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>categoria.propuesta_consultar</code><code>categoria.aprobar</code><code>categoria.rechazar</code><code>categoria.corregir_asignada</code></div>
+      <details><summary>No le concede</summary><ul><li>Administrar el árbol por el permiso de aprobar</li><li>Editar otros atributos</li><li>Aprobar si la política permite automatización sin tarea</li></ul></details>
+      <small>Actividad actual; permanencia pendiente P-37</small>
+    </article>
+    <article class="profile" id="p15" data-group="Operación">
+      <div class="profile-head"><span class="profile-id">P15</span><span class="badge">Operación</span></div>
+      <h3>Repoblamiento / operación de contenido</h3>
+      <p>Corrige fichas ya publicadas y reenvía contenido cuando existe una tarea autorizada.</p>
+      <dl><dt>Alcance</dt><dd>Canal, negocio, categoría y causa de corrección.</dd><dt>Código propuesto</dt><dd><code>PIM_CONTENT_OPERATIONS</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>publicados.consultar</code><code>publicados.corregir_asignado</code><code>publicacion.reenviar</code><code>publicacion.error_resolver</code><code>tareas.devolver_origen</code></div>
+      <details><summary>No le concede</summary><ul><li>Cambiar precio o inventario</li><li>Modificar cualquier publicado sin causa</li><li>Omitir las revisiones aplicables</li></ul></details>
+      <small>Actividad citada</small>
+    </article>
+    <article class="profile" id="p16" data-group="Operación">
+      <div class="profile-head"><span class="profile-id">P16</span><span class="badge">Operación</span></div>
+      <h3>KAM / soporte Marketplace</h3>
+      <p>Acompaña al seller y consulta bloqueos sin convertirse en aprobador.</p>
+      <dl><dt>Alcance</dt><dd>Sellers y categorías de su cartera.</dd><dt>Código propuesto</dt><dd><code>PIM_MARKETPLACE_SUPPORT</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>seller.estado_consultar</code><code>seller.bloqueo_consultar</code><code>incidencia.registrar</code><code>incidencia.escalar</code></div>
+      <details><summary>No le concede</summary><ul><li>Editar la propuesta del seller</li><li>Aprobar Marketplace</li><li>Liberar restricciones por sí mismo</li></ul></details>
+      <small>Necesidad P-28; vista pendiente</small>
+    </article>
+    <article class="profile" id="p17" data-group="Plataforma">
+      <div class="profile-head"><span class="profile-id">P17</span><span class="badge">Plataforma</span></div>
+      <h3>Administrador de integraciones</h3>
+      <p>Registra consumidores técnicos y limita sus alcances.</p>
+      <dl><dt>Alcance</dt><dd>Consumidor, ambiente, negocio, operación y cuota.</dd><dt>Código propuesto</dt><dd><code>PIM_INTEGRATION_ADMIN</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>consumidores.registrar</code><code>credenciales.rotar</code><code>alcances.configurar</code><code>cuotas.configurar</code><code>integraciones.suspender</code></div>
+      <details><summary>No le concede</summary><ul><li>Usar credenciales de persona</li><li>Conceder operaciones fuera del contrato</li><li>Modificar productos manualmente</li></ul></details>
+      <small>FT-USR-03 / PD-26, propuesta</small>
+    </article>
+    <article class="profile" id="p18" data-group="Control">
+      <div class="profile-head"><span class="profile-id">P18</span><span class="badge">Control</span></div>
+      <h3>Auditor / consulta</h3>
+      <p>Consulta trazabilidad y evidencia sin cambiar el producto.</p>
+      <dl><dt>Alcance</dt><dd>Negocio, módulo, periodo y clasificación de datos autorizados.</dd><dt>Código propuesto</dt><dd><code>PIM_AUDITOR</code></dd></dl>
+      <h4>Acciones base</h4><div class="chips"><code>auditoria.consultar</code><code>historial.consultar</code><code>reportes.exportar_autorizados</code><code>configuracion.consultar</code></div>
+      <details><summary>No le concede</summary><ul><li>Ejecutar acciones operativas</li><li>Ver secretos</li><li>Exportar fuera de su alcance</li></ul></details>
+      <small>Necesidad de trazabilidad citada; perfil propuesto</small>
+    </article></div></section>
+<section id="construccion"><h2>Base para construirlo</h2><div class="steps">
+  <div class="step"><b>Ratificar actividades.</b> Revisar esta lista por área y eliminar o dividir sólo donde cambie la separación de funciones.</div>
+  <div class="step"><b>Congelar el catálogo de acciones.</b> Cada botón o proceso sensible debe apuntar a una acción estable: <code>recurso.acción</code>.</div>
+  <div class="step"><b>Definir alcances.</b> Negocio, organización, proveedor/seller, categoría, grupo de atributos, canal, sede y ambiente se asignan aparte del perfil.</div>
+  <div class="step"><b>Crear plantillas de perfil.</b> Los 18 perfiles son plantillas versionadas; una persona puede recibir varias, con vigencia y motivo.</div>
+  <div class="step"><b>Aplicar en pantalla y dominio.</b> El frente esconde menús y botones; el servicio dueño vuelve a autorizar la acción y el alcance.</div>
+  <div class="step"><b>Probar negaciones.</b> Cada acción crítica necesita pruebas de “puede” y “no puede”, incluida otra organización, otro negocio y una tarea no asignada.</div>
+  <div class="step"><b>Auditar y recertificar.</b> Registrar decisiones y revisar periódicamente membresías, privilegios no usados y combinaciones incompatibles.</div>
+</div></section>
+<section id="pendientes"><h2>Qué falta ratificar</h2><p class="lead">Estos puntos impiden llamar “definitiva” a la matriz; no impiden usarla como base de talleres y diseño.</p><div class="table-wrap"><table><thead><tr><th>Referencia</th><th>Decisión pendiente</th></tr></thead><tbody><tr><td><code>DUD-22</code></td><td>Ratificar perfil × módulo × acción y los grupos de atributos con Negocio y Seguridad.</td></tr><tr><td><code>P-29</code></td><td>Precisar qué datos maestros puede editar Compras y en qué productos.</td></tr><tr><td><code>P-22</code></td><td>Confirmar si Legal, Sostenibilidad, VAS, Logística y E-commerce actuarán como dueños de sección.</td></tr><tr><td><code>P-37</code></td><td>Decidir cuándo Category manager aprueba y cuándo la categoría puede continuar automáticamente.</td></tr><tr><td><code>P-28</code></td><td>Cerrar qué ve el KAM y si sólo consulta o también atiende incidencias.</td></tr><tr><td><code>S42-PEN-02</code></td><td>Definir quién puede modificar contenido creado por otra organización o seller.</td></tr><tr><td><code>PD-26</code></td><td>Cerrar validación de tokens, cuotas y administración de consumidores técnicos.</td></tr></tbody></table></div></section>
+<section id="fuentes"><h2>Base documental</h2><p class="sources">Citado: ADR-12 (frente/BFF compartido y permisos de pantalla), ADR-02 (unificación completa), discovery TO-BE §13.1 (participantes y bandejas), ficha 09 y DUD-22 (matriz aún sin ratificar), reglas medidas de Entrada Única y Foro sobre perfiles actuales. Inferido/propuesto: consolidación en 18 perfiles, códigos, niveles, alcances y catálogo de acciones. No se consultaron cuentas ni ambientes.</p></section>
+</main>
+<footer><div><b>Lectura correcta:</b> esta página propone la base de autorización. No concede accesos, no sustituye el taller con Negocio y Seguridad y no convierte responsabilidades funcionales en permisos vigentes.</div></footer>
+<script>
+document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));button.classList.add('active');
+  document.querySelectorAll('.profile').forEach(card=>card.hidden=button.dataset.filter!=='all'&&card.dataset.group!==button.dataset.filter);
+}));
+</script>
+</body></html>
